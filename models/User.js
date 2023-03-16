@@ -1,6 +1,7 @@
 let mongoose = require("mongoose");
 var bcrypt = require('bcrypt');
 let jwt = require("jsonwebtoken");
+let crypto = require("crypto");
 
 
 let userSchema = new mongoose.Schema(
@@ -43,6 +44,8 @@ userSchema.methods.generateJWT = function () {
 		{ expiresIn: "60d" }
 	);
 };
+
+
 
 userSchema.methods.toAuthJSON = function () {
 	return {

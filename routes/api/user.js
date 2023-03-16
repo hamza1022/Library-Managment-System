@@ -8,7 +8,7 @@ let auth = require("../auth");
 let { OkResponse, BadRequestResponse, UnauthorizedResponse } = require("express-http-response");
 
 
-// General Check
+
 router.get("/", function (req, res, next) {
     return next(
         new OkResponse({
@@ -18,7 +18,23 @@ router.get("/", function (req, res, next) {
 });
 
 
-// Signup
+router.get('/getOne/:userId',(req,res,next)=>{
+
+    console.log(req.params.userId)
+
+    User.findById(req.params.userId)
+    .then((user)=>{
+
+        return next(new OkResponse(user));
+
+    })
+    .catch((err)=>{
+        return next(new BadRequestResponse(err));
+    })
+
+})
+
+
 router.post("/signUp", async (req, res, next) => {
     if (!req.body.email || !req.body.name || !req.body.password) {
         return next(new BadRequestResponse("Missing Required parameters"));
@@ -58,48 +74,59 @@ router.post("/signUp", async (req, res, next) => {
 
 });
 
+// router.post('/login', async (req, res, next) => {
+
+//     if (!req.body.email || !req.body.password) {
+
+//         res.status(301).json({ message: "error", messgae: "Please enter Email and password" })
+//     }
+
+//     let user = await User.findOne({ email: req.body.email })
+
+//     if (!user || user.password === req.body.password) {
+//         return next(new BadRequestResponse("Incorrect Credentials"));
+
+//     }
+//     else if (user) {
+//         let match = await bcrypt.compare(req.body.password, user.password)
+//         if(match){
+
+//             return next(new OkResponse(user.toAuthJSON()));
+//         }
+//         return next(new BadRequestResponse("Incorrect Credentials"));
+
+//     }
+   
+
+// })
 router.post('/login', async (req, res, next) => {
 
     if (!req.body.email || !req.body.password) {
-
-        res.status(301).json({ message: "error", messgae: "Please enter Email and password" })
+        return res.status(400).json({ message: "error", messgae: "Please enter Email and password" });
     }
 
-    let user = await User.findOne({ email: req.body.email })
+    try {
+        let user = await User.findOne({ email: req.body.email });
 
-    if (!user || user.password === req.body.password) {
-        return next(new BadRequestResponse("Incorrect Credentials"));
+        if (!user) {
+            return next(new BadRequestResponse("Incorrect Credentials"));
+        }
 
-    }
-    else if (user) {
-        let match = await bcrypt.compare(req.body.password, user.password)
+        console.log("user pass",user.password)
+
+
+        let match = await bcrypt.compare(req.body.password, user.password);
+
+        if (!match) {
+            return next(new BadRequestResponse("Incorrect Credentials"));
+        }
 
         return next(new OkResponse(user.toAuthJSON()));
-
-        // if (match) {
-        //     const payload = {
-        //         _id: user._id,
-        //         email: user.email,
-        //         name: user.userName,
-
-        //     }
-        //     const token = JWT.sign(payload, secret, {
-        //         expiresIn: '24h'
-        //     })
-        //     res.status(200).json({
-        //         message: 'SUCCESS: logged in.',
-        //         token,
-        //         user: user
-        //     })
-        // } else {
-        //     return next(new BadRequestResponse("password is invalid"));
-
-        // }
+    } catch (error) {
+        return next(new BadRequestResponse(error.message));
     }
+});
 
-    res.status(500).json({ error: 'INTERNAL SERVER ERROR' })
-
-})
 
 router.get("/getUsers", auth.required, auth.user, (req, res, next) => {
     User.find().then((user)=>{
@@ -151,7 +178,41 @@ router.put("/update/:userId", auth.required, auth.admin, (req, res, next) => {
           }
       
  })
-    
+
+
+router.put("/update-password", auth.required, auth.user, async (req, res, next) => {
+	if (!req.body.oldPassword || !req.body.password)
+		return next(new BadRequestResponse("Missing Required Parameters"));
+
+	if (req.body.oldPassword.length <= 0 || req.body.password.length <= 0)
+		return next(new BadRequestResponse("Missing Required Parameters"));
+
+	if (req.body.oldPassword === req.body.password)
+		return next(new BadRequestResponse("Old password and new password cannot be same", 422));
+
+	try {
+		const user = await User.findById(req.user.id);
+
+      
+		const hashedPassword = user.password;
+		const passwordMatch = await bcrypt.compare(req.body.oldPassword, hashedPassword);
+		
+		if (passwordMatch) {
+			const salt = await bcrypt.genSalt(10);
+			const hashedNewPassword = await bcrypt.hash(req.body.password, salt);
+
+			user.password = hashedNewPassword;
+			await user.save();
+
+			return next(new OkResponse({ message: "Password has been changed successfully" }));
+		} else {
+			return next(new BadRequestResponse("Invalid Old Password!!", 422));
+		}
+	} catch (error) {
+		return next(new BadRequestResponse(error.message));
+	}
+});
+
 
 
 module.exports = router

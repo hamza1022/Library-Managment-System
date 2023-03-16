@@ -88,12 +88,6 @@ module.exports = (app) => {
 
 	app.use(require("./routes"));
 
-	if (isProduction) {
-		app.use("/", express.static(path.join(__dirname, "dist")));
-		app.use((req, res, next) => {
-			res.sendFile(path.join(__dirname, "dist", "index.html"));
-		});
-	}
 
 	app.use(function (req, res, next) {
 		let err = new Error("Not Found");
@@ -102,20 +96,7 @@ module.exports = (app) => {
 	});
 
 	app.use(httpResponse.Middleware);
-	if (!isProduction) {
-		app.use(function (err, req, res, next) {
-			console.log(err.stack);
 
-			res.status(err.status || 500);
-
-			res.json({
-				errors: {
-					message: err.message,
-					error: err,
-				},
-			});
-		});
-	}
 
 	app.use(function (err, req, res, next) {
 		res.status(err.status || 500);

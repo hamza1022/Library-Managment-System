@@ -1,8 +1,8 @@
 module.exports = {
 	apps: [
 		{
-			name: "Self-Assessment",
-			script: "./server.js",
+			name: "Library Managment System",
+			script: "./app.js",
 			instances: "1",
 			exec_mode: "cluster",
 			watch: true,

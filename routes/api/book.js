@@ -17,7 +17,6 @@ router.get("/", function (req, res, next) {
 });
 
 
-
 router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
     if ( !req.body.bookName) {
         return next(new BadRequestResponse("Missing Required parameters"));
@@ -46,11 +45,22 @@ router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
 
 });
 
+router.get('/getOne/:bookId',(req,res,next)=>{
+    
+    Book.findById(req.params.bookId)
+    .then((book)=>{
+        return next(new OkResponse(book));
+    })
+    .catch((err)=>{
+        return next(new BadRequestResponse(err));
+    })
+
+})
 
 router.get("/getBooks", auth.required, auth.user,  (req, res, next) => {
     Book.find().
-    populate('Author', 'name country').then((author)=>{
-        return next(new OkResponse(author));
+    populate('Author', 'name country').then((book)=>{
+        return next(new OkResponse(book));
 
     }).catch((err)=>{
         console.log(err)

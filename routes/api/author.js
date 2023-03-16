@@ -7,7 +7,7 @@ let auth = require("../auth");
 let { OkResponse, BadRequestResponse, UnauthorizedResponse } = require("express-http-response");
 
 
-// General Check
+
 router.get("/", function (req, res, next) {
     return next(
         new OkResponse({
@@ -16,8 +16,18 @@ router.get("/", function (req, res, next) {
     );
 });
 
+router.get('/getOne/:authorId',(req,res,next)=>{
+    
+    Author.findById(req.params.authorId)
+    .then((author)=>{
+        return next(new OkResponse(author));
+    })
+    .catch((err)=>{
+        return next(new BadRequestResponse(err));
+    })
 
-// Create
+})
+
 router.post("/create", async (req, res, next) => {
     if ( !req.body.name) {
         return next(new BadRequestResponse("Missing Required parameters"));
@@ -47,7 +57,7 @@ router.post("/create", async (req, res, next) => {
 
 });
 
-// Get Authors
+
 router.get("/getAuthors", auth.required, auth.user, (req, res, next) => {
     Author.find().then((author)=>{
         return next(new OkResponse(author));
@@ -57,7 +67,7 @@ router.get("/getAuthors", auth.required, auth.user, (req, res, next) => {
     })
 });
 
-// Delete Author
+
 router.delete("/delete/:authorId", auth.required, auth.admin,  (req, res, next) => {
 
    
@@ -75,7 +85,7 @@ router.delete("/delete/:authorId", auth.required, auth.admin,  (req, res, next) 
     })
 });
 
-// Update Author
+
 router.put("/update/:authorId", auth.required, auth.admin, (req, res, next) => {
     try {
    

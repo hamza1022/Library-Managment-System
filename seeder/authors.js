@@ -29,7 +29,16 @@ async function seedAuthor() {
 
 		await newAuthor.save();
 	}
-	// Seed user
+	{
+		let newAuthor = new Author();
+		newAuthor.name = "Aslam";
+		newAuthor.age = 40;
+		newAuthor.country = "pk";
+    
+
+		await newAuthor.save();
+	}
+	
 	
 
 	console.log("Default Authors Seeded");
