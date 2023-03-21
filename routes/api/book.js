@@ -57,7 +57,7 @@ router.get('/getOne/:bookId',(req,res,next)=>{
 
 })
 
-router.get("/getBooks", auth.required, auth.user,  (req, res, next) => {
+router.get("/getBooks",   (req, res, next) => {
     Book.find().
     populate('Author', 'name country').then((book)=>{
         return next(new OkResponse(book));

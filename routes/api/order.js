@@ -41,7 +41,7 @@ router.post("/create", auth.required, auth.user, async (req, res, next) => {
   const newOrder = new Order({
     books: req.body.books,
     customer: req.body.customer,
-    fineafterperDay: 50,
+    fineAfterPerDay: 50,
     status:orderStatus
 
   });
@@ -49,27 +49,16 @@ router.post("/create", auth.required, auth.user, async (req, res, next) => {
     .then(async (order) => {
       const bookIds = order.books.map((book) => book._id);
       await Book.updateMany({ _id: { $in: bookIds } }, { status: "lent" });
-      return Order.populate(order, { path: "books", select: "-_id bookName bookTitle status" });
-    })
-    .then((order) => {
-      return Order.populate(order, { path: "customer", select: "-_id name address phoneNumber email" });
-    })
-    .then((order) => {
-      return Order.populate(order, { path: "books.Author", model: "Author", select: "-_id name" });
-    })
-    .then((order) => {
-      const responseObj = {
-        message: "Order Created Successfully",
-        order: {
-          books: order.books,
-          customer: order.customer,
-          fineafterperDay: order.fineafterperDay,
-          status:order.status
-        },
-      };
-      res.status(201).json(responseObj);
-      // const { fineafterperDay, ...rest } = order.toObject();
-      // return next(new OkResponse({ ...rest, fineafterperDay }));
+      await  order.populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
+      return next(new OkResponse({
+        order:{
+          books:order.books,
+          customers:order.customers,
+          fineAfterPerDay:order.fineAfterPerDay,
+          status:order.status,
+          fine:order.fine
+        }
+      }))
     })
     .catch((err) => {
       return next(new BadRequestResponse(err));
@@ -90,32 +79,30 @@ router.put('/return', auth.required, auth.user, async (req, res, next) => {
   const overdueDays = Math.max(0, currentDateObj.diff(borrowDate, 'days') - 7);
   const fineRate = 50;
   const fine = overdueDays * fineRate;
- 
 
-  order.fineafterperDay = fine;
+ 
+  order.fine = fine;
   order.status = "Returned"
   order.save()
     .then(async (order) => {
       const bookIds = order.books.map((book) => book._id);
       await Book.updateMany({ _id: { $in: bookIds } }, { status: "Available" });
-
-      return Order.populate(order, { path: "books", select: "-_id bookName bookTitle status" });
-    })
-    .then((order) => {
-      return Order.populate(order, { path: "customer", select: "-_id name address phoneNumber" });
-    }).then((order) => {
-      return Order.populate(order, { path: "books.Author", model: "Author", select: "-_id name" });
-    })
-    .then((order) => {
-      res.status(201).json({
-        message:"Successfully Returned",
-        data:order
-      })
-      return next(new OkResponse(order));
+      await  order.populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
+      return next(new OkResponse({
+        order:{
+          books:order.books,
+          customers:order.customers,
+          fineAfterPerDay:order.fineAfterPerDay,
+          status:order.status,
+          fine:order.fine
+        }
+      }))
     })
     .catch((err) => {
       return next(new BadRequestResponse(err));
     });
+
+    
 
 
 });
@@ -125,7 +112,8 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
     const allOrders = await Order.find({});
     const userOrders = allOrders
       .map((order) => {
-        if (order.customer.equals(req.user._id)) {
+       
+        if (order.customer.toString()===req.user._id.toString()) {
           return order;
         }
       })
@@ -144,15 +132,7 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
 });
 
 router.get("/getOrders", auth.required, auth.admin, (req, res, next) => {
-  Order.find()
-    .then((order) => {
-      return Order.populate(order, { path: "books", select: "-_id bookName bookTitle status" });
-    })
-    .then((order) => {
-      return Order.populate(order, { path: "customer", select: "-_id name address phoneNumber email" });
-    }).then((order) => {
-      return Order.populate(order, { path: "books.Author", model: "Author", select: "-_id name" });
-    })
+  Order.find().populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
     .then((order) => {
       return next(new OkResponse(order));
     })

@@ -2,7 +2,7 @@ let mongoose = require("mongoose");
 var bcrypt = require('bcrypt');
 let jwt = require("jsonwebtoken");
 let crypto = require("crypto");
-
+const { publicPics } = require("../config");
 
 let userSchema = new mongoose.Schema(
 	{
@@ -10,6 +10,10 @@ let userSchema = new mongoose.Schema(
 		name: { type: String },
 		address: { type: String },
 		phoneNumber: { type: String, default: "" },
+		otp: { type: String, default: null },
+		otpExpires: { type: Date, default: null },
+		isOtpVerified: { type: Boolean, default: false },
+		profileImage:[ { type: String, default: `${publicPics}/noImage.png` }],
         password:{type:String},
         role: {
 			type: String,
@@ -24,15 +28,13 @@ let userSchema = new mongoose.Schema(
 
 
 
-userSchema.pre('save', function (next) {
 
-    var salt = bcrypt.genSaltSync(10);
-    if (this.password && this.isModified("password")) {
-        this.password = bcrypt.hashSync(this.password, salt);
+userSchema.methods.setOTP = function () {
+	this.otp = Math.floor(1000 + Math.random() * 9000);
+	this.otpExpires = Date.now() + 3600000; // 1 hour
+};
 
-    }
-    next();
-})
+
 
 userSchema.methods.generateJWT = function () {
 	return jwt.sign(
@@ -56,6 +58,7 @@ userSchema.methods.toAuthJSON = function () {
         phoneNumber:this.phoneNumber,
         password:this.password,
         role:this.role,
+		profileImage:this.profileImage,
 		
 
 		token: this.generateJWT(),

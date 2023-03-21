@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt')
 const User = require('../../models/User')
 let auth = require("../auth");
 
+var emailService = require("../../utilities/emailService");
+const upload = require("../../utilities/multer");
+
+
 
 
 let { OkResponse, BadRequestResponse, UnauthorizedResponse } = require("express-http-response");
@@ -15,6 +19,17 @@ router.get("/", function (req, res, next) {
             message: `Users Api's are working`,
         })
     );
+});
+
+router.param("email", (req, res, next, email) => {
+	User.findOne({ email }, (err, user) => {
+		if (!err && user !== null) {
+			// console.log(user);
+			req.userToUpdate = user;
+			return next();
+		}
+		return next(new BadRequestResponse("User not found!", 423));
+	});
 });
 
 
@@ -51,21 +66,23 @@ router.post("/signUp", async (req, res, next) => {
         return next(new BadRequestResponse("Email Already exist"));
     }
 
-    // Create user in our database
+    const salt = await bcrypt.genSalt(10)
+    const hashedPassword = await bcrypt.hash(req.body.password, salt)
+
+
     let newUser = User();
     newUser.email = req.body.email;
     newUser.name = req.body.name;
     newUser.phoneNumber = req.body.phoneNumber;
 
-    newUser.password = req.body.password;
+    newUser.password =hashedPassword ;
     newUser.address = req.body.address
-    newUser.role = req.body.role
+    newUser.role = "user"
+    newUser.setOTP();
 
-
-
-    // console.log(newUser);
     newUser.save()
         .then(result => {
+            emailService.sendEmailVerificationOTP(result);
             return next(new OkResponse(result));
         })
         .catch(err => {
@@ -153,31 +170,24 @@ router.delete("/delete/:email", auth.required, auth.admin, (req, res, next) => {
         })
 });
 
-router.put("/update/:userId", auth.required, auth.admin, (req, res, next) => {
 
-    try {
-   
-        const { userId } = req.params
-        const dataToUpdate = req.body
-          User.findById(userId)
-          .then((user) =>{
-            if(!user){
-                return next(new BadRequestResponse("The User Doesnot Exists."));
+router.put("/update-profile", auth.required, auth.user, (req, res, next) => {
+	if (!req.body) return next(new BadRequestResponse("Missing required parameter.", 422.0));
 
-            }
-            for (let key in dataToUpdate) {
-                user[key] = dataToUpdate[key]
-              }
-              user.save()
-              return next(new OkResponse(user));
-          }).catch((err)=>{
-            console.log(err)
-          })
-        }catch (error) {
-            res.status(500).json({ error: 'INTERNAL SERVER ERROR' })
-          }
-      
- })
+	req.user.name = req.body.name || req.user.name;
+	req.user.address = req.body.address || req.user.address;
+	req.user.email = req.body.email || req.user.email;
+	req.user.phoneNumber = req.body.phoneNumber || req.user.phoneNumber;
+
+	req.user.save()
+    .then((user)=>{
+        return next(new OkResponse(user));
+
+    })
+    .catch((err)=>{
+		if (err) return next(new BadRequestResponse(err));
+    });
+});
 
 
 router.put("/update-password", auth.required, auth.user, async (req, res, next) => {
@@ -213,6 +223,55 @@ router.put("/update-password", auth.required, auth.user, async (req, res, next) 
 	}
 });
 
+
+router.post("/verifyOtp", async (req, res, next) => {
+    const { email, otp } = req.body;
+  
+    if (!email || !otp) {
+      return next(new BadRequestResponse("Missing Required parameters"));
+    }
+
+    let query ={ 
+        email:email,
+    }
+  
+    const user = await User.findOne(query);
+    if (!user) {
+      return next(new BadRequestResponse("User not found"));
+    }
+  
+    if (user.otp !== otp) {
+      return next(new BadRequestResponse("Invalid OTP"));
+    }
+  
+    // Mark the user as verified
+    user.isOtpVerified = true;
+    user.otp = null;
+    await user.save();
+  
+    return next(new OkResponse("OTP verification successful"));
+  });
+
+router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(req,res,next)=>{
+
+    const files = req.files; 
+    const filePaths = files.map(file => file.path);
+    const profileImagePath = filePaths.join(',');
+    
+    const dataToUpdate = {
+        profileImage: profileImagePath
+    }
+    
+    User.findByIdAndUpdate(req.user.id, dataToUpdate)
+    .then((result)=>{
+        return next(new OkResponse(result));
+    })
+    .catch((err)=>{
+        return next(new BadRequestResponse(err));
+    })
+    
+      })
+  
 
 
 module.exports = router

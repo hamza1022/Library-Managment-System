@@ -18,21 +18,12 @@ let isProduction = process.env.NODE_ENV === "production";
 const { allowedOrigins, MONGODB_URI } = require("./config");
 
 module.exports = (app) => {
-	app.use(
-		cors({
-			credentials: true,
-			origin: function (origin, callback) {
-				// allow requests with no origin
-				// (like mobile apps or curl requests)
-				if (!origin) return callback(null, true);
-				if (allowedOrigins.indexOf(origin) === -1) {
-					var msg = "The CORS policy for this site does not " + "allow access from the specified Origin.";
-					return callback(new Error(msg), false);
-				}
-				return callback(null, true);
-			},
-		})
-	);
+	app.use((req, res, next) => {
+		res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+		res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+		next();
+	  });
 	app.use(compression());
 	// Normal express config defaults
 	app.use(require("morgan")("dev"));

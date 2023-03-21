@@ -9,9 +9,12 @@ const orderSchema = mongoose.Schema(
       ref: 'User',
       type: mongoose.Schema.Types.ObjectId
     },
-    fineafterperDay: {
+    fineAfterPerDay: {
       type: Number,
-     
+      default : 50
+    },
+    fine:{
+      type:String,
     },
     status:{
       type:String,
