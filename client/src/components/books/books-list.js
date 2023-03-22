@@ -94,7 +94,7 @@ const BooksLis = () => {
                                             <TableCell>{book.bookTitle}</TableCell>
                                             <TableCell align="right">{book.bookPrice}</TableCell>
                                             <TableCell align="right">{book.status}</TableCell>
-                                            <TableCell align="right">{book.Author.name}</TableCell>
+                                            <TableCell align="right">{book.Author?.name}</TableCell>
                                           
                                             <TableCell>
                                             <Button

@@ -33,6 +33,7 @@ router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
     newBook.bookTitle = req.body.bookTitle;
     newBook.bookPrice = req.body.bookPrice;
     newBook.Author = req.body.Author
+    newBook.status = "Available";
 
     // console.log(newBook);
     newBook.save()

@@ -32,6 +32,7 @@ export const UserApi = {
     return response
 
   },
+
   verifyOtp: async ({ email, OTP }) => {
     try {
       const otp = OTP
@@ -46,28 +47,46 @@ export const UserApi = {
       return error;
     }
   },
-  login:async (data)=>{
 
+  login: async (data) => {
+
+    console.log("login api called",)
+    const email = data.email;
+    const password = data.password;
+  
     try {
-      const email = data.email;
-      const password = data.password;
-   
-      const response = await axios.post("http://localhost:8080/api/user/login", {
-       
+      const res = await axios.post("http://localhost:8080/api/user/login", { 
         email,
-        password,
-        
-      })
-      console.log(response.data.data)
+        password
+      });
+      console.log("api" ,res.data.data);
+      return res.data.data;
+    } catch (err) {
+      console.error("err",err);
+      throw err;
+    }
+  },
+  getAllUsers:async()=>{
 
-      return response.data.data;
-    } catch (error) {
-      console.error(error);
-      return error;
+
+    let token = localStorage.getItem("token");
+
+
+    try{
+      const response = await axios.get("http://localhost:8080/api/user/getUsers",{
+        headers:{
+          'Authorization': `Bearer ${token}`
+          
+        } 
+      })
+      return response.data.data
+
+    }catch(err){
+      throw err
     }
 
-
   }
+  
 
 
 };

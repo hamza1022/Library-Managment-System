@@ -58,7 +58,7 @@ router.post("/create", async (req, res, next) => {
 });
 
 
-router.get("/getAuthors", auth.required, auth.user, (req, res, next) => {
+router.get("/getAuthors", auth.required, (req, res, next) => {
     Author.find().then((author)=>{
         return next(new OkResponse(author));
 
@@ -98,7 +98,11 @@ router.put("/update/:authorId", auth.required, auth.admin, (req, res, next) => {
 
             }
             for (let key in dataToUpdate) {
-                author[key] = dataToUpdate[key]
+                if (Object.prototype.hasOwnProperty.call(dataToUpdate, key)) {
+                  if (dataToUpdate[key]) {
+                    author[key] = dataToUpdate[key];
+                  }
+                }
               }
               author.save()
               return next(new OkResponse(author));

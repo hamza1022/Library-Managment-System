@@ -128,10 +128,6 @@ router.post('/login', async (req, res, next) => {
         if (!user) {
             return next(new BadRequestResponse("Incorrect Credentials"));
         }
-
-        console.log("user pass",user.password)
-
-
         let match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
@@ -145,7 +141,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 
-router.get("/getUsers", auth.required, auth.user, (req, res, next) => {
+router.get("/getUsers", auth.required, auth.admin, (req, res, next) => {
     User.find().then((user)=>{
         return next(new OkResponse(user));
 

@@ -64,6 +64,12 @@ export default function SignUp() {
       </div>
       <button type="submit" className="btn btn-primary">Register</button>
     </form>
+    <div className="d-flex justify-content-center align-items-center gap-3">
+								<div className="fs-13 fw-500 text-900">Have an account?</div>
+								<Link to="/" className="fs-13 fw-500 text-primary">
+									Login
+								</Link>
+							</div>
 
 </>
   );

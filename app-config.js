@@ -4,7 +4,7 @@ let http = require("http"),
 	(express = require("express")),
 	(bodyParser = require("body-parser")),
 	(session = require("express-session")),
-	(cors = require("cors")),
+
 	(passport = require("passport")),
 	(errorhandler = require("errorhandler")),
 	(mongoose = require("mongoose")),
@@ -12,6 +12,7 @@ let http = require("http"),
 	(createLocaleMiddleware = require("express-locale")),
 	(compression = require("compression")),
 	(httpResponse = require("express-http-response"));
+	var cors = require('cors')
 
 let isProduction = process.env.NODE_ENV === "production";
 
@@ -24,6 +25,7 @@ module.exports = (app) => {
 		res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 		next();
 	  });
+	  app.use(cors()) 
 	app.use(compression());
 	// Normal express config defaults
 	app.use(require("morgan")("dev"));
@@ -87,6 +89,7 @@ module.exports = (app) => {
 	});
 
 	app.use(httpResponse.Middleware);
+	
 
 
 	app.use(function (err, req, res, next) {

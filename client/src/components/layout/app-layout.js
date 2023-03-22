@@ -23,6 +23,13 @@ import  SignUp from "../registration/signUp"
 import { Sidebar } from "./sidebar";
 import Otp from '../registration/otp'
 import Login from '../Auth/login';
+import Author from '../admin/author';
+import Book from '../admin/book';
+import EditBook from '../admin/edit-book';
+import AddBook from '../admin/add-book';
+import CreateAuthor from '../admin/authors/create-author';
+import EditAuthor from '../admin/authors/edit-author';
+import Users from '../admin/users/users';
 
 
 
@@ -66,6 +73,13 @@ return(
                 <Route path = "/admin/dashboard" exact element={<AdminDashboard />} />
                 <Route path = "/register" exact element={<SignUp/>} />
                 <Route path = "/registration/otp/:id" exact element={<Otp/>} />
+                <Route path = "/admin/dashboard/book/edit/:id" exact element={<EditBook/>} />
+                <Route path = "/admin/dashboard/author/edit/:id" exact element={<EditAuthor/>} />
+                <Route path = "/admin/dashboard/books" exact element={<Book/>} />
+                <Route path = "/admin/dashboard/authors" exact element={<Author/>} />
+                <Route path = "/admin/dashboard/book/create" exact element={<AddBook/>} />
+                <Route path = "/admin/dashboard/users" exact element={<Users/>} />
+                <Route path = "/admin/dashboard/author/create" exact element={<CreateAuthor/>} />
                 <Route path = "/" exact element={<Login/>} />
 
             

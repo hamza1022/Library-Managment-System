@@ -15,6 +15,7 @@ let userSchema = new mongoose.Schema(
 		isOtpVerified: { type: Boolean, default: false },
 		profileImage:[ { type: String, default: `${publicPics}/noImage.png` }],
         password:{type:String},
+		status:{type:String,},
         role: {
 			type: String,
 			default: "user",
