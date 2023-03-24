@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react"
-import { Route, Routes, Navigate, Link } from "react-router-dom"
+import { Route, Routes, useNavigate, Link } from "react-router-dom"
 import {
     AppBar,
     Box,
@@ -30,10 +30,15 @@ import AddBook from '../admin/add-book';
 import CreateAuthor from '../admin/authors/create-author';
 import EditAuthor from '../admin/authors/edit-author';
 import Users from '../admin/users/users';
+import { useDispatch, useSelector } from 'react-redux'
 
 
 
 export const  AppLayout = ()=>{
+
+  const naviagte =useNavigate()
+  const loggedInUser = useSelector((state) => state.user.value);
+  const [anchorElUser, setAnchorElUser] = useState(null)
 
     const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -41,10 +46,25 @@ export const  AppLayout = ()=>{
         // loginUser(username, password)
         setOpenLoginDialog(false)
     }
+    const handleOpenUserMenu = (event) => {
+      setAnchorElUser(event.currentTarget)
+  }
+
+  const handleCloseUserMenu = () => {
+    naviagte('/admin/dashboard')
+      setAnchorElUser(null)
+  }
 
     const handleLoginClose = () => {
         setOpenLoginDialog(false)
     }
+
+    const handleLogout = () => {
+      window.localStorage.removeItem("token");
+      naviagte('/')
+      handleCloseUserMenu()
+  }
+
 
 
 
@@ -65,6 +85,53 @@ return(
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Library Managment System
           </Typography>
+          <Box
+                            sx={{
+                                flexGrow: 0,
+                            }}
+                        >
+                            {loggedInUser ? (
+                                <>
+                                    <Tooltip title="Open settings">
+                                        <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                            <Avatar> {loggedInUser.name} </Avatar>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Menu
+                                        sx={{ mt: "45px" }}
+                                        id="menu-appbar"
+                                        anchorEl={anchorElUser}
+                                        anchorOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        keepMounted
+                                        transformOrigin={{
+                                            vertical: "top",
+                                            horizontal: "right",
+                                        }}
+                                        open={Boolean(anchorElUser)}
+                                        onClose={handleCloseUserMenu}
+                                    >
+                                        <MenuItem onClick={handleCloseUserMenu}>
+                                            <Typography textAlign="center">Dashboard</Typography>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleLogout}>
+                                            <Typography textAlign="center">Logout</Typography>
+                                        </MenuItem>
+                                    </Menu>
+                                </>
+                            ) : (
+                                <Button
+                                    onClick={() => {
+                                        setOpenLoginDialog(true)
+                                    }}
+                                    sx={{ my: 2, color: "white", display: "block" }}
+                                >
+                                    Login
+                                </Button>
+                            )}
+                        </Box>
          
         </Toolbar>
       </AppBar>

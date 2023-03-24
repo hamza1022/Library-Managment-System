@@ -102,7 +102,11 @@ router.put("/update/:bookId", auth.required, auth.admin, (req, res, next) => {
 
             }
             for (let key in dataToUpdate) {
-                book[key] = dataToUpdate[key]
+                if (Object.prototype.hasOwnProperty.call(dataToUpdate, key)) {
+                  if (dataToUpdate[key]) {
+                    book[key] = dataToUpdate[key];
+                  }
+                }
               }
               book.save()
               return next(new OkResponse(book));
