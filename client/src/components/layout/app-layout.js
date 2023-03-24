@@ -34,6 +34,7 @@ import {  useSelector } from 'react-redux'
 import { UserDashboard } from '../user/user-dashboard';
 import Authors from '../user/authors';
 import Books from '../user/books';
+import Order from '../user/orders';
 
 
 
@@ -145,6 +146,7 @@ return(
                 <Route path = "/user/dashboard" exact element={<UserDashboard/>} />
                 <Route path = "/user/authors" exact element={<Authors/>} />
                 <Route path = "/user/books" exact element={<Books/>} />
+                 <Route path = "/user/order" exact element={<Order/>} />
 
                 <Route path = "/register" exact element={<SignUp/>} />
                 <Route path = "/registration/otp/:id" exact element={<Otp/>} />

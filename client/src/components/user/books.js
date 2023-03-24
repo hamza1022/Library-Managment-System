@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react'
 import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
 import { UserDashboard } from './user-dashboard';
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
@@ -10,6 +11,7 @@ const Books = () => {
 
 
     const [books,setBooks]= useState([])
+    const navigate = useNavigate()
     const [searchText, setSearchText] = useState("");
     const [searchResults, setSearchResults] = useState([]);
 
@@ -37,6 +39,11 @@ const Books = () => {
      
 
       const booksToDisplay = searchText === "" ? books : searchResults;
+
+      const Buy= ()=>{
+        navigate("/user/order")
+      }
+
 
 
     const fetchBooks =   () => {
@@ -78,6 +85,7 @@ const Books = () => {
           <th>Book Title</th>
           <th>Author</th>
           <th>Status</th>
+          <th>Action</th>
       
         </tr>
       </thead>
@@ -93,6 +101,9 @@ const Books = () => {
           <td>{book.bookTitle}</td>
           <td>{book.Author?.name}</td>
           <td>{book.status}</td>
+          <td>
+          <button onClick={() =>Buy()}>Buy</button>
+          </td>
         </tr>
 
             )

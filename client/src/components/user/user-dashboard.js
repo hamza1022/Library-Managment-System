@@ -35,7 +35,7 @@ export const UserDashboard = ()=>{
 							<span className="side-link">Authors </span>
 						</NavLink>
                         <NavLink
-							to={"/user/orders"}
+							to={"/user/order"}
 							className="pointer"
                             style={{ display: 'block', marginBottom: '10px', color: '#000' }}
 							>
