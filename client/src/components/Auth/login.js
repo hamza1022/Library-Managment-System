@@ -25,6 +25,7 @@ const Login = () => {
 
       BackendApi.user.login(data)
       .then((user) => {
+        console.log("user restored", user)
         dispatch(setUser(user));
         window.localStorage.setItem("token", user.token);
 
@@ -32,7 +33,7 @@ const Login = () => {
           navigate("/admin/dashboard");
         }
         else{
-           navigate("/books")
+           navigate("/user/dashboard");
         }
       })
       .catch((err) => {

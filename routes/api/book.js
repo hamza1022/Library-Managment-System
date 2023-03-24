@@ -1,6 +1,6 @@
 let router = require("express").Router();
-const Book = require('../../models/Book')
 let auth = require("../auth");
+const Book = require ("../../models/Book")
 
 
 
@@ -118,6 +118,29 @@ router.put("/update/:bookId", auth.required, auth.admin, (req, res, next) => {
           }
       
  })
+
+ router.get("/search", async (req, res, next) => {
+    const searchQuery = req.query.q;
+    if (!searchQuery) {
+      return next(new BadRequestResponse("Missing search query parameter"));
+    }
+  
+    try {
+      const books = await Book.find({
+        $or: [
+          { bookName: { $regex: searchQuery, $options: "i" } },
+          { bookTitle: { $regex: searchQuery, $options: "i" } },
+         
+        ],
+      })
+        .populate("Author", "name -_id")
+        .select("-__v")
+        .exec();
+      return next(new OkResponse(books));
+    } catch (err) {
+      return next(new BadRequestResponse(err));
+    }
+  });
 
 
 module.exports = router

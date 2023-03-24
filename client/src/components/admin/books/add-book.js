@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
-import { AdminDashboard } from './dashboard'
+import { AdminDashboard } from '../dashboard'
 import { useNavigate } from "react-router-dom";
-import { BackendApi } from '../../api';
+import { BackendApi } from '../../../api';
 import Select from "react-select";
 
 

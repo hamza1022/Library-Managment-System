@@ -1,0 +1,112 @@
+import React, { useState,useEffect } from 'react'
+
+import Table from 'react-bootstrap/Table';
+import { BackendApi } from '../../api';
+import { UserDashboard } from './user-dashboard';
+
+
+
+const Books = () => {
+
+
+    const [books,setBooks]= useState([])
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
+
+
+    function handleChange(event) {
+        const newSearchText = event.target.value;
+        setSearchText(newSearchText);
+    
+        if (newSearchText === "") {
+          setSearchResults([]);
+        } else {
+        
+            BackendApi.book.searchBook(newSearchText)
+            .then((book)=>{
+                setSearchResults(book)
+    
+            })
+            .catch((error)=>{console.log(error)})
+            }
+        }
+      
+ 
+ 
+    
+     
+
+      const booksToDisplay = searchText === "" ? books : searchResults;
+
+
+    const fetchBooks =   () => {
+        BackendApi.book.getAllBooks()
+        .then((books)=>{
+          console.log(books)
+
+            setBooks(books)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    
+  }
+  useEffect(() => {
+    fetchBooks()
+    console.log(books)
+  
+}, [])
+
+
+  return (
+    <>
+   
+    <div style={{display :"flex"}}>
+    <UserDashboard/>
+
+    
+    <div style={{ flex: 1, padding: '20px' }}>
+  
+      <input type="text" value={searchText} onChange={handleChange} />
+ 
+    
+          <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Book Name</th>
+          <th>Book Price</th>
+          <th>Book Title</th>
+          <th>Author</th>
+          <th>Status</th>
+      
+        </tr>
+      </thead>
+      <tbody>
+      {
+        booksToDisplay.map((book)=>{
+            return (
+
+
+            <tr key= {book._id}>
+          <td>{book.bookName}</td>
+          <td>{book.bookPrice}</td>
+          <td>{book.bookTitle}</td>
+          <td>{book.Author?.name}</td>
+          <td>{book.status}</td>
+        </tr>
+
+            )
+
+        })
+      }
+      
+    
+      </tbody>
+    </Table>
+        </div>
+    </div>
+    </>
+  )
+}
+
+export default Books

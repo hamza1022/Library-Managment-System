@@ -16,21 +16,25 @@ import {
 } from "@mui/material"
 
 import MenuIcon from '@mui/icons-material/Menu';
-import Bookslist from '../books/books-list'
+
 import { AdminDashboard } from "../admin/dashboard";
 import { LoginDialog } from "../signUp/dialog";
 import  SignUp from "../registration/signUp"
 import { Sidebar } from "./sidebar";
 import Otp from '../registration/otp'
 import Login from '../Auth/login';
-import Author from '../admin/author';
-import Book from '../admin/book';
-import EditBook from '../admin/edit-book';
-import AddBook from '../admin/add-book';
+import Author from '../admin/authors/author';
+import Book from '../admin/books/book';
+import EditBook from '../admin/books/edit-book';
+import AddBook from '../admin/books/add-book';
 import CreateAuthor from '../admin/authors/create-author';
 import EditAuthor from '../admin/authors/edit-author';
 import Users from '../admin/users/users';
-import { useDispatch, useSelector } from 'react-redux'
+import {  useSelector } from 'react-redux'
+import { UserDashboard } from '../user/user-dashboard';
+import Authors from '../user/authors';
+import Books from '../user/books';
+
 
 
 
@@ -39,6 +43,7 @@ export const  AppLayout = ()=>{
   const naviagte =useNavigate()
   const loggedInUser = useSelector((state) => state.user.value);
   const [anchorElUser, setAnchorElUser] = useState(null)
+
 
     const [openLoginDialog, setOpenLoginDialog] = useState(false)
 
@@ -51,7 +56,6 @@ export const  AppLayout = ()=>{
   }
 
   const handleCloseUserMenu = () => {
-    naviagte('/admin/dashboard')
       setAnchorElUser(null)
   }
 
@@ -136,8 +140,12 @@ return(
         </Toolbar>
       </AppBar>
       <Routes>
-                <Route path="/books" exact element={<Bookslist />} />
-                <Route path = "/admin/dashboard" exact element={<AdminDashboard />} />
+               
+                <Route path = "/admin/dashboard" exact element={<AdminDashboard/>} />
+                <Route path = "/user/dashboard" exact element={<UserDashboard/>} />
+                <Route path = "/user/authors" exact element={<Authors/>} />
+                <Route path = "/user/books" exact element={<Books/>} />
+
                 <Route path = "/register" exact element={<SignUp/>} />
                 <Route path = "/registration/otp/:id" exact element={<Otp/>} />
                 <Route path = "/admin/dashboard/book/edit/:id" exact element={<EditBook/>} />

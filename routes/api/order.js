@@ -184,28 +184,28 @@ router.put("/update/:orderId", auth.required, auth.user, (req, res, next) => {
 
 })
 
-router.get("/search", async (req, res, next) => {
-  const searchQuery = req.query.q;
-  if (!searchQuery) {
-    return next(new BadRequestResponse("Missing search query parameter"));
-  }
+// router.get("/search", async (req, res, next) => {
+//   const searchQuery = req.query.q;
+//   if (!searchQuery) {
+//     return next(new BadRequestResponse("Missing search query parameter"));
+//   }
 
-  try {
-    const books = await Book.find({
-      $or: [
-        { bookName: { $regex: searchQuery, $options: "i" } },
-        { bookTitle: { $regex: searchQuery, $options: "i" } },
+//   try {
+//     const books = await Book.find({
+//       $or: [
+//         { bookName: { $regex: searchQuery, $options: "i" } },
+//         { bookTitle: { $regex: searchQuery, $options: "i" } },
        
-      ],
-    })
-      .populate("Author", "name -_id")
-      .select("-__v")
-      .exec();
-    return next(new OkResponse(books));
-  } catch (err) {
-    return next(new BadRequestResponse(err));
-  }
-});
+//       ],
+//     })
+//       .populate("Author", "name -_id")
+//       .select("-__v")
+//       .exec();
+//     return next(new OkResponse(books));
+//   } catch (err) {
+//     return next(new BadRequestResponse(err));
+//   }
+// });
 
 
 

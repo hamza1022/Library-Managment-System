@@ -26,11 +26,12 @@ export const BookApi = {
 
       }
     },
-    editBook:async(id, data )=>{
+    editBook:async(id, data,authorid )=>{
       console.log("edit api called",id)
       const bookName = data.bookName;
       const bookTitle = data.bookTitle;
       const bookPrice = data.bookPrice;
+      
 
       let token = localStorage.getItem("token");
       try{
@@ -38,7 +39,8 @@ export const BookApi = {
         const response = await axios.put(`http://localhost:8080/api/book/update/${id}`,{
           bookName,
           bookTitle,
-          bookPrice
+          bookPrice,
+          Author:authorid
         },
         {
           headers:{
@@ -80,6 +82,23 @@ export const BookApi = {
         })
 
         return response.data.data
+
+      },
+      searchBook:async(value)=>{
+        console.log("value", value)
+        console.log("search api called")
+
+
+        try{
+          const response = await axios.get(`http://localhost:8080/api/book/search?q=${value}`);
+          return response.data.data
+  
+        }catch(error){
+          throw error
+  
+        }
+
+
 
       }
 };

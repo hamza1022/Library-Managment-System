@@ -1,8 +1,8 @@
 import React, { useState,useEffect } from 'react'
-import { AdminDashboard } from './dashboard'
+import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
 import {FaTrashAlt} from 'react-icons/fa' 
-import { BackendApi } from '../../api';
+import { BackendApi } from '../../../api';
 import {FaEdit} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
 
@@ -11,7 +11,28 @@ const Book = () => {
 
 
     const [books,setBooks]= useState([])
+    const [searchText, setSearchText] = useState("");
+    const [searchResults, setSearchResults] = useState([]);
 
+
+    function handleChange(event) {
+      const newSearchText = event.target.value;
+      setSearchText(newSearchText);
+  
+      if (newSearchText === "") {
+        setSearchResults([]);
+      } else {
+      
+          BackendApi.book.searchBook(newSearchText)
+          .then((book)=>{
+              setSearchResults(book)
+  
+          })
+          .catch((error)=>{console.log(error)})
+          }
+      }
+
+      const booksToDisplay = searchText === "" ? books : searchResults;
 
     const fetchBooks =   () => {
         BackendApi.book.getAllBooks()
@@ -64,17 +85,18 @@ const removeBook=(book)=>{
     <div style={{display :"flex"}}>
     <AdminDashboard/>
     <div style={{ flex: 1, padding: '20px' }}>
+    <input type="text" value={searchText} onChange={handleChange} />
           
     <NavLink
 							to={"/admin/dashboard/book/create"}
 							className="pointer"
-                            style={{ display: 'block', marginBottom: '10px', color: '#000' }}
+                            style={{ display: 'block', marginBottom: '10px', color: '#000', marginRight: "12px" }}
 							>
                             
 							<span className="side-ic">
 								<span className="iconify" data-icon="uim:calender"></span>
 							</span>
-                            <button className='h-5 w-5'>Add Product</button>
+                            <button className='h-5 w-5'>Add Book</button>
 						</NavLink>
           <Table striped bordered hover>
       <thead>
@@ -90,7 +112,7 @@ const removeBook=(book)=>{
       </thead>
       <tbody>
       {
-        books.map((book)=>{
+        booksToDisplay.map((book)=>{
             return (
 
 
