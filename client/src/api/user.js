@@ -85,6 +85,28 @@ export const UserApi = {
       throw err
     }
 
+  },
+  changeStatus : async(email)=>{
+
+    let token = localStorage.getItem("token");
+    try {
+    
+      const response = await axios.post(`http://localhost:8080/api/user/update-status/${email}`, {
+      
+        status:"active"
+      },{
+        headers:{
+          'Authorization': `Bearer ${token}`
+          
+        } 
+
+      })
+      return response.data.data
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+
   }
   
 

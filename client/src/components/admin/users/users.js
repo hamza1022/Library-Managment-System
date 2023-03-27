@@ -2,7 +2,10 @@ import React, { useState ,useEffect} from 'react'
 import { BackendApi } from '../../../api'
 import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
-import FaBan from 'react-bootstrap/FaBan';
+
+import {FaTrashAlt} from 'react-icons/fa'
+import {ImCross} from 'react-icons/im'
+import {BsCheckLg} from 'react-icons/bs'
 
 const Users = () => {
 
@@ -23,6 +26,10 @@ const Users = () => {
         
       
 
+    }
+
+    const changeStatus =(user)=>{
+      console.log(user.email)
     }
 
 
@@ -63,6 +70,13 @@ const Users = () => {
           <td>{user.email}</td>
           <td>{user.role}</td>
           <td>
+
+          {
+                        user.status =="active" ? 
+                        <button><ImCross onClick={() => changeStatus(user)}></ImCross></button>
+                        : 
+                        <button><BsCheckLg onClick={() => changeStatus(user)}></BsCheckLg></button>
+                        }
 
 
 

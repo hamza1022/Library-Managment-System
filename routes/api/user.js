@@ -21,16 +21,16 @@ router.get("/", function (req, res, next) {
     );
 });
 
-router.param("email", (req, res, next, email) => {
-	User.findOne({ email }, (err, user) => {
-		if (!err && user !== null) {
-			// console.log(user);
-			req.userToUpdate = user;
-			return next();
-		}
-		return next(new BadRequestResponse("User not found!", 423));
-	});
-});
+// router.param("email", (req, res, next, email) => {
+// 	User.findOne({ email }, (err, user) => {
+// 		if (!err && user !== null) {
+// 			// console.log(user);
+// 			req.userToUpdate = user;
+// 			return next();
+// 		}
+// 		return next(new BadRequestResponse("User not found!", 423));
+// 	});
+// });
 
 
 router.get('/getOne/:userId',(req,res,next)=>{
@@ -269,31 +269,31 @@ router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(re
         return next(new BadRequestResponse(err));
     })
     
-      })
+})
 
-router.put('/update-status/:email', auth.required, auth.admin, async (req, res, next) => {
-        try {
+router.put("/update-status/:email", auth.required, auth.admin, async (req, res, next) => {
+   
+     
           let email = req.params.email;
           let user = await User.findOne({ email: email });
-          console.log("user",user)
-      
+         
           if (!user) {
             return next(new BadRequestResponse("User not found"));
           }
       console.log("request",req.body.status)
           user.status = req.body.status;
       
-          user.save((err, data) => {
-            if (err) {
-              return next(new BadRequestResponse(err));
-            } else {
-              return next(new OkResponse(data));
-            }
-          });
-        } catch (err) {
-          return next(new BadRequestResponse(err.message));
-        }
-      });
+          user.save()
+          .then((data)=>{
+            return next(new OkResponse(data));
+          })
+          .catch((err)=>{
+            return next(new BadRequestResponse(err.message));
+
+          })
+        
+      
+        });
       
 
       
