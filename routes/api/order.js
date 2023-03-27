@@ -109,7 +109,7 @@ router.put('/return', auth.required, auth.user, async (req, res, next) => {
 
 router.get('/view', auth.required, auth.user, async (req, res) => {
   try {
-    const allOrders = await Order.find({});
+    const allOrders = await Order.find({}).populate({path: 'books', select: 'bookName'});
     const userOrders = allOrders
       .map((order) => {
        
@@ -117,7 +117,8 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
           return order;
         }
       })
-      .filter(Boolean); // filter out undefined values
+      .filter(Boolean);
+      
   
     res.status(200).json({
       message: "Orders retrieved successfully",

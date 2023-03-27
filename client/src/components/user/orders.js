@@ -1,27 +1,22 @@
 import React, { useState,useEffect } from 'react'
 
-
+import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
 import { UserDashboard } from './user-dashboard';
-import Select from "react-select";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 
-const Order = () => {
-
- 
-    const [selectedBooks,setSelectedBooks] =useState(null)
-    const [books,setBooks]= useState([])
-    console.log("Selected",selectedBooks)
+const Orders = () => {
 
 
+    const [orders,setOrders]= useState([])
+   
 
-    const fetchBooks =   () => {
-        BackendApi.book.getAllBooks()
-        .then((books)=>{
-          console.log(books)
-
-            setBooks(books)
+    const fetchOrders =  () => {
+     BackendApi.order.viewOrder()
+        .then((order)=>{    
+            setOrders(order)
         })
         .catch((err) => {
           console.log(err)
@@ -29,12 +24,20 @@ const Order = () => {
     
   }
   useEffect(() => {
-    fetchBooks()
-    console.log(books)
+    fetchOrders()
+    console.log(orders)
   
 }, [])
-const handleSubmit =()=>{
-  console.log(selectedBooks._id)
+
+const returnBook=(order)=>{
+    console.log(order)
+    BackendApi.order.returnOrder(order._id)
+    .then((response)=>{
+
+        console.log("response", response)
+
+    })
+
 }
 
 
@@ -47,47 +50,43 @@ const handleSubmit =()=>{
     
     <div style={{ flex: 1, padding: '20px' }}>
 
-    <div>
+          <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Books</th>
+          <th>fineAfterPerDay</th>
+          <th>Status</th>
+          <th>Action</th>
+      
+        </tr>
+      </thead>
+      <tbody>
+      {
+        orders.map((order)=>{
+            return (
 
-    <h1>Buy Books</h1> 
-    </div>
-  
-  
 
+                <tr key= {order._id}>
+                <td>{order.books.map((book) => book.bookName).join(", ")}</td>
+          <td>{order.fineAfterPerDay}</td>
+          <td>{order.status}</td>
+          <td>
+          <button onClick={() =>returnBook(order)}>Return</button>
+          </td>
+        </tr>
 
-      <label className="fs-14 fw-500 text-900 mb-1 mt-3">Books</label>
-									
-                                    <Select
-                                        defaultValue={null}
-    value={selectedBooks}
-    options={books}
-    getOptionLabel={(book) => book.bookName}
-    getOptionValue={(book) => book._id}
-    isSearchable={false}
-    isClearable={true}
-    onChange={(selected) => {
-        setSelectedBooks(selected);
-    }}
-    isMulti
-                                    />
-                                    <div className="col-lg-6">
-									<button
-										className="btnPrimary pointer mt-4 h-56 w-100 br-16"
-                    onChange={(e) => {
-												setSelectedBooks(e);
-											
-											}}
-										>
-										Place Order
-									</button>
-								</div>
- 
+            )
+
+        })
+      }
+      
     
-         
+      </tbody>
+    </Table>
         </div>
     </div>
     </>
   )
 }
 
-export default Order
+export default Orders

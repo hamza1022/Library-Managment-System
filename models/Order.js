@@ -27,8 +27,12 @@ const orderSchema = mongoose.Schema(
 
   orderSchema.methods.toJSON = function () {
     return {
+      _id:this._id,
       books: this.books,
       customer: this.customer,
+      fineAfterPerDay : this.fineAfterPerDay,
+      status:this.status,
+      fine:this.fine,
       totalAmount:this.totalAmount,
     
      

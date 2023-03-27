@@ -14,6 +14,8 @@ export const userSlice = createSlice ({
     reducers:{
         setUser(state,action){
 
+            console.log("id from payload", action.payload)
+
             state.value = action.payload;
 			window.localStorage.setItem("token", action.payload.token);
 
