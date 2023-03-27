@@ -63,15 +63,15 @@ const EditBook = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nameInput">Book Name</label>
-            <input type="text" className="form-control" id="bookName" name='bookName' placeholder="Enter Book name" />
+            <input type="text" className="form-control" id="name" name='name' placeholder="Enter Book name" />
           </div>
           <div className="form-group">
             <label htmlFor="titleInput">Book Title </label>
-            <input type="text" className="form-control" id="bookTitle" name='bookTitle' placeholder="Enter Book Title" />
+            <input type="text" className="form-control" id="title" name='title' placeholder="Enter Book Title" />
           </div>
           <div className="form-group">
             <label htmlFor="priceInput">Book Price</label>
-            <input type="number" className="form-control" id="bookPrice" name='bookPrice' placeholder="Enter Book Price" />
+            <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price" />
           </div>
           {/* <div className="form-group">
         <label htmlFor="passwordInput">Author</label>

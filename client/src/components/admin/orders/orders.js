@@ -57,7 +57,7 @@ const Orders = () => {
 
 
                 <tr key= {order._id}>
-                <td>{order.books.map((book) => book.bookName).join(", ")}</td>
+                <td>{order.books.map((book) => book.name).join(", ")}</td>
                 <td>{order.customer.name}</td>
           <td>{order.fineAfterPerDay}</td>
           <td>{order.status}</td>

@@ -117,9 +117,9 @@ const removeBook=(book)=>{
 
 
             <tr key= {book._id}>
-          <td>{book.bookName}</td>
-          <td>{book.bookPrice}</td>
-          <td>{book.bookTitle}</td>
+          <td>{book.name}</td>
+          <td>{book.price}</td>
+          <td>{book.title}</td>
           <td>{book.Author?.name}</td>
           <td>{book.status}</td>
           <td>
