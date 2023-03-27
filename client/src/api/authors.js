@@ -87,13 +87,19 @@ export const AuthorApi = {
         const name = data.name;
         const age = data.age;
         const country = data.country;
+        let token = localStorage.getItem("token")
     
         const response = await axios.post ("http://localhost:8080/api/author/create",{
           name,
           age,
           country,
         
-        },
+        },{
+          headers:{
+            'Authorization': `Bearer ${token}`
+            
+        }  
+        }
       )
 
         return response.data.data

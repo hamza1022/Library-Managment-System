@@ -28,7 +28,7 @@ router.get('/getOne/:authorId',(req,res,next)=>{
 
 })
 
-router.post("/create", async (req, res, next) => {
+router.post("/create",auth.required , auth.admin ,  async (req, res, next) => {
     if ( !req.body.name) {
         return next(new BadRequestResponse("Missing Required parameters"));
     } else if (
