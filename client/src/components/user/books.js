@@ -32,12 +32,7 @@ const Books = () => {
             .catch((error)=>{console.log(error)})
             }
         }
-      
- 
- 
-    
-     
-
+  
       const booksToDisplay = searchText === "" ? books : searchResults;
 
       const Buy= ()=>{

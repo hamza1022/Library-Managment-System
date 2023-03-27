@@ -127,12 +127,7 @@ return(
                                     </Menu>
                                 </>
                             ) : (
-                                <Button
-                                    onClick={() => {
-                                        setOpenLoginDialog(true)
-                                    }}
-                                    sx={{ my: 2, color: "white", display: "block" }}
-                                >
+                                <Button>
                                     Login
                                 </Button>
                             )}
