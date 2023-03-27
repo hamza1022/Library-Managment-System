@@ -118,7 +118,6 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
         }
       })
       .filter(Boolean);
-      
   
     res.status(200).json({
       message: "Orders retrieved successfully",
@@ -133,7 +132,7 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
 });
 
 router.get("/getOrders", auth.required, auth.admin, (req, res, next) => {
-  Order.find().populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
+  Order.find().populate([{path: 'books', select: 'bookName status'}, {path: 'customer', select: 'name email'}])
     .then((order) => {
       return next(new OkResponse(order));
     })

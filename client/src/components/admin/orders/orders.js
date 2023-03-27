@@ -1,22 +1,21 @@
 import React, { useState,useEffect } from 'react'
 
 import Table from 'react-bootstrap/Table';
-import { BackendApi } from '../../api';
-import { UserDashboard } from './user-dashboard';
-import { useNavigate, useParams } from "react-router-dom";
+import { BackendApi } from '../../../api';
+import { AdminDashboard } from '../dashboard';
 
-
-
-const Order = () => {
+const Orders = () => {
 
 
     const [orders,setOrders]= useState([])
    
 
     const fetchOrders =  () => {
-     BackendApi.order.viewOrder()
-        .then((order)=>{    
+        BackendApi.order.allOrders()
+        .then((order)=>{ 
+               
             setOrders(order)
+            console.log("orders",order)
         })
         .catch((err) => {
           console.log(err)
@@ -29,24 +28,13 @@ const Order = () => {
   
 }, [])
 
-const returnBook=(order)=>{
-    console.log(order._id)
-    BackendApi.order.returnOrder(order._id)
-    .then((response)=>{
-        fetchOrders()
-
-        console.log("response", response)
-
-    }).catch((error)=>{console.log("error", error)})
-
-}
 
 
   return (
     <>
    
     <div style={{display :"flex"}}>
-    <UserDashboard/>
+    <AdminDashboard/>
 
     
     <div style={{ flex: 1, padding: '20px' }}>
@@ -58,7 +46,6 @@ const returnBook=(order)=>{
           <th>fineAfterPerDay</th>
           <th>Status</th>
           <th>Fine</th>
-          <th>Action</th>
       
         </tr>
       </thead>
@@ -73,14 +60,7 @@ const returnBook=(order)=>{
           <td>{order.fineAfterPerDay}</td>
           <td>{order.status}</td>
           <td>{order.fine}</td>
-          <td>
-          {
-            order.status === "Returned" ? <td>{"Returned successfully"}</td> : 
-            <button onClick={() =>returnBook(order)}>Return</button>
-
-          }
-         
-          </td>
+    
         </tr>
 
             )
@@ -97,4 +77,4 @@ const returnBook=(order)=>{
   )
 }
 
-export default Order
+export default Orders

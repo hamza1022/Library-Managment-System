@@ -106,6 +106,21 @@ returnOrder: async(id)=>{
 
       }
 
+},
+allOrders :async()=>{
+    let token = localStorage.getItem("token");
+    try {
+        const response = await axios.get ("http://localhost:8080/api/order/getOrders",
+    {
+        headers:{
+            'Authorization': `Bearer ${token}`
+            
+        }       
+    }) 
+    return response.data.data
+    } catch (error) {
+        
+    }
 }
 
 };

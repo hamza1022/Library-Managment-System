@@ -35,7 +35,8 @@ import { UserDashboard } from '../user/user-dashboard';
 import Authors from '../user/authors';
 import Books from '../user/books';
 import PlaceOrder from '../user/placeOrder';
-import Orders from '../user/orders';
+import Order from '../user/orders';
+import Orders from '../admin/orders/orders';
 
 
 
@@ -143,13 +144,14 @@ return(
                 <Route path = "/user/authors" exact element={<Authors/>} />
                 <Route path = "/user/books" exact element={<Books/>} />
                  <Route path = "/user/placeorder" exact element={<PlaceOrder/>} />
-                 <Route path = "/user/order" exact element={<Orders/>} />
+                 <Route path = "/user/order" exact element={<Order/>} />
 
                 <Route path = "/register" exact element={<SignUp/>} />
                 <Route path = "/registration/otp/:id" exact element={<Otp/>} />
                 <Route path = "/admin/dashboard/book/edit/:id" exact element={<EditBook/>} />
                 <Route path = "/admin/dashboard/author/edit/:id" exact element={<EditAuthor/>} />
                 <Route path = "/admin/dashboard/books" exact element={<Book/>} />
+                <Route path = "/admin/dashboard/orders" exact element={<Orders/>} />
                 <Route path = "/admin/dashboard/authors" exact element={<Author/>} />
                 <Route path = "/admin/dashboard/book/create" exact element={<AddBook/>} />
                 <Route path = "/admin/dashboard/users" exact element={<Users/>} />

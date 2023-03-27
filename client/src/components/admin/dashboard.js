@@ -45,6 +45,18 @@ export const AdminDashboard = ()=>{
 							</span>
 							<span className="side-link">Users </span>
 						</NavLink>
+
+						<NavLink
+							to={"/admin/dashboard/orders"}
+							className="pointer"
+                            style={{ display: 'block', marginBottom: '10px', color: '#000' }}
+							>
+                            
+							<span className="side-ic">
+								<span className="iconify" data-icon="uim:calender"></span>
+							</span>
+							<span className="side-link">Orders </span>
+						</NavLink>
           
           
         </ul>
