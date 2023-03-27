@@ -12,8 +12,6 @@ const Users = () => {
     const [users,setUsers]=useState([])
 
     const fetchUsers= async ()=>{
-
-       
         BackendApi.user.getAllUsers({role:"user"})
             .then((users)=>{
               console.log(users)
@@ -25,6 +23,19 @@ const Users = () => {
             })
         
       
+
+    }
+
+    const deleteUser = (user)=>{
+
+      BackendApi.user.deleteUser(user)
+      .then((users)=>{
+        fetchUsers()
+        console.log(users)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
 
     }
 
@@ -67,6 +78,7 @@ const Users = () => {
           <th>email</th>
           <th>Role</th>
           <th>Action</th>
+          <th>Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -91,6 +103,9 @@ const Users = () => {
 
 
 
+          </td>
+          <td>
+          <button><FaTrashAlt onClick={() => deleteUser(user)}></FaTrashAlt></button>
           </td>
          
           <td>

@@ -107,6 +107,24 @@ export const UserApi = {
       return error;
     }
 
+  },
+  deleteUser:async(user)=>{
+
+    
+    let token = localStorage.getItem("token");
+    try{
+      const response = await axios.delete(`http://localhost:8080/api/user/delete/${user.email}`,{
+        headers:{
+          'Authorization': `Bearer ${token}`
+          
+        } 
+      });
+      return response.data.data
+
+    }catch(error){
+      throw error
+
+    } 
   }
   
 
