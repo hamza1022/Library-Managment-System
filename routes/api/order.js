@@ -49,7 +49,7 @@ router.post("/create", auth.required, auth.user, async (req, res, next) => {
     .then(async (order) => {
       const bookIds = order.books.map((book) => book._id);
       await Book.updateMany({ _id: { $in: bookIds } }, { status: "lent" });
-      await  order.populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
+      await  order.populate([{path: 'books', select: 'name'}, {path: 'customer', select: 'name email'}])
       return next(new OkResponse({
         order:{
           books:order.books,
@@ -87,7 +87,7 @@ router.put('/return', auth.required, auth.user, async (req, res, next) => {
     .then(async (order) => {
       const bookIds = order.books.map((book) => book._id);
       await Book.updateMany({ _id: { $in: bookIds } }, { status: "Available" });
-      await  order.populate([{path: 'books', select: 'bookName'}, {path: 'customer', select: 'name email'}])
+      await  order.populate([{path: 'books', select: 'name'}, {path: 'customer', select: 'name email'}])
       return next(new OkResponse({
         order:{
           books:order.books,
@@ -109,7 +109,7 @@ router.put('/return', auth.required, auth.user, async (req, res, next) => {
 
 router.get('/view', auth.required, auth.user, async (req, res) => {
   try {
-    const allOrders = await Order.find({}).populate({path: 'books', select: 'bookName'});
+    const allOrders = await Order.find({}).populate({path: 'books', select: 'name'});
     const userOrders = allOrders
       .map((order) => {
        
@@ -132,7 +132,7 @@ router.get('/view', auth.required, auth.user, async (req, res) => {
 });
 
 router.get("/getOrders", auth.required, auth.admin, (req, res, next) => {
-  Order.find().populate([{path: 'books', select: 'bookName status'}, {path: 'customer', select: 'name email'}])
+  Order.find().populate([{path: 'books', select: 'name status'}, {path: 'customer', select: 'name email'}])
     .then((order) => {
       return next(new OkResponse(order));
     })
@@ -193,7 +193,7 @@ router.put("/update/:orderId", auth.required, auth.user, (req, res, next) => {
 //   try {
 //     const books = await Book.find({
 //       $or: [
-//         { bookName: { $regex: searchQuery, $options: "i" } },
+//         { name: { $regex: searchQuery, $options: "i" } },
 //         { bookTitle: { $regex: searchQuery, $options: "i" } },
        
 //       ],

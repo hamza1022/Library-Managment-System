@@ -2,9 +2,9 @@ const mongoose = require("mongoose")
 const bookSchema = mongoose.Schema(
     {
        
-         bookName: {type:String},
-         bookPrice: {type:Number},
-         bookTitle : {type:String},
+         name: {type:String},
+         price: {type:Number},
+         title : {type:String},
          status:{type:String},
          Author: {
            type: mongoose.Schema.Types.ObjectId,

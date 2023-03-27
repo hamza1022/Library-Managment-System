@@ -18,7 +18,7 @@ router.get("/", function (req, res, next) {
 
 
 router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
-    if ( !req.body.bookName) {
+    if ( !req.body.name) {
         return next(new BadRequestResponse("Missing Required parameters"));
     }
 
@@ -29,9 +29,9 @@ router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
    
     // Create author in our database
     let newBook = Book();
-    newBook.bookName = req.body.bookName;
-    newBook.bookTitle = req.body.bookTitle;
-    newBook.bookPrice = req.body.bookPrice;
+    newBook.name = req.body.name;
+    newBook.title = req.body.title;
+    newBook.price = req.body.price;
     newBook.Author = req.body.Author
     newBook.status = "Available";
 
@@ -128,8 +128,8 @@ router.put("/update/:bookId", auth.required, auth.admin, (req, res, next) => {
     try {
       const books = await Book.find({
         $or: [
-          { bookName: { $regex: searchQuery, $options: "i" } },
-          { bookTitle: { $regex: searchQuery, $options: "i" } },
+          { name: { $regex: searchQuery, $options: "i" } },
+          { title: { $regex: searchQuery, $options: "i" } },
          
         ],
       })
