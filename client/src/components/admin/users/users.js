@@ -2,6 +2,7 @@ import React, { useState ,useEffect} from 'react'
 import { BackendApi } from '../../../api'
 import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
+import FaBan from 'react-bootstrap/FaBan';
 
 const Users = () => {
 
@@ -48,6 +49,7 @@ const Users = () => {
           <th>Address</th>
           <th>email</th>
           <th>Role</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -60,6 +62,12 @@ const Users = () => {
           <td>{user.address}</td>
           <td>{user.email}</td>
           <td>{user.role}</td>
+          <td>
+
+
+
+
+          </td>
          
           <td>
         

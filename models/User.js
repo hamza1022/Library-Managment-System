@@ -21,6 +21,7 @@ let userSchema = new mongoose.Schema(
 			default: "user",
 			enum: ["user", "admin"],
 		},
+		status: { type: String, enum: ["active", "blocked", "pending"], default: "pending" },
 
 	
 	},
@@ -61,6 +62,8 @@ userSchema.methods.toAuthJSON = function () {
         password:this.password,
         role:this.role,
 		profileImage:this.profileImage,
+		status:this.status,
+		isOtpVerified:this.isOtpVerified,
 		
 
 		token: this.generateJWT(),

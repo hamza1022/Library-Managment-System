@@ -128,6 +128,8 @@ router.post('/login', async (req, res, next) => {
         if (!user) {
             return next(new BadRequestResponse("Incorrect Credentials"));
         }
+       else if (user.status !== "active")
+			return next(new UnauthorizedResponse("Your Account is Blocked!, Contact to Support please", 403));
         let match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
@@ -243,6 +245,7 @@ router.post("/verifyOtp", async (req, res, next) => {
     // Mark the user as verified
     user.isOtpVerified = true;
     user.otp = null;
+    user.status = "active"
     await user.save();
   
     return next(new OkResponse("OTP verification successful"));
@@ -267,6 +270,33 @@ router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(re
     })
     
       })
+
+router.put('/update-status/:email', auth.required, auth.admin, async (req, res, next) => {
+        try {
+          let email = req.params.email;
+          let user = await User.findOne({ email: email });
+          console.log("user",user)
+      
+          if (!user) {
+            return next(new BadRequestResponse("User not found"));
+          }
+      console.log("request",req.body.status)
+          user.status = req.body.status;
+      
+          user.save((err, data) => {
+            if (err) {
+              return next(new BadRequestResponse(err));
+            } else {
+              return next(new OkResponse(data));
+            }
+          });
+        } catch (err) {
+          return next(new BadRequestResponse(err.message));
+        }
+      });
+      
+
+      
   
 
 
