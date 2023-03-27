@@ -28,8 +28,18 @@ const Users = () => {
 
     }
 
-    const changeStatus =(user)=>{
-      console.log(user.email)
+    const changeStatus =(user, newStatus)=>{
+      BackendApi.user.changeStatus(user.email,newStatus)
+      .then((user)=>{
+        console.log("user",user)
+
+        fetchUsers()
+
+      })
+      .catch((err)=>{
+        console.log(err)
+
+      })
     }
 
 
@@ -73,9 +83,9 @@ const Users = () => {
 
           {
                         user.status =="active" ? 
-                        <button><ImCross onClick={() => changeStatus(user)}></ImCross></button>
+                        <button><BsCheckLg onClick={() => changeStatus(user,"inactive")}></BsCheckLg></button>
                         : 
-                        <button><BsCheckLg onClick={() => changeStatus(user)}></BsCheckLg></button>
+                        <button><ImCross onClick={() => changeStatus(user,"active")}></ImCross></button>
                         }
 
 

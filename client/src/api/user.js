@@ -86,14 +86,14 @@ export const UserApi = {
     }
 
   },
-  changeStatus : async(email)=>{
+  changeStatus : async(email,status)=>{
 
     let token = localStorage.getItem("token");
     try {
     
-      const response = await axios.post(`http://localhost:8080/api/user/update-status/${email}`, {
+      const response = await axios.put(`http://localhost:8080/api/user/update-status/${email}`, {
       
-        status:"active"
+        status:status
       },{
         headers:{
           'Authorization': `Bearer ${token}`
