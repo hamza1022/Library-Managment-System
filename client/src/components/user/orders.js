@@ -33,10 +33,11 @@ const returnBook=(order)=>{
     console.log(order._id)
     BackendApi.order.returnOrder(order._id)
     .then((response)=>{
+        fetchOrders()
 
         console.log("response", response)
 
-    })
+    }).catch((error)=>{console.log("error", error)})
 
 }
 
@@ -56,6 +57,7 @@ const returnBook=(order)=>{
           <th>Books</th>
           <th>fineAfterPerDay</th>
           <th>Status</th>
+          <th>Fine</th>
           <th>Action</th>
       
         </tr>
@@ -70,8 +72,14 @@ const returnBook=(order)=>{
                 <td>{order.books.map((book) => book.bookName).join(", ")}</td>
           <td>{order.fineAfterPerDay}</td>
           <td>{order.status}</td>
+          <td>{order.fine}</td>
           <td>
-          <button onClick={() =>returnBook(order)}>Return</button>
+          {
+            order.status === "Returned" ? <td>{"Returned successfully"}</td> : 
+            <button onClick={() =>returnBook(order)}>Return</button>
+
+          }
+         
           </td>
         </tr>
 

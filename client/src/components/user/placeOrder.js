@@ -5,10 +5,12 @@ import { BackendApi } from '../../api';
 import { UserDashboard } from './user-dashboard';
 import Select from "react-select";
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const PlaceOrder = () => {
+  const navigate = useNavigate()
 
  
   const loggedInUser = useSelector((state) => state.user.value);
@@ -43,6 +45,7 @@ const handleSubmit = () => {
 
       BackendApi.order.placeOrder(loggedInUser._id, bookIds)
       .then((order)=>{
+        navigate("user/order")
         console.log(order)
 
       })
