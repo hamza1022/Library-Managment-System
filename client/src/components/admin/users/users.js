@@ -14,7 +14,7 @@ const Users = () => {
     const fetchUsers= async ()=>{
 
        
-        BackendApi.user.getAllUsers()
+        BackendApi.user.getAllUsers({role:"user"})
             .then((users)=>{
               console.log(users)
     
