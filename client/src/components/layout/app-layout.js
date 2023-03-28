@@ -126,27 +126,7 @@ return(
                                         <MenuItem onClick={handleCloseUserMenu}>
                                             <Typography textAlign="center">Dashboard</Typography>
                                         </MenuItem>
-                                        <MenuItem onClick={handleUpload}>
-                                            <Typography textAlign="center">
-                                            <div className="uploadBox h-40">
-												
-                                                <div className="icon">
-                                                    <span className="iconify " data-icon="akar-icons:cloud-upload"></span>
-                                                </div>
-                                                <div className="fs-14 fw-500 text-800">
-                                                    Add Profile{" "}
-                                                    <input
-                                                        onChange={(e) => {
-                                                            onProfileImageChange(e);
-                                                            e.target = null;
-                                                        }}
-                                                        type="file"
-                                                    />
-                                                </div>
-                                        
-                                    </div>
-                                            </Typography>
-                                        </MenuItem>
+                                      
                                         <MenuItem onClick={handleLogout}>
                                             <Typography textAlign="center">Logout</Typography>
                                         </MenuItem>

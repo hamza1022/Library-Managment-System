@@ -253,17 +253,15 @@ router.post("/verifyOtp", async (req, res, next) => {
 
 router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(req,res,next)=>{
 
-    const files = req.files; 
-    const filePaths = files.map(file => file.path);
-    const profileImagePath = filePaths.join(',');
+    const file = req.file;
+    const dataToUpdate = { profileImage: file.filename };
     
-    const dataToUpdate = {
-        profileImage: profileImagePath
-    }
+   
     
     User.findByIdAndUpdate(req.user.id, dataToUpdate)
     .then((result)=>{
-        return next(new OkResponse(result));
+        const imageUrl = `http://localhost:8080/images/${file.filename}`;
+        return next(new OkResponse({ ...result, imageUrl }));
     })
     .catch((err)=>{
         return next(new BadRequestResponse(err));
