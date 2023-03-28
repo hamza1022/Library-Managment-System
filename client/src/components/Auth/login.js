@@ -23,22 +23,25 @@ const Login = () => {
 
   const login =   (data) => {
 
-      BackendApi.user.login(data)
-      .then((user) => {
-        console.log("user restored", user)
-        dispatch(setUser(user));
-        window.localStorage.setItem("token", user.token);
-
-        if (user.role == "admin") {
-          navigate("/admin/dashboard");
-        }
-        else{
-           navigate("/user/dashboard");
-        }
-      })
-      .catch((err) => {
-        console.log("err",err)
-      })
+    BackendApi.user.login(data)
+    .then((user) => {
+      console.log("user restored", user)
+      dispatch(setUser(user));
+      window.localStorage.setItem("token", user.token);
+      
+     
+  
+      if (user.role == "admin") {
+        navigate("/admin/dashboard");
+      }
+      else{
+         navigate("/user/dashboard");
+      }
+    })
+    .catch((err) => {
+      console.log("err",err)
+    })
+  
 
   }
 

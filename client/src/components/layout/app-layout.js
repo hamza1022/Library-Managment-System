@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react"
-import { Route, Routes, useNavigate, Navigate, Link } from "react-router-dom"
+import { Route, Routes, useNavigate, Link } from "react-router-dom"
 import {
     AppBar,
     Box,
@@ -44,6 +44,7 @@ export const AppLayout = () => {
 
     const naviagte = useNavigate()
     const loggedInUser = useSelector((state) => state.user.value);
+    console.log("logged ",loggedInUser)
     const [anchorElUser, setAnchorElUser] = useState(null)
 
 
@@ -141,44 +142,38 @@ export const AppLayout = () => {
 
                 </Toolbar>
             </AppBar>
-
-
-
             <Routes>
-    {!loggedInUser && (
-        <Route path="/" element={<Login />} />
-    )}
-    {loggedInUser && loggedInUser.role === "admin" && (
-        <>
-            <Route path="/admin/dashboard/book/edit/:id" exact element={<EditBook />} />
-            <Route path="/admin/dashboard" exact element={<Sidebar />} />
-            <Route path="/admin/dashboard/author/edit/:id" exact element={<EditAuthor />} />
-            <Route path="/admin/dashboard/books" exact element={<Book />} />
-            <Route path="/admin/dashboard/orders" exact element={<Orders />} />
-            <Route path="/admin/dashboard/authors" exact element={<Author />} />
-            <Route path="/admin/dashboard/book/create" exact element={<AddBook />} />
-            <Route path="/admin/dashboard/users" exact element={<Users />} />
-            <Route path="/admin/dashboard/author/create" exact element={<CreateAuthor />} />
+       <>
+            {loggedInUser.role === "admin" && (
+                <>
+                    <Route path="/admin/dashboard/book/edit/:id" exact element={<EditBook />} />
+                    <Route path="/admin/dashboard" exact element={<Sidebar />} />
+                    <Route path="/admin/dashboard/author/edit/:id" exact element={<EditAuthor />} />
+                    <Route path="/admin/dashboard/books" exact element={<Book />} />
+                    <Route path="/admin/dashboard/orders" exact element={<Orders />} />
+                    <Route path="/admin/dashboard/authors" exact element={<Author />} />
+                    <Route path="/admin/dashboard/book/create" exact element={<AddBook />} />
+                    <Route path="/admin/dashboard/users" exact element={<Users />} />
+                    <Route path="/admin/dashboard/author/create" exact element={<CreateAuthor />} />
+                </>
+            )}
+            {loggedInUser.role === "user" && (
+                <>
+                    <Route path="/user/dashboard" exact element={<Sidebar />} />
+                    <Route path="/user/authors" exact element={<Authors />} />
+                    <Route path="/user/books" exact element={<Books />} />
+                    <Route path="/user/placeorder" exact element={<PlaceOrder />} />
+                    <Route path="/user/order" exact element={<Order />} />
+                    <Route path="/user/profile" exact element={<Profile />} />
+                    <Route path="/register" exact element={<SignUp />} />
+                    <Route path="/registration/otp/:id" exact element={<Otp />} />
+                </>
+            )}
+            <Route path="/" exact element={<Login />} />
+           
         </>
-    )}
-    {loggedInUser && loggedInUser.role === "user" && (
-        <>
-            <Route path="/user/dashboard" exact element={<Sidebar />} />
-            <Route path="/user/authors" exact element={<Authors />} />
-            <Route path="/user/books" exact element={<Books />} />
-            <Route path="/user/placeorder" exact element={<PlaceOrder />} />
-            <Route path="/user/order" exact element={<Order />} />
-            <Route path="/user/profile" exact element={<Profile />} />
-            <Route path="/register" exact element={<SignUp />} />
-            <Route path="/registration/otp/:id" exact element={<Otp />} />
-        </>
-    )}
-    {/* <Route path="*" element={<Navigate to={Paths[loggedInUser.role]} />} /> */}
+    
 </Routes>
-
-
-
-
 
 
 

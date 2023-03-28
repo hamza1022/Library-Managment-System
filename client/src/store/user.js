@@ -1,4 +1,5 @@
-import { createSlice,current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { BackendApi } from "../api";
 
 
 
@@ -18,6 +19,7 @@ export const userSlice = createSlice ({
 
             state.value = action.payload;
 			window.localStorage.setItem("token", action.payload.token);
+            BackendApi.user.refreshToken()
 
         }
         

@@ -125,7 +125,13 @@ export const UserApi = {
       throw error
 
     } 
-  }
+  },
+  refreshToken: () => {
+		let token = localStorage.getItem("token");
+		if (token) {
+			axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+		}
+	},
   
 
 
