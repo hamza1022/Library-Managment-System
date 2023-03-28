@@ -46,12 +46,9 @@ export const  AppLayout = ()=>{
   const [anchorElUser, setAnchorElUser] = useState(null)
 
 
-    const [openLoginDialog, setOpenLoginDialog] = useState(false)
+  
 
-    const handleLoginSubmit = (username, password) => {
-        // loginUser(username, password)
-        setOpenLoginDialog(false)
-    }
+    
     const handleOpenUserMenu = (event) => {
       setAnchorElUser(event.currentTarget)
   }
@@ -60,9 +57,6 @@ export const  AppLayout = ()=>{
       setAnchorElUser(null)
   }
 
-    const handleLoginClose = () => {
-        setOpenLoginDialog(false)
-    }
 
     const handleLogout = () => {
       window.localStorage.removeItem("token");
