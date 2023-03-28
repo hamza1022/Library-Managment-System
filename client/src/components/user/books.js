@@ -36,7 +36,7 @@ const Books = () => {
       const booksToDisplay = searchText === "" ? books : searchResults;
 
       const Buy= ()=>{
-        navigate("/user/order")
+        navigate("/user/placeorder")
       }
 
 

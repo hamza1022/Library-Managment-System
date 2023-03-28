@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
 import {FaTrashAlt} from 'react-icons/fa' 
 import { BackendApi } from '../../../api';
 import {FaEdit} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
+import { Sidebar } from '../../layout/sidebar';
 
 const Author = () => {
 
@@ -58,7 +58,7 @@ const removeAuthor=(author)=>{
 
    
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
     <div style={{ flex: 1, padding: '20px' }}>
           
     <NavLink

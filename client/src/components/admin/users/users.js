@@ -7,6 +7,7 @@ import Swal from 'sweetalert2'
 import {FaTrashAlt} from 'react-icons/fa'
 import {ImCross} from 'react-icons/im'
 import {BsCheckLg} from 'react-icons/bs'
+import { Sidebar } from '../../layout/sidebar';
 
 const Users = () => {
 
@@ -101,7 +102,7 @@ const Users = () => {
 
    
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
     <div style={{ flex: 1, padding: '20px' }}>
           
     
@@ -113,7 +114,7 @@ const Users = () => {
           <th>Address</th>
           <th>email</th>
           <th>Role</th>
-          <th>Action</th>
+          <th>change status</th>
           <th>Delete</th>
         </tr>
       </thead>

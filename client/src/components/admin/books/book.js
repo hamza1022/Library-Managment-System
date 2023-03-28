@@ -5,6 +5,7 @@ import {FaTrashAlt} from 'react-icons/fa'
 import { BackendApi } from '../../../api';
 import {FaEdit} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
+import { Sidebar } from '../../layout/sidebar';
 
 const Book = () => {
 
@@ -83,7 +84,7 @@ const removeBook=(book)=>{
 
    
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
     <div style={{ flex: 1, padding: '20px' }}>
     <input type="text" value={searchText} onChange={handleChange} />
           

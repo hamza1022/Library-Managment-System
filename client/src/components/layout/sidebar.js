@@ -13,7 +13,7 @@ export const Sidebar = () => {
 
 
 	return (
-		<div style={{ display: 'flex' }}>
+		
         <div style={{ 
             width: '200px',
             backgroundColor: '#f2f2f2',
@@ -137,6 +137,6 @@ loggedInUser.role === "user" && (
         </ul>
         </div>
        
-      </div>
+    
 	);
 };

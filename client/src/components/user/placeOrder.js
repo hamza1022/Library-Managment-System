@@ -82,7 +82,7 @@ const PlaceOrder = () => {
             defaultValue={null}
             value={selectedBooks}
             options={books}
-            getOptionLabel={(book) => book.bookName}
+            getOptionLabel={(book) => book.name}
             getOptionValue={(book) => book._id}
             isSearchable={false}
             isClearable={true}
