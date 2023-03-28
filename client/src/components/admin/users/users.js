@@ -1,6 +1,5 @@
 import React, { useState ,useEffect} from 'react'
 import { BackendApi } from '../../../api'
-import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
 import Swal from 'sweetalert2'
 

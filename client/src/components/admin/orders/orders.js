@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react'
 import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../../api';
 import { Sidebar } from '../../layout/sidebar';
-import { AdminDashboard } from '../dashboard';
+
 
 const Orders = () => {
 

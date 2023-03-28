@@ -1,7 +1,8 @@
 import React from 'react'
-import { AdminDashboard } from '../dashboard'
+
 import { useNavigate, useParams } from "react-router-dom";
 import { BackendApi } from '../../../api';
+import { Sidebar } from '../../layout/sidebar';
 
 const EditAuthor = () => {
 
@@ -34,7 +35,7 @@ const EditAuthor = () => {
       }
   return (
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
     <p>this is edit page</p>

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { AdminDashboard } from '../././admin/dashboard'
 import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
-import { UserDashboard } from './user-dashboard';
+
+import { Sidebar } from '../layout/sidebar';
 
 
 
@@ -36,7 +36,7 @@ const Authors = () => {
 
    
     <div style={{display :"flex"}}>
-    <UserDashboard/>
+    <Sidebar/>
     <div style={{ flex: 1, padding: '20px' }}>
           
           <Table striped bordered hover>

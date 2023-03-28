@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { AdminDashboard } from '../dashboard'
+
 import Table from 'react-bootstrap/Table';
 import {FaTrashAlt} from 'react-icons/fa' 
 import { BackendApi } from '../../../api';

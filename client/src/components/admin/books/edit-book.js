@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { AdminDashboard } from '../dashboard'
+
 
 import { useNavigate, useParams } from "react-router-dom";
 import { BackendApi } from '../../../api';
 import Select from "react-select";
+import { Sidebar } from '../../layout/sidebar';
 
 const EditBook = () => {
 
@@ -55,7 +56,7 @@ const EditBook = () => {
   return (
 
     <div style={{ display: "flex" }}>
-      <AdminDashboard />
+      <Sidebar />
 
       <div style={{ flex: 1, padding: '20px' }}>
         <p>this is edit page</p>

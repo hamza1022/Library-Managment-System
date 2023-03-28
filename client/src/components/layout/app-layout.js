@@ -17,7 +17,6 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { AdminDashboard } from "../admin/dashboard";
 import { LoginDialog } from "../signUp/dialog";
 import  SignUp from "../registration/signUp"
 import { Sidebar } from "./sidebar";
@@ -31,7 +30,7 @@ import CreateAuthor from '../admin/authors/create-author';
 import EditAuthor from '../admin/authors/edit-author';
 import Users from '../admin/users/users';
 import {  useSelector } from 'react-redux'
-import { UserDashboard } from '../user/user-dashboard';
+
 import Authors from '../user/authors';
 import Books from '../user/books';
 import PlaceOrder from '../user/placeOrder';
