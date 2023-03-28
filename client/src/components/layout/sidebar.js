@@ -8,7 +8,7 @@ export const Sidebar = () => {
 
 	const navigate = useNavigate();
 	const loggedInUser = useSelector((state) => state.user.value);
-	console.log("logged", loggedInUser);
+	
 
 
 
