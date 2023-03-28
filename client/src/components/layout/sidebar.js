@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
 
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 
 export const Sidebar = () => {
 
 	const navigate = useNavigate();
+	const loggedInUser = useSelector((state) => state.user.value);
+	console.log("logged", loggedInUser);
 
 
 
