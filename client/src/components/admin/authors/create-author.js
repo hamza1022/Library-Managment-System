@@ -2,7 +2,8 @@ import React from 'react'
 
 import { useNavigate } from "react-router-dom";
 import { BackendApi } from '../../../api';
-import { AdminDashboard } from '../dashboard';
+import { Sidebar } from '../../layout/sidebar';
+
 
 
 const CreateAuthor = () => {
@@ -30,7 +31,7 @@ const CreateAuthor = () => {
     }
   return (
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
     <p>Create Author</p>
