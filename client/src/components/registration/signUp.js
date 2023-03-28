@@ -21,6 +21,7 @@ export default function SignUp() {
 
 
   };
+ 
   const  signup = async (data)=>{
 
      await BackendApi.user.signUp(data)
@@ -42,6 +43,7 @@ export default function SignUp() {
 <>
 
     <form onSubmit={handleSubmit}>
+    
       <div className="form-group">
         <label htmlFor="nameInput">Name</label>
         <input type="text" className="form-control" id="name" name='name'  placeholder="Enter your name" />

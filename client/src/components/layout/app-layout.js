@@ -35,6 +35,7 @@ import Books from '../user/books';
 import PlaceOrder from '../user/placeOrder';
 import Order from '../user/orders';
 import Orders from '../admin/orders/orders';
+import Profile from '../user/profile';
 
 
 
@@ -56,6 +57,16 @@ export const  AppLayout = ()=>{
   const handleCloseUserMenu = () => {
       setAnchorElUser(null)
   }
+const handleUpload=()=>{
+    console.log('Upload')
+}
+  const onProfileImageChange = (e) => {
+    let file = e.target.files[0];
+    let formData = new FormData();
+    formData.append("file", file);
+
+  
+};
 
 
     const handleLogout = () => {
@@ -115,6 +126,27 @@ return(
                                         <MenuItem onClick={handleCloseUserMenu}>
                                             <Typography textAlign="center">Dashboard</Typography>
                                         </MenuItem>
+                                        <MenuItem onClick={handleUpload}>
+                                            <Typography textAlign="center">
+                                            <div className="uploadBox h-40">
+												
+                                                <div className="icon">
+                                                    <span className="iconify " data-icon="akar-icons:cloud-upload"></span>
+                                                </div>
+                                                <div className="fs-14 fw-500 text-800">
+                                                    Add Profile{" "}
+                                                    <input
+                                                        onChange={(e) => {
+                                                            onProfileImageChange(e);
+                                                            e.target = null;
+                                                        }}
+                                                        type="file"
+                                                    />
+                                                </div>
+                                        
+                                    </div>
+                                            </Typography>
+                                        </MenuItem>
                                         <MenuItem onClick={handleLogout}>
                                             <Typography textAlign="center">Logout</Typography>
                                         </MenuItem>
@@ -137,6 +169,7 @@ return(
                 <Route path = "/user/books" exact element={<Books/>} />
                  <Route path = "/user/placeorder" exact element={<PlaceOrder/>} />
                  <Route path = "/user/order" exact element={<Order/>} />
+                 <Route path = "/user/profile" exact element={<Profile/>} />
 
                 <Route path = "/register" exact element={<SignUp/>} />
                 <Route path = "/registration/otp/:id" exact element={<Otp/>} />
