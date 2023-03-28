@@ -12,7 +12,7 @@ const Users = () => {
 
     const [users,setUsers]=useState([])
     const deleteUser = (user) => {
-      // Show confirmation dialog
+      
       Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -23,12 +23,11 @@ const Users = () => {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          // Delete user if user confirms
+         
           BackendApi.user.deleteUser(user)
             .then(() => {
-              // Reload user list after successful deletion
               fetchUsers();
-              // Show success message
+             
               Swal.fire(
                 'Deleted!',
                 'User has been deleted.',
@@ -37,7 +36,7 @@ const Users = () => {
             })
             .catch((err) => {
               console.log(err)
-              // Show error message
+             
               Swal.fire(
                 'Error!',
                 'Failed to delete user.',
