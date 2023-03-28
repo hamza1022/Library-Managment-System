@@ -17,7 +17,6 @@ import {
 
 import MenuIcon from '@mui/icons-material/Menu';
 
-import { LoginDialog } from "../signUp/dialog";
 import  SignUp from "../registration/signUp"
 import { Sidebar } from "./sidebar";
 import Otp from '../registration/otp'
@@ -160,11 +159,7 @@ return(
             
 
             </Routes>
-            <LoginDialog
-                open={openLoginDialog}
-                handleSubmit={handleLoginSubmit}
-                handleClose={handleLoginClose}
-            />
+           
     </Box>
 
     

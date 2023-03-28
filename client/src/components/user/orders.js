@@ -2,8 +2,8 @@ import React, { useState,useEffect } from 'react'
 
 import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
-import { UserDashboard } from './user-dashboard';
 import { useNavigate, useParams } from "react-router-dom";
+import { Sidebar } from '../layout/sidebar';
 
 
 
@@ -46,7 +46,7 @@ const returnBook=(order)=>{
     <>
    
     <div style={{display :"flex"}}>
-    <UserDashboard/>
+    <Sidebar/>
 
     
     <div style={{ flex: 1, padding: '20px' }}>

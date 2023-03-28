@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 
 
 import { BackendApi } from '../../api';
-import { UserDashboard } from './user-dashboard';
 import Select from "react-select";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Sidebar } from '../layout/sidebar';
 
 
 
@@ -63,7 +63,7 @@ const PlaceOrder = () => {
     <>
 
       <div style={{ display: "flex" }}>
-        <UserDashboard />
+        <Sidebar />
 
 
         <div style={{ flex: 1, padding: '20px' }}>

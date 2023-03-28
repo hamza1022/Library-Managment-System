@@ -1,7 +1,7 @@
 import React, { useState ,useEffect} from 'react'
 import { BackendApi } from '../../../api'
-import { AdminDashboard } from '../dashboard'
 import Table from 'react-bootstrap/Table';
+import { Sidebar } from '../layout/sidebar';
 
 const Users = () => {
 
@@ -36,7 +36,7 @@ const Users = () => {
 
    
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
     <div style={{ flex: 1, padding: '20px' }}>
           
     
