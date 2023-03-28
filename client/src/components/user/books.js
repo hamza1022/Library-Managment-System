@@ -4,6 +4,8 @@ import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
 import { useNavigate, useParams } from "react-router-dom";
 import { Sidebar } from '../layout/sidebar';
+import Routes from "../WithAuth"
+import withAuth from '../WithAuth';
 
 
 
@@ -115,4 +117,4 @@ const Books = () => {
   )
 }
 
-export default Books
+export default withAuth(Books)
