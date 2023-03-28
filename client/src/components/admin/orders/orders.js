@@ -2,6 +2,7 @@ import React, { useState,useEffect } from 'react'
 
 import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../../api';
+import { Sidebar } from '../../layout/sidebar';
 import { AdminDashboard } from '../dashboard';
 
 const Orders = () => {
@@ -34,7 +35,7 @@ const Orders = () => {
     <>
    
     <div style={{display :"flex"}}>
-    <AdminDashboard/>
+    <Sidebar/>
 
     
     <div style={{ flex: 1, padding: '20px' }}>
@@ -57,8 +58,8 @@ const Orders = () => {
 
 
                 <tr key= {order._id}>
-                <td>{order.books.map((book) => book.name).join(", ")}</td>
-                <td>{order.customer.name}</td>
+                <td>{order.books?.map((book) => book.name).join(", ")}</td>
+                <td>{order.customer?.name}</td>
           <td>{order.fineAfterPerDay}</td>
           <td>{order.status}</td>
           <td>{order.fine}</td>

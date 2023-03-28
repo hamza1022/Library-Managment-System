@@ -139,8 +139,8 @@ return(
       </AppBar>
       <Routes>
                
-                <Route path = "/admin/dashboard" exact element={<AdminDashboard/>} />
-                <Route path = "/user/dashboard" exact element={<UserDashboard/>} />
+                <Route path = "/admin/dashboard" exact element={<Sidebar/>} />
+                <Route path = "/user/dashboard" exact element={<Sidebar/>} />
                 <Route path = "/user/authors" exact element={<Authors/>} />
                 <Route path = "/user/books" exact element={<Books/>} />
                  <Route path = "/user/placeorder" exact element={<PlaceOrder/>} />
