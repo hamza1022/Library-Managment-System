@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react"
-import { Route, Routes, useNavigate, Link } from "react-router-dom"
+import { Route, Routes, useNavigate,Navigate, Link } from "react-router-dom"
 import {
     AppBar,
     Box,
@@ -38,6 +38,7 @@ import Orders from '../admin/orders/orders';
 import Profile from '../user/profile';
 import { BackendApi } from '../../api';
 import { setUser , logout} from '../../store/user';
+import { Paths } from '../constants/paths';
 
 
 
@@ -183,6 +184,7 @@ export const AppLayout = () => {
                 </>
             )}
             <Route path="/" exact element={<Login />} />
+            <Route path="*" element={<Navigate to={Paths[loggedInUser.role]} />} />
            
         </>
     
