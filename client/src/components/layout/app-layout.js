@@ -37,7 +37,7 @@ import Order from '../user/orders';
 import Orders from '../admin/orders/orders';
 import Profile from '../user/profile';
 import { BackendApi } from '../../api';
-import { setUser } from '../../store/user';
+import { setUser , logout} from '../../store/user';
 
 
 
@@ -84,7 +84,7 @@ export const AppLayout = () => {
 
 
     const handleLogout = () => {
-        window.localStorage.removeItem("token");
+       dispatch(logout())
         naviagte('/')
         handleCloseUserMenu()
     }

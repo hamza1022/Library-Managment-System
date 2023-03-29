@@ -21,10 +21,14 @@ export const userSlice = createSlice ({
 			window.localStorage.setItem("token", action.payload.token);
             BackendApi.user.refreshToken()
 
+        },
+        logout(state,action){
+            state.value = {};
+			window.localStorage.removeItem("token");
         }
         
 
     }
 })
-export const {setUser} = userSlice.actions
+export const {setUser,logout} = userSlice.actions
 export default userSlice.reducer
