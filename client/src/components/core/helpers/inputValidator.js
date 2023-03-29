@@ -1,4 +1,4 @@
-const validateInput = (event,  ) => {
+const validateInput = (event, valueToCompare) => {
 	let target = event.target;
 	let errors = [];
 
@@ -56,7 +56,11 @@ const validateInput = (event,  ) => {
 		}
 	}
 
-	
+	if (target.name === "confirmPassword") {
+		if (target.value !== valueToCompare) {
+			errors.push("Confirm Password does not match Password");
+		}
+	}
 
 	return errors;
 };

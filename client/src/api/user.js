@@ -157,8 +157,31 @@ export const UserApi = {
       
     }
     
-  }
-  
+  },
+  changePassword : async (data)=>{
+    let token = localStorage.getItem('token')
+    try {
+
+      const response = await axios.put("http://localhost:8080/api/user/update-password", {
+      
+        oldPassword:data.oldPassword,
+       password:data.password
+      },{
+        headers:{
+          'Authorization': `Bearer ${token}`
+          
+        } 
+
+        
+      })
+      return response.data.data
+      
+    } catch (error) {
+      throw error
+      
+    }
+
+  } 
 
 
 };

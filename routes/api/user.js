@@ -200,6 +200,10 @@ router.put("/update-password", auth.required, auth.user, async (req, res, next) 
 
 	try {
 		const user = await User.findById(req.user.id);
+        if(!user){
+            return next(new BadRequestResponse(error.message));
+
+        }
 
       
 		const hashedPassword = user.password;
