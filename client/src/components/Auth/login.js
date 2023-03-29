@@ -1,5 +1,5 @@
 import { bottomNavigationClasses } from '@mui/material';
-import React from 'react'
+import React, {createContext,useState} from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
 import { BackendApi } from '../../api';
@@ -8,6 +8,9 @@ import { setUser } from "../../store/user";
 
 
 const Login = () => {
+  const UserContext = createContext();
+
+  const [user, setUser] = useState({})
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -26,6 +29,8 @@ const Login = () => {
     BackendApi.user.login(data)
     .then((user) => {
       console.log("user restored", user)
+      setUser(user)
+      console.log("user logged in state wala user ", user)
       dispatch(setUser(user));
       window.localStorage.setItem("token", user.token);
       
@@ -50,6 +55,8 @@ const Login = () => {
 
   return (
     <>
+    <UserContext.Provider value={user}>
+
 
       <div className="text-center mb-2">
         <img src="\public\assests\images\ellips-upload-user.png" height={60} alt="" />
@@ -76,6 +83,7 @@ const Login = () => {
           </Link>
         </div>
       </div>
+    </UserContext.Provider>
     </>
   )
 }
