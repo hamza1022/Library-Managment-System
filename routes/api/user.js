@@ -291,7 +291,11 @@ router.put("/update-status/:email", auth.required, auth.admin, async (req, res, 
           })
         
       
-        });
+});
+
+router.get("/context", auth.required, auth.user, (req, res, next) => {
+	return next(new OkResponse(req.user.toAuthJSON()));
+});
       
 
       

@@ -28,7 +28,7 @@ import AddBook from '../admin/books/add-book';
 import CreateAuthor from '../admin/authors/create-author';
 import EditAuthor from '../admin/authors/edit-author';
 import Users from '../admin/users/users';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Authors from '../user/authors';
 import Books from '../user/books';
@@ -36,16 +36,38 @@ import PlaceOrder from '../user/placeOrder';
 import Order from '../user/orders';
 import Orders from '../admin/orders/orders';
 import Profile from '../user/profile';
+import { BackendApi } from '../../api';
+import { setUser } from '../../store/user';
 
 
 
 
 export const AppLayout = () => {
+    
+  const dispatch = useDispatch();
 
     const naviagte = useNavigate()
     const loggedInUser = useSelector((state) => state.user.value);
-    console.log("logged ",loggedInUser)
+    console.log("logged user from redux",loggedInUser)
     const [anchorElUser, setAnchorElUser] = useState(null)
+
+    useEffect(() => {
+
+        console.log("user context api called")
+        if(localStorage.getItem('token') ){
+            BackendApi.user.getContext()
+            .then((user)=>{
+              if(user.status === "active" || user.isOtpVerified === "true"){
+                dispatch(setUser(user))
+  
+  
+              }
+            })
+  
+  
+          }
+    }, [])
+    
 
 
 
@@ -58,16 +80,7 @@ export const AppLayout = () => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null)
     }
-    const handleUpload = () => {
-        console.log('Upload')
-    }
-    const onProfileImageChange = (e) => {
-        let file = e.target.files[0];
-        let formData = new FormData();
-        formData.append("file", file);
-
-
-    };
+  
 
 
     const handleLogout = () => {

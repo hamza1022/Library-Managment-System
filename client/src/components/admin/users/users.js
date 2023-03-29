@@ -7,8 +7,11 @@ import {FaTrashAlt} from 'react-icons/fa'
 import {ImCross} from 'react-icons/im'
 import {BsCheckLg} from 'react-icons/bs'
 import { Sidebar } from '../../layout/sidebar';
+import { useDispatch } from 'react-redux';
+import { setUser } from "../../../store/user";
 
 const Users = () => {
+
 
     const [users,setUsers]=useState([])
     const deleteUser = (user) => {
@@ -92,6 +95,7 @@ const Users = () => {
 
     useEffect(() => {
         fetchUsers();
+      
 
      
     }, [])
@@ -131,7 +135,7 @@ const Users = () => {
 
           {
                         user.status =="active" ? 
-                        <button><BsCheckLg onClick={() => changeStatus(user,"inactive")}></BsCheckLg></button>
+                        <button><BsCheckLg onClick={() => changeStatus(user,"blocked")}></BsCheckLg></button>
                         : 
                         <button><ImCross onClick={() => changeStatus(user,"active")}></ImCross></button>
                         }
