@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useState, useEffect } from "react"
 import { Route, Routes, useNavigate,Navigate, Link } from "react-router-dom"
 import {
@@ -37,19 +37,23 @@ import Order from '../user/orders';
 import Orders from '../admin/orders/orders';
 import Profile from '../user/profile';
 import { BackendApi } from '../../api';
-import { setUser , logout} from '../../store/user';
+import { SetUser , logout} from '../../store/user';
 import { Paths } from '../constants/paths';
 
 
 
 
+
 export const AppLayout = () => {
+
+    
     
   const dispatch = useDispatch();
 
     const naviagte = useNavigate()
     const loggedInUser = useSelector((state) => state.user.value);
     console.log("logged user from redux",loggedInUser)
+  
     const [anchorElUser, setAnchorElUser] = useState(null)
 
     useEffect(() => {
@@ -59,7 +63,7 @@ export const AppLayout = () => {
             BackendApi.user.getContext()
             .then((user)=>{
               if(user.status === "active" || user.isOtpVerified === "true"){
-                dispatch(setUser(user))
+                dispatch(SetUser(user))
   
   
               }
@@ -179,12 +183,12 @@ export const AppLayout = () => {
                     <Route path="/user/placeorder" exact element={<PlaceOrder />} />
                     <Route path="/user/order" exact element={<Order />} />
                     <Route path="/user/profile" exact element={<Profile />} />
-                    <Route path="/register" exact element={<SignUp />} />
-                    <Route path="/registration/otp/:id" exact element={<Otp />} />
                 </>
             )}
             <Route path="/" exact element={<Login />} />
-            <Route path="*" element={<Navigate to={Paths[loggedInUser.role]} />} />
+                    <Route path="/registration/otp/:id" exact element={<Otp />} />
+                    <Route path="/register" exact element={<SignUp />} />
+            <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
            
         </>
     

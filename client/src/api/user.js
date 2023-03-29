@@ -20,16 +20,24 @@ export const UserApi = {
       return response.data.data;
     } catch (error) {
       console.error(error);
-      return error;
+      throw error;
     }
   },
 
   getOneById: async (id) => {
     console.log("get id", id)
 
+    try {
+      const response = await axios.get(`http://localhost:8080/api/user/getOne/${id}`)
+    return response.data.data
+      
+    } catch (error) {
+      throw error
+      
+    }
 
-    const response = await axios.get(`http://localhost:8080/api/user/getOne/${id}`)
-    return response
+
+    
 
   },
 

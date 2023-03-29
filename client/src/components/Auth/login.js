@@ -1,16 +1,14 @@
-import { bottomNavigationClasses } from '@mui/material';
-import React, {createContext,useState} from 'react'
+
+import React from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
 import { BackendApi } from '../../api';
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/user";
+import { SetUser } from "../../store/user";
 
 
+// export const UserContext = createContext();
 const Login = () => {
-  const UserContext = createContext();
-
-  const [user, setUser] = useState({})
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -29,9 +27,7 @@ const Login = () => {
     BackendApi.user.login(data)
     .then((user) => {
       console.log("user restored", user)
-      setUser(user)
-      console.log("user logged in state wala user ", user)
-      dispatch(setUser(user));
+      dispatch(SetUser(user));
       window.localStorage.setItem("token", user.token);
       
      
@@ -55,7 +51,7 @@ const Login = () => {
 
   return (
     <>
-    <UserContext.Provider value={user}>
+    
 
 
       <div className="text-center mb-2">
@@ -83,9 +79,10 @@ const Login = () => {
           </Link>
         </div>
       </div>
-    </UserContext.Provider>
+    
     </>
   )
 }
 
 export default Login
+

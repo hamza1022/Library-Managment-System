@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Sidebar } from "../layout/sidebar";
 
 const Profile = () => {
   const [imageUrl, setImageUrl] = useState(null);
@@ -28,11 +29,14 @@ const Profile = () => {
 
   return (
     <>
+      <div style={{display :"flex"}}>
+   
+    <Sidebar/>
       <div>
-        <h1>Profile</h1>
+        <h1>Resest Password</h1>
       </div>
 
-      <div className="uploadBox h-40">
+      {/* <div className="uploadBox h-40">
         <div className="icon">
           <span className="iconify " data-icon="akar-icons:cloud-upload"></span>
         </div>
@@ -48,7 +52,8 @@ const Profile = () => {
           alt="Profile image"
           style={{ width: "200px", height: "200px" }}
         />
-      )}
+      )} */}
+      </div>
     </>
   );
 };

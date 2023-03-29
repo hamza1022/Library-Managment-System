@@ -13,7 +13,7 @@ export const userSlice = createSlice ({
     },
 
     reducers:{
-        setUser(state,action){
+        SetUser(state,action){
 
             console.log("id from payload", action.payload)
 
@@ -30,5 +30,5 @@ export const userSlice = createSlice ({
 
     }
 })
-export const {setUser,logout} = userSlice.actions
+export const {SetUser,logout} = userSlice.actions
 export default userSlice.reducer

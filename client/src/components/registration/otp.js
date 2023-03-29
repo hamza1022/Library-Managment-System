@@ -19,16 +19,21 @@ const Otp = () => {
   console.log("otp", OTP)
 
   const getUser = async () => {
-    await BackendApi.user.getOneById(id)
+
+    if (id){
+
+      await BackendApi.user.getOneById(id)
       .then((result) => {
         setUser(result.data.data)
       })
       .catch((err) => {
 
         console.log(err)
-
+        
       })
-
+      
+    }
+    console.log("id is undefined")
   }
 
   useEffect(() => {
