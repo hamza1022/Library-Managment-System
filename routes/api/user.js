@@ -402,8 +402,10 @@ router.post("/otp/resend/:email", async (req, res, next) => {
         if (!user) {
             return next(new BadRequestResponse("User not found"));
         }
+        user.otp = null
 
         user.setOTP();
+
 
      
         

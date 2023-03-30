@@ -30,7 +30,7 @@ const Otp = () => {
         text: 'Please check your email for verification',
         confirmButtonText: 'OK'
       }).then(() => {
-        navigate(`/registration/otp/${result._id}/1`);
+        // navigate(`/registration/otp/${result._id}/1`);
       });
   
        })
