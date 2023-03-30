@@ -300,6 +300,37 @@ router.put("/update-status/:email", auth.required, auth.admin, async (req, res, 
 router.get("/context", auth.required, auth.user, (req, res, next) => {
 	return next(new OkResponse(req.user.toAuthJSON()));
 });
+
+router.get("/forgot/email", async(req, res, next) => {
+    if (!req.body.email) {
+		return next(new BadRequestResponse("Missing required parameter.", 422.0));
+	}
+    const user = await User.findOe({ email: req.body.email})
+    if(!user) {
+        return next(new BadRequestResponse("User does not exist.", 422.0));
+
+    }
+    user.setOtp()
+    user.save()
+    .then((result)=>{
+        emailService.sendEmailVerificationOTP(result);
+        console.log("result", result);
+        return next(new OkResponse(result));
+
+
+    })
+    .catch(err => {
+        return next(new BadRequestResponse(err));
+    });
+
+    
+
+
+	return next(new OkResponse(req.user.toAuthJSON()));
+});
+
+
+
       
 
       

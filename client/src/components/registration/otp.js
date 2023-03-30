@@ -24,7 +24,8 @@ const Otp = () => {
 
       await BackendApi.user.getOneById(id)
       .then((result) => {
-        setUser(result.data.data)
+        console.log()
+        setUser(result)
       })
       .catch((err) => {
 
