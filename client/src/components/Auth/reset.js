@@ -20,8 +20,11 @@ const Reset = () => {
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
+    if(data.email === ""){
+        setError("Email is required")
+    }
 
-    if(data.password.length <= 0 === "" ){
+    else if(data.password.length <= 0 === "" ){
       setError("password is required")
     }
     else if  (data.password.length < 4){
@@ -32,17 +35,17 @@ const Reset = () => {
 
     }
 
-    BackendApi.user.changePassword(data)
+    BackendApi.user.resetPassword(data,passwordRestToken)
     .then((res) => {
       Swal.fire({
         title: "Success",
-        text: "Password has been changed successfully!!!",
+        text: "Password has been reset successfully!!!",
         icon: "success",
         confirmButtonText: "Ok",
         confirmButtonColor: "#2c974acd",
         allowEnterKeyboard: true,
       }).then((result) => {
-        if (result.isConfirmed) navigate("/auth");
+        if (result.isConfirmed) navigate("/");
       });
     })
     .catch((e) => {
@@ -64,7 +67,11 @@ const Reset = () => {
 
       <form onSubmit={handleSubmit}>
     
-      ;
+      
+      <div className="form-group">
+        <label htmlFor="emailInput">Email</label>
+        <input type="email" className="form-control" id="email"  name='email' placeholder="Enter your email" />
+      </div>
       <div className="form-group">
         <label htmlFor="emailInput">New Password</label>
         <input type="password" className="form-control" id="email"  name='password' placeholder="Enter your new password" />

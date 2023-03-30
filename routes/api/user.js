@@ -33,19 +33,19 @@ router.get("/", function (req, res, next) {
 // });
 
 
-router.get('/getOne/:userId',(req,res,next)=>{
+router.get('/getOne/:userId', (req, res, next) => {
 
     console.log(req.params.userId)
 
     User.findById(req.params.userId)
-    .then((user)=>{
+        .then((user) => {
 
-        return next(new OkResponse(user));
+            return next(new OkResponse(user));
 
-    })
-    .catch((err)=>{
-        return next(new BadRequestResponse(err));
-    })
+        })
+        .catch((err) => {
+            return next(new BadRequestResponse(err));
+        })
 
 })
 
@@ -75,7 +75,7 @@ router.post("/signUp", async (req, res, next) => {
     newUser.name = req.body.name;
     newUser.phoneNumber = req.body.phoneNumber;
 
-    newUser.password =hashedPassword ;
+    newUser.password = hashedPassword;
     newUser.address = req.body.address
     newUser.role = "user"
     newUser.setOTP();
@@ -113,7 +113,7 @@ router.post("/signUp", async (req, res, next) => {
 //         return next(new BadRequestResponse("Incorrect Credentials"));
 
 //     }
-   
+
 
 // })
 router.post('/login', async (req, res, next) => {
@@ -128,8 +128,8 @@ router.post('/login', async (req, res, next) => {
         if (!user) {
             return next(new BadRequestResponse("email dont exist"));
         }
-       else if (user.status !== "active")
-			return next(new UnauthorizedResponse("Your Account is Blocked!, Contact to Support please", 403));
+        else if (user.status !== "active")
+            return next(new UnauthorizedResponse("Your Account is Blocked!, Contact to Support please", 403));
         let match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
@@ -144,10 +144,10 @@ router.post('/login', async (req, res, next) => {
 
 
 router.get("/getUsers", auth.required, auth.admin, (req, res, next) => {
-    User.find().then((user)=>{
+    User.find().then((user) => {
         return next(new OkResponse(user));
 
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     })
 });
@@ -170,59 +170,59 @@ router.delete("/delete/:email", auth.required, auth.admin, (req, res, next) => {
 
 
 router.put("/update-profile", auth.required, auth.user, (req, res, next) => {
-	if (!req.body) return next(new BadRequestResponse("Missing required parameter.", 422.0));
+    if (!req.body) return next(new BadRequestResponse("Missing required parameter.", 422.0));
 
-	req.user.name = req.body.name || req.user.name;
-	req.user.address = req.body.address || req.user.address;
-	req.user.email = req.body.email || req.user.email;
-	req.user.phoneNumber = req.body.phoneNumber || req.user.phoneNumber;
+    req.user.name = req.body.name || req.user.name;
+    req.user.address = req.body.address || req.user.address;
+    req.user.email = req.body.email || req.user.email;
+    req.user.phoneNumber = req.body.phoneNumber || req.user.phoneNumber;
 
-	req.user.save()
-    .then((user)=>{
-        return next(new OkResponse(user));
+    req.user.save()
+        .then((user) => {
+            return next(new OkResponse(user));
 
-    })
-    .catch((err)=>{
-		if (err) return next(new BadRequestResponse(err));
-    });
+        })
+        .catch((err) => {
+            if (err) return next(new BadRequestResponse(err));
+        });
 });
 
 
 router.put("/update-password", auth.required, auth.user, async (req, res, next) => {
-	if (!req.body.oldPassword || !req.body.password)
-		return next(new BadRequestResponse("Missing Required Parameters"));
+    if (!req.body.oldPassword || !req.body.password)
+        return next(new BadRequestResponse("Missing Required Parameters"));
 
-	if (req.body.oldPassword.length <= 0 || req.body.password.length <= 0)
-		return next(new BadRequestResponse("Missing Required Parameters"));
+    if (req.body.oldPassword.length <= 0 || req.body.password.length <= 0)
+        return next(new BadRequestResponse("Missing Required Parameters"));
 
-	if (req.body.oldPassword === req.body.password)
-		return next(new BadRequestResponse("Old password and new password cannot be same", 422));
+    if (req.body.oldPassword === req.body.password)
+        return next(new BadRequestResponse("Old password and new password cannot be same", 422));
 
-	try {
-		const user = await User.findById(req.user.id);
-        if(!user){
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
             return next(new BadRequestResponse(error.message));
 
         }
 
-      
-		const hashedPassword = user.password;
-		const passwordMatch = await bcrypt.compare(req.body.oldPassword, hashedPassword);
-		
-		if (passwordMatch) {
-			const salt = await bcrypt.genSalt(10);
-			const hashedNewPassword = await bcrypt.hash(req.body.password, salt);
 
-			user.password = hashedNewPassword;
-			await user.save();
+        const hashedPassword = user.password;
+        const passwordMatch = await bcrypt.compare(req.body.oldPassword, hashedPassword);
 
-			return next(new OkResponse({ message: "Password has been changed successfully" }));
-		} else {
-			return next(new BadRequestResponse("Invalid Old Password!!", 422));
-		}
-	} catch (error) {
-		return next(new BadRequestResponse(error.message));
-	}
+        if (passwordMatch) {
+            const salt = await bcrypt.genSalt(10);
+            const hashedNewPassword = await bcrypt.hash(req.body.password, salt);
+
+            user.password = hashedNewPassword;
+            await user.save();
+
+            return next(new OkResponse({ message: "Password has been changed successfully" }));
+        } else {
+            return next(new BadRequestResponse("Invalid Old Password!!", 422));
+        }
+    } catch (error) {
+        return next(new BadRequestResponse(error.message));
+    }
 });
 
 
@@ -232,144 +232,173 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
 
 
     const { email, otp } = req.body;
-  
+
     if (!email || !otp) {
-      return next(new BadRequestResponse("Missing Required parameters"));
+        return next(new BadRequestResponse("Missing Required parameters"));
     }
 
-    let query ={ 
-        email:email,
+    let query = {
+        email: email,
     }
-  
+
     const user = await User.findOne(query);
     if (!user) {
-      return next(new BadRequestResponse("User not found"));
+        return next(new BadRequestResponse("User not found"));
     }
-  
+
     if (user.otp !== otp) {
-      return next(new BadRequestResponse("Invalid OTP"));
+        return next(new BadRequestResponse("Invalid OTP"));
     }
 
     user.otp = null;
     user.status = "active"
     user.otpExpires = null;
 
-    if (+req.params.type === 1){
+    if (+req.params.type === 1) {
         user.isOtpVerified === true
-    }else {
+    } else {
         user.generatePasswordRestToken();
     }
-  
+
 
     await user.save()
-    .then((user)=>{
-        if (+req.params.type === 1) {
-            return next(new OkResponse(user.toAuthJSON()));
-        } else if (+req.params.type === 2) {
-            return next(new OkResponse({ passwordRestToken: user.resetPasswordToken }));
-        }
-    })
-  
-    
-  });
+        .then((user) => {
+            if (+req.params.type === 1) {
+                return next(new OkResponse(user.toAuthJSON()));
+            } else if (+req.params.type === 2) {
+                return next(new OkResponse({ passwordRestToken: user.resetPasswordToken, user }));
+            }
+        })
 
 
-  router.post("/reset/password/:email", (req, res, next) => {
-	// console.log(req.body);
-	if (!req.body.resetPasswordToken || !req.body.password) {
-		return next(new UnauthorizedResponse("Missing Required Parameters"));
-	}
-	if (req.body.resetPasswordToken !== req.userToUpdate.resetPasswordToken) {
-		return next({ err: new UnauthorizedResponse("Invalid Password Reset Token") });
-	}
-	req.userToUpdate.setPassword(req.body.password);
-	req.userToUpdate.resetPasswordToken = null;
-	req.userToUpdate.save((err, user) => {
-		if (err) return next(new BadRequestResponse(err));
-		return next(new OkResponse(user.toAuthJSON()));
-	});
 });
-router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(req,res,next)=>{
+
+
+router.post("/reset-password/:email", async (req, res, next) => {
+    let email = req.params.email;
+
+    try {
+        let user = await User.findOne({ email: email });
+
+        if (!user) {
+            return next(new BadRequestResponse("User not found"));
+        }
+
+        if (!req.body.resetPasswordToken || !req.body.password) {
+            return next(new UnauthorizedResponse("Missing Required Parameters"));
+        }
+        if (req.body.resetPasswordToken !== user.resetPasswordToken) {
+            return next({ err: new UnauthorizedResponse("Invalid Password Reset Token") });
+        }
+
+
+
+
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+
+        user.password = hashedPassword;
+        await user.save()
+        .then((result) => {
+
+            return next(new OkResponse({ message: "Password has been changed successfully" }));
+        })
+        .catch((err)=>{
+            return next(new BadRequestResponse(err.message));
+
+        })
+
+    }
+    catch (error) {
+        return next(new BadRequestResponse(error.message));
+
+
+       
+    }
+
+});
+
+router.patch('/profileImage', auth.required, auth.user, upload.array('files', 5), (req, res, next) => {
 
     const file = req.file;
     const dataToUpdate = { profileImage: file.filename };
-    
-   
-    
+
+
+
     User.findByIdAndUpdate(req.user.id, dataToUpdate)
-    .then((result)=>{
-        const imageUrl = `http://localhost:8080/images/${file.filename}`;
-        return next(new OkResponse({ ...result, imageUrl }));
-    })
-    .catch((err)=>{
-        return next(new BadRequestResponse(err));
-    })
-    
+        .then((result) => {
+            const imageUrl = `http://localhost:8080/images/${file.filename}`;
+            return next(new OkResponse({ ...result, imageUrl }));
+        })
+        .catch((err) => {
+            return next(new BadRequestResponse(err));
+        })
+
 })
 
 router.put("/update-status/:email", auth.required, auth.admin, async (req, res, next) => {
-   
-     
-          let email = req.params.email;
-          let user = await User.findOne({ email: email });
-         
-          if (!user) {
-            return next(new BadRequestResponse("User not found"));
-          }
-      console.log("request",req.body.status)
-          user.status = req.body.status;
-      
-          user.save()
-          .then((data)=>{
+
+
+    let email = req.params.email;
+    let user = await User.findOne({ email: email });
+
+    if (!user) {
+        return next(new BadRequestResponse("User not found"));
+    }
+    console.log("request", req.body.status)
+    user.status = req.body.status;
+
+    user.save()
+        .then((data) => {
             return next(new OkResponse(data));
-          })
-          .catch((err)=>{
+        })
+        .catch((err) => {
             return next(new BadRequestResponse(err.message));
 
-          })
-        
-      
+        })
+
+
 });
 
 router.get("/context", auth.required, auth.user, (req, res, next) => {
-	return next(new OkResponse(req.user.toAuthJSON()));
+    return next(new OkResponse(req.user.toAuthJSON()));
 });
 
-router.post("/forgot/email", async(req, res, next) => {
+router.post("/forgot/email", async (req, res, next) => {
     if (!req.body.email) {
-		return next(new BadRequestResponse("Missing required parameter.", 422.0));
-	}
-    const user = await User.findOne({ email: req.body.email})
-    if(!user) {
+        return next(new BadRequestResponse("Missing required parameter.", 422.0));
+    }
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
         return next(new BadRequestResponse("User does not exist.", 422.0));
 
     }
     user.setOTP();
     user.isOtpVerified = true
-    
+
     user.save()
-    .then((result)=>{
-        emailService.sendEmailVerificationOTP(result);
-        return next(new OkResponse({result , message :"Otp sent SUCCESSFUL to this Email"}));
+        .then((result) => {
+            emailService.sendEmailVerificationOTP(result);
+            return next(new OkResponse({ result, message: "Otp sent SUCCESSFUL to this Email" }));
 
 
-    })
-    .catch(err => {
-        return next(new BadRequestResponse(err));
-    });
-
-    
+        })
+        .catch(err => {
+            return next(new BadRequestResponse(err));
+        });
 
 
-	
+
+
+
 });
 
 
 
-      
 
-      
-  
+
+
+
 
 
 module.exports = router

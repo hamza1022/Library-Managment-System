@@ -200,6 +200,27 @@ forgotPassword :async(data)=>{
 
      }
 
+  },
+
+  resetPassword : async(data,token )=>{
+
+    let email = data.email
+
+
+    try{
+      const response = await axios.post(`http://localhost:8080/api/user/reset-password/${email}`, {
+      
+        password:data.password,
+        resetPasswordToken:token
+      
+      })
+      return response.data.data
+
+    }catch (error){
+      throw error
+
+     }
+
   }
 
 
