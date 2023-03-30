@@ -19,6 +19,14 @@ const Otp = () => {
 
   console.log("otp", OTP)
 
+  const resendOtp = async()=>{
+  
+    await BackendApi.user.resendOtp(user.email)
+    .then((result)=>{
+
+    })
+
+  }
   const getUser = async () => {
 
     if (id){
@@ -90,7 +98,8 @@ const Otp = () => {
 
             <div className="text-center mt-5">
               <span className="d-block mobile-text">Don't receive the code?</span>
-              <span className="font-weight-bold text-danger cursor">Resend</span>
+            
+              <span className="font-weight-bold text-danger cursor" onClick={resendOtp}>Resend</span>
             </div>
           </div>
         </div>
