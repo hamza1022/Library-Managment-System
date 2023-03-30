@@ -8,7 +8,7 @@ import { SetUser } from "../../store/user";
 
 
 // export const UserContext = createContext();
-const Login = () => {
+const Forgot = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -18,26 +18,19 @@ const Login = () => {
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
-    login(data)
+    console.log(data)
+
+    forgot(data)
 
   };
 
-  const login =   (data) => {
+  const forgot =   (data) => {
 
-    BackendApi.user.login(data)
+    BackendApi.user.forgotPassword(data)
     .then((user) => {
       console.log("user restored", user)
-      dispatch(SetUser(user));
-      window.localStorage.setItem("token", user.token);
-      
+    
      
-  
-      if (user.role == "admin") {
-        navigate("/admin/dashboard");
-      }
-      else{
-         navigate("/user/dashboard");
-      }
     })
     .catch((err) => {
       console.log("err",err)
@@ -65,18 +58,10 @@ const Login = () => {
           <label htmlFor="emailInput">Email address</label>
           <input type="email" className="form-control" id="email" name='email' placeholder="Enter your email" />
         </div>
-        <div className="form-group">
-          <label htmlFor="passwordInput">Password</label>
-          <input type="password" className="form-control" id="password" name='password' placeholder="Enter your password" />
-        </div>
-        <button type="submit" className="btn btn-primary">Login</button>
+       
+        <button type="submit" className="btn btn-primary">Send</button>
       </form>
-      <div className="text-center">
-								<Link to="/forgot" className="fs-14 fw-500 text-800 text-center">
-									Forgot password?
-								</Link>
-							</div>
-
+  
       <div className="form-footer">
         <div className="d-flex justify-content-center align-items-center gap-3">
           <div className="fs-13 fw-500 text-900">Don't Have an account?</div>
@@ -90,5 +75,5 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Forgot
 

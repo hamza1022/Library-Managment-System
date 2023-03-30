@@ -39,6 +39,7 @@ import Profile from '../user/profile';
 import { BackendApi } from '../../api';
 import { SetUser , logout} from '../../store/user';
 import { Paths } from '../constants/paths';
+import Forgot from '../Auth/forgot';
 
 
 
@@ -187,6 +188,7 @@ export const AppLayout = () => {
             )}
             <Route path="/" exact element={<Login />} />
                     <Route path="/registration/otp/:id" exact element={<Otp />} />
+                    <Route path="/forgot" exact element={<Forgot />} />
                     <Route path="/register" exact element={<SignUp />} />
             <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
            

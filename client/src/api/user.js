@@ -181,7 +181,26 @@ export const UserApi = {
       
     }
 
-  } 
+  } ,
+
+
+forgotPassword :async(data)=>{
+  console.log("email",data.email)
+
+    try{
+      const response = await axios.post("http://localhost:8080/api/user/forgot/email", {
+      
+        email:data.email,
+      
+      })
+      return response.data.data
+
+    }catch (error){
+      throw error
+
+     }
+
+  }
 
 
 };
