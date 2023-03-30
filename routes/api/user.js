@@ -226,7 +226,7 @@ router.put("/update-password", auth.required, auth.user, async (req, res, next) 
 });
 
 
-router.post("/verifyOtp", async (req, res, next) => {
+router.post("/verifyOtp/:type", async (req, res, next) => {
     const { email, otp } = req.body;
   
     if (!email || !otp) {
@@ -311,6 +311,7 @@ router.post("/forgot/email", async(req, res, next) => {
 
     }
     user.setOTP();
+    user.isOtpVerified = false
     
     user.save()
     .then((result)=>{

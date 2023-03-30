@@ -45,7 +45,7 @@ export const UserApi = {
     try {
       const otp = OTP
       console.log("API ", otp + email)
-      const response = await axios.post("http://localhost:8080/api/user/verifyOtp", {
+      const response = await axios.post("http://localhost:8080/api/user/verifyOtp/type", {
         email,
         otp
       })

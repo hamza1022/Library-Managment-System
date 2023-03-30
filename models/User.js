@@ -16,6 +16,7 @@ let userSchema = new mongoose.Schema(
 		profileImage:[ { type: String, default: `${publicPics}/noImage.png` }],
         password:{type:String},
 		status:{type:String,},
+		resetPasswordToken: { type: String, default: null },
         role: {
 			type: String,
 			default: "user",
@@ -34,6 +35,10 @@ let userSchema = new mongoose.Schema(
 userSchema.methods.setOTP = function () {
 	this.otp = Math.floor(1000 + Math.random() * 9000);
 	this.otpExpires = Date.now() + 3600000; // 1 hour
+};
+
+userSchema.methods.generatePasswordRestToken = function () {
+	this.resetPasswordToken = crypto.randomBytes(20).toString("hex");
 };
 
 
