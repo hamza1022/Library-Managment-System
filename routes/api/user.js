@@ -315,7 +315,7 @@ router.post("/forgot/email", async(req, res, next) => {
     user.save()
     .then((result)=>{
         emailService.sendEmailVerificationOTP(result);
-        return next(new OkResponse({message :"Otp sent SUCCESSFUL to this Email"}));
+        return next(new OkResponse({result , message :"Otp sent SUCCESSFUL to this Email"}));
 
 
     })
