@@ -224,7 +224,7 @@ forgotPassword :async(data)=>{
 
     try {
 
-      const response = await axios.post(`http://localhost:8080/api/user/otp/resend/$/${email}`)
+      const response = await axios.post(`http://localhost:8080/api/user/otp/resend/${email}`)
       return response.data.data
       
     } catch (error) {

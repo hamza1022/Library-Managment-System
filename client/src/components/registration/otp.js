@@ -4,6 +4,7 @@ import { BackendApi } from "../../api"
 
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import OTPInput from "otp-input-react";
+import Swal from 'sweetalert2';
 
 
 const Otp = () => {
@@ -23,8 +24,21 @@ const Otp = () => {
   
     await BackendApi.user.resendOtp(user.email)
     .then((result)=>{
+      Swal.fire({
+        icon: 'success',
+        title: 'Otp resend successfully',
+        text: 'Please check your email for verification',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        navigate(`/registration/otp/${result._id}/1`);
+      });
+  
+       })
+       .catch(()=>{
 
-    })
+       })
+
+    
 
   }
   const getUser = async () => {
