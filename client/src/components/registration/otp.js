@@ -86,7 +86,7 @@ const Otp = () => {
       }
       })
       .catch((err) => {
-        console.log(err)
+        navigate(-1)
       })
   }
 
