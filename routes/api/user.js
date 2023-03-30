@@ -393,6 +393,44 @@ router.post("/forgot/email", async (req, res, next) => {
 
 });
 
+router.post("/otp/resend/:email", async (req, res, next) => {
+
+    let email = req.params.email;
+    try {
+        let user = await User.findOne({ email: email });
+
+        if (!user) {
+            return next(new BadRequestResponse("User not found"));
+        }
+
+        user.setOTP();
+
+     
+        
+        user.save()
+        .then(result => {
+            emailService.sendEmailVerificationOTP(result);
+            return next(new OkResponse(result));
+        })
+        .catch(err => {
+            return next(new BadRequestResponse(err));
+        });
+       
+
+    }
+    catch(err){
+        return next(new BadRequestResponse(err));
+
+    }
+
+
+
+	
+   
+
+
+});
+
 
 
 

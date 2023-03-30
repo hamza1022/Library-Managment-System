@@ -182,8 +182,6 @@ export const UserApi = {
     }
 
   } ,
-
-
 forgotPassword :async(data)=>{
   console.log("email",data.email)
 
@@ -220,6 +218,30 @@ forgotPassword :async(data)=>{
       throw error
 
      }
+
+  },
+  resendOtp:async()=>{
+
+    try {
+
+      const response = await axios.put(`http://localhost:8080/api/user/otp/resend/$/{}`, {
+      
+        oldPassword:data.oldPassword,
+       password:data.password
+      },{
+        headers:{
+          'Authorization': `Bearer ${token}`
+          
+        } 
+
+        
+      })
+      return response.data.data
+      
+    } catch (error) {
+      throw error
+      
+    }
 
   }
 

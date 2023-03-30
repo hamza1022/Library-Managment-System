@@ -1,6 +1,7 @@
 import React,{useEffect, useState} from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 
 
@@ -21,7 +22,9 @@ export default function SignUp() {
 
     if(!data.email){
       setError("Email is required")
-    }
+    } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+      setError("Invalid email format")
+   }
   else if(!data.password){
     setError("Password is required")
 
@@ -40,11 +43,15 @@ export default function SignUp() {
      await BackendApi.user.signUp(data)
      .then((data)=>{
 		console.log(data)
-
     
-
-        navigate(`/registration/otp/${data._id}/1`);
-
+    Swal.fire({
+      icon: 'success',
+      title: 'Registration successful',
+      text: 'Please check your email for verification',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      navigate(`/registration/otp/${data._id}/1`);
+    });
 
      })
      .catch((err)=>{
