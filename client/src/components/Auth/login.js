@@ -33,10 +33,10 @@ const Login = () => {
      
   
       if (user.role == "admin") {
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard/books");
       }
       else{
-         navigate("/user/dashboard");
+         navigate("/user/books");
       }
     })
     .catch((err) => {
