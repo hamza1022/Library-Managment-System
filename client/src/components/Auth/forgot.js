@@ -3,15 +3,12 @@ import React from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
 import { BackendApi } from '../../api';
-import { useDispatch } from "react-redux";
-import { SetUser } from "../../store/user";
 
 
 // export const UserContext = createContext();
 const Forgot = () => {
+    const navigate= useNavigate()
 
-  const navigate = useNavigate()
-  const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +26,7 @@ const Forgot = () => {
     BackendApi.user.forgotPassword(data)
     .then((user) => {
       console.log("user restored", user)
+      navigate(`/registration/otp/${user.result._id}`);
     
      
     })
@@ -44,6 +42,16 @@ const Forgot = () => {
 
   return (
     <>
+
+    <div>
+        <h2>Forgot Your Password?</h2>
+        <div>
+            <p>
+            Enter your email address to request a password
+reset. You will receive an OTP with further instructions.
+            </p>
+        </div>
+    </div>
     
 
 
