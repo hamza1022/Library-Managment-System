@@ -80,8 +80,10 @@ const Otp = () => {
         if (parseInt(type) === 1){
           navigate("/")
 
-        }else if (parseInt(type) === 2){
-        navigate(`/reset-password/${result.passwordRestToken}`)}
+        }
+        else if (parseInt(type) === 2){
+        navigate(`/reset-password/${result.passwordRestToken}`)
+      }
       })
       .catch((err) => {
         console.log(err)
