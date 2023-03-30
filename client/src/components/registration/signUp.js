@@ -19,13 +19,20 @@ export default function SignUp() {
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
-    if(!data.email && !data.password){
+    if(!data.email){
       setError("Email is required")
+    }
+  else if(!data.password){
+    setError("Password is required")
+
+    }
+    else {
+      signup(data)
+
     }
     
     
     
-    signup(data)
   };
  
   const  signup = async (data)=>{
@@ -33,6 +40,8 @@ export default function SignUp() {
      await BackendApi.user.signUp(data)
      .then((data)=>{
 		console.log(data)
+
+    
 
         navigate(`/registration/otp/${data._id}/1`);
 
