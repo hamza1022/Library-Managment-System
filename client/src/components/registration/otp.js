@@ -8,7 +8,8 @@ import OTPInput from "otp-input-react";
 
 const Otp = () => {
 
-  const { id } = useParams();
+  const { id ,type} = useParams();
+  console.log("type",type)
   const navigate = useNavigate()
 
   console.log("id", id);
@@ -44,13 +45,16 @@ const Otp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log("otp in handl", OTP)
+
+    
     await BackendApi.user.verifyOtp({
       OTP: OTP,
-      email: user.email
+      email: user.email,
+      type:1
     })
     .then((result) => {
         console.log("otp verified successfully");
-        console.log(result);
+        console.log("result",result);
         navigate("/")
       })
       .catch((err) => {

@@ -227,6 +227,10 @@ router.put("/update-password", auth.required, auth.user, async (req, res, next) 
 
 
 router.post("/verifyOtp/:type", async (req, res, next) => {
+
+    console.log("req params", req.params.type)
+
+
     const { email, otp } = req.body;
   
     if (!email || !otp) {
@@ -245,14 +249,28 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
     if (user.otp !== otp) {
       return next(new BadRequestResponse("Invalid OTP"));
     }
-  
-    // Mark the user as verified
-    user.isOtpVerified = true;
+
     user.otp = null;
     user.status = "active"
-    await user.save();
+    user.otpExpires = null;
+
+    if (+req.params.type === 1){
+        user.isOtpVerified === true
+    }else {
+        user.generatePasswordRestToken();
+    }
   
-    return next(new OkResponse("OTP verification successful"));
+
+    await user.save()
+    .then(()=>{
+        if (+req.params.type === 1) {
+            return next(new OkResponse(user.toAuthJSON()));
+        } else if (+req.params.type === 2) {
+            return next(new OkResponse({ passwordRestToken: user.resetPasswordToken }));
+        }
+    })
+  
+    
   });
 
 router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(req,res,next)=>{

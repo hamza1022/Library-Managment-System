@@ -26,7 +26,7 @@ const Forgot = () => {
     BackendApi.user.forgotPassword(data)
     .then((user) => {
       console.log("user restored", user)
-      navigate(`/registration/otp/${user.result._id}`);
+      navigate(`/registration/otp/${user.result._id}/2`);
     
      
     })

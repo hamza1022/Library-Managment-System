@@ -28,7 +28,7 @@ export default function SignUp() {
      .then((data)=>{
 		console.log(data)
 
-        navigate(`/registration/otp/${data._id}/type:2`);
+        navigate(`/registration/otp/${data._id}/1`);
 
 
      })
