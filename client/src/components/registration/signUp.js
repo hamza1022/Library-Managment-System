@@ -9,6 +9,8 @@ import  {BackendApi}  from "../../api"
 
 export default function SignUp() {
 
+  const [error, setError] = useState("") 
+
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -16,10 +18,14 @@ export default function SignUp() {
     const formData  = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
     console.log(data);
+
+    if(!data.email && !data.password){
+      setError("Email is required")
+    }
+    
+    
+    
     signup(data)
-
-
-
   };
  
   const  signup = async (data)=>{
@@ -64,6 +70,9 @@ export default function SignUp() {
         <label htmlFor="passwordInput">Password</label>
         <input type="password" className="form-control" id="password"  name='password' placeholder="Enter your password" />
       </div>
+      <div className="col-lg-12">
+									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+								</div>
       <button type="submit" className="btn btn-primary">Register</button>
     </form>
     <div className="d-flex justify-content-center align-items-center gap-3">

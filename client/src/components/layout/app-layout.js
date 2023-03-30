@@ -187,19 +187,13 @@ export const AppLayout = () => {
                     <Route path="/user/profile" exact element={<Profile />} />
                 </>
             )}
-            {!loggedInUser && (
-                <>
-                <Route path="/registration/otp/:id/:type" exact element={<Otp />} />
+            
+            <Route path="/" exact element={<Login />} />
+                    <Route path="/registration/otp/:id/:type" exact element={<Otp />} />
                     <Route path="/reset-password/:passwordRestToken" exact element={<Reset />} />
                     <Route path="/forgot" exact element={<Forgot />} />
                     <Route path="/register" exact element={<SignUp />} />
-                    <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
-
-                </>
-            )}
-            <Route path="/" exact element={<Login />} />
-                    
-            <Route path="*" element={<Navigate to={"/"} />} />
+            <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
            
         </>
     
