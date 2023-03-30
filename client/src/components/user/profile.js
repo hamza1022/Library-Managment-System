@@ -38,7 +38,7 @@ const Profile = () => {
         confirmButtonColor: "#2c974acd",
         allowEnterKeyboard: true,
       }).then((result) => {
-        if (result.isConfirmed) navigate("/auth");
+        if (result.isConfirmed) navigate("/user/dashboard");
       });
     })
     .catch((e) => {
