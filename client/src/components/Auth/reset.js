@@ -7,6 +7,8 @@ import Swal from "sweetalert2";
 
 const Reset = () => {
   const navigate = useNavigate();
+  const {passwordRestToken} = useParams();
+  console.log(passwordRestToken)
 
   const [error, setError] = useState("");
 
@@ -17,10 +19,12 @@ const Reset = () => {
     const formData  = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
     console.log(data);
-    if(data.oldPassword.length <= 0 === "" ){
-      setError("old password is required")
+
+
+    if(data.password.length <= 0 === "" ){
+      setError("password is required")
     }
-    else if  (data.oldPassword.length < 4){
+    else if  (data.password.length < 4){
       setError("password   must be at least 4 characters")
     }
     else if(data.password !== data.confirmPassword){
@@ -60,10 +64,7 @@ const Reset = () => {
 
       <form onSubmit={handleSubmit}>
     
-      <div className="form-group">
-        <label htmlFor="nameInput">Old password</label>
-        <input type="password" className="form-control" id="name" name='oldPassword'  placeholder="Enter your old password" />
-      </div>
+      ;
       <div className="form-group">
         <label htmlFor="emailInput">New Password</label>
         <input type="password" className="form-control" id="email"  name='password' placeholder="Enter your new password" />
@@ -73,7 +74,7 @@ const Reset = () => {
         <input type="password" className="form-control" id="email"  name='confirmPassword' placeholder="enter password again" />
       </div>
       
-      <button type="submit" className="btn btn-primary">Register</button>
+      <button type="submit" className="btn btn-primary">Set Password</button>
     </form>
 
       

@@ -50,7 +50,7 @@ const Otp = () => {
     await BackendApi.user.verifyOtp({
       OTP: OTP,
       email: user.email,
-      type:1
+      type:type
     })
     .then((result) => {
         console.log("otp verified successfully");
@@ -59,7 +59,7 @@ const Otp = () => {
           navigate("/")
 
         }else if (parseInt(type) === 2){
-        navigate("/reset-password")}
+        navigate(`/reset-password/${result.passwordRestToken}`)}
       })
       .catch((err) => {
         console.log(err)

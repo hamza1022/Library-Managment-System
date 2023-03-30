@@ -262,7 +262,7 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
   
 
     await user.save()
-    .then(()=>{
+    .then((user)=>{
         if (+req.params.type === 1) {
             return next(new OkResponse(user.toAuthJSON()));
         } else if (+req.params.type === 2) {
@@ -273,6 +273,22 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
     
   });
 
+
+  router.post("/reset/password/:email", (req, res, next) => {
+	// console.log(req.body);
+	if (!req.body.resetPasswordToken || !req.body.password) {
+		return next(new UnauthorizedResponse("Missing Required Parameters"));
+	}
+	if (req.body.resetPasswordToken !== req.userToUpdate.resetPasswordToken) {
+		return next({ err: new UnauthorizedResponse("Invalid Password Reset Token") });
+	}
+	req.userToUpdate.setPassword(req.body.password);
+	req.userToUpdate.resetPasswordToken = null;
+	req.userToUpdate.save((err, user) => {
+		if (err) return next(new BadRequestResponse(err));
+		return next(new OkResponse(user.toAuthJSON()));
+	});
+});
 router.patch('/profileImage',auth.required,auth.user,upload.array('files',5),(req,res,next)=>{
 
     const file = req.file;
@@ -329,7 +345,7 @@ router.post("/forgot/email", async(req, res, next) => {
 
     }
     user.setOTP();
-    user.isOtpVerified = false
+    user.isOtpVerified = true
     
     user.save()
     .then((result)=>{
