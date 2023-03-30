@@ -75,7 +75,7 @@ const Otp = () => {
       type:type
     })
     .then((result) => {
-        console.log("otp verified successfully");
+        
         console.log("result",result);
         if (parseInt(type) === 1){
           navigate("/")

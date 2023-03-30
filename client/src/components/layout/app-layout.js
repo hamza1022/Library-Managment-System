@@ -60,7 +60,7 @@ export const AppLayout = () => {
 
     useEffect(() => {
 
-        console.log("user context api called")
+        
         if(localStorage.getItem('token') ){
             BackendApi.user.getContext()
             .then((user)=>{
