@@ -46,7 +46,7 @@ const Otp = () => {
     event.preventDefault();
     console.log("otp in handl", OTP)
 
-    
+
     await BackendApi.user.verifyOtp({
       OTP: OTP,
       email: user.email,
@@ -55,7 +55,11 @@ const Otp = () => {
     .then((result) => {
         console.log("otp verified successfully");
         console.log("result",result);
-        navigate("/")
+        if (parseInt(type) === 1){
+          navigate("/")
+
+        }else if (parseInt(type) === 2){
+        navigate("/reset-password")}
       })
       .catch((err) => {
         console.log(err)
