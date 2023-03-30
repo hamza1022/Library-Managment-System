@@ -52,7 +52,7 @@ export const UserApi = {
       return response.data.data
     } catch (error) {
       console.error(error);
-      return error;
+      throw error;
     }
   },
 
