@@ -187,14 +187,9 @@ export const AppLayout = () => {
                     <Route path="/user/profile" exact element={<Profile />} />
                 </>
             )}
-            {loggedInUser==={}&&( 
-
-            <>
-                        <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
-            </>
-            )
-
-            }
+            {Object.keys(loggedInUser).length === 0 && (
+  <Route path="*" element={<Navigate to={Paths[loggedInUser?.role]} />} />
+)}
             
             <Route path="/" exact element={<Login />} />
                     <Route path="/registration/otp/:id/:type" exact element={<Otp />} />
