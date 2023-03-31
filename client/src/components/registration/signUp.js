@@ -20,15 +20,13 @@ export default function SignUp() {
     const data = Object.fromEntries(formData.entries());
     console.log(data);
 
-    if(!data.email){
+
+    if(!data.emai && data.password) {
       setError("Email is required")
     } else if (!/\S+@\S+\.\S+/.test(data.email)) {
       setError("Invalid email format")
    }
-  else if(!data.password){
-    setError("Password is required")
 
-    }
     else {
       signup(data)
 
@@ -72,7 +70,7 @@ export default function SignUp() {
       </div>
       <div className="form-group">
         <label htmlFor="emailInput">Email address</label>
-        <input type="email" className="form-control" id="email"  name='email' placeholder="Enter your email" />
+        <input type="email" className="form-control" id="email"  name='email' required placeholder="Enter your email" />
       </div>
       <div className="form-group">
         <label htmlFor="passwordInput">phoneNumber</label>
@@ -84,7 +82,7 @@ export default function SignUp() {
       </div>
 	  <div className="form-group">
         <label htmlFor="passwordInput">Password</label>
-        <input type="password" className="form-control" id="password"  name='password' placeholder="Enter your password" />
+        <input type="password" className="form-control" id="password"  required name='password' placeholder="Enter your password" />
       </div>
       <div className="col-lg-12">
 									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
