@@ -1,5 +1,5 @@
 
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Link, useNavigate } from "react-router-dom";
 import { BackendApi } from '../../api';
@@ -12,13 +12,30 @@ const Login = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch();
+  const [error , setErrors]= useState("")
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries());
 
-    login(data)
+
+    if(data.email === "" && data.password === ""){
+      setErrors("Email and Password is required")
+
+    }
+
+    else if(data.email === ""){
+      setErrors("Email is required")
+    } else if (data.password === ""){
+      setErrors("Password is required")
+    }
+  
+    if(data.email.length > 0 && data.password.length > 0){
+
+      login(data)
+    }
+
 
   };
 
@@ -40,6 +57,7 @@ const Login = () => {
       }
     })
     .catch((err) => {
+      setErrors(err.response.data.message)
       console.log("err",err)
     })
   
@@ -69,6 +87,9 @@ const Login = () => {
           <label htmlFor="passwordInput">Password</label>
           <input type="password" className="form-control" id="password" name='password' placeholder="Enter your password" />
         </div>
+        <div className="col-lg-12">
+									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+								</div>
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
       <div className="text-center">
