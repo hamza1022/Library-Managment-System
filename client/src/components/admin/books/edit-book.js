@@ -1,65 +1,63 @@
-import React, { useState, useEffect } from 'react'
-
-
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import { BackendApi } from '../../../api';
 import Select from "react-select";
 import { Sidebar } from '../../layout/sidebar';
 
 const EditBook = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
-  const [selectedAuthor, setSelectedAuthor] = useState(null)
-  const [authors, setAuthors] = useState([])
+  const [selectedAuthor, setSelectedAuthor] = useState(null);
+  const [authors, setAuthors] = useState([]);
+  const [book, setBook] = useState({});
+  const [error, setError] = useState("");
 
   const getAuthors = () => {
     BackendApi.author.getAllAuthors()
       .then((authors) => {
-        setAuthors(authors)
+        setAuthors(authors);
+      })
+      .catch(err => console.log(err));
+  };
 
-      }).catch(err => console.log(err))
-  }
-
-  useEffect(() => {
-
-    getAuthors()
-
-
-
-  }, [])
-
-  console.log("Selected", selectedAuthor)
-
-  const handleSubmit = (event) => {
-    console.log("clicked")
-
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries())
-
-    BackendApi.book.editBook(id, data, selectedAuthor._id)
-      .then((res) => {
-        navigate(-1);
-
-        console.log("res retrieved", res)
-
+  const getBookById = () => {
+    BackendApi.book.getOneById(id)
+      .then((book) => {
+        setBook(book);
+        console.log(book)
+        setSelectedAuthor(book.Author); // set the selected author to the current author of the book being edited
       })
       .catch((err) => {
-        console.log("err", err)
+        setError(err);
+      });
+  };
 
+  useEffect(() => {
+    getAuthors();
+    getBookById();
+  }, []);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    BackendApi.book.editBook(id, data, selectedAuthor?._id)
+      .then((res) => {
+        navigate(-1);
+        console.log("res retrieved", res);
       })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
 
-
-
-  }
   return (
-
     <div style={{ display: "flex" }}>
       <Sidebar />
 
       <div style={{ flex: 1, padding: '20px' }}>
-       <h1>Edit Book</h1>
+        <h1>Edit Book</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -74,33 +72,23 @@ const EditBook = () => {
             <label htmlFor="priceInput">Book Price</label>
             <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price" />
           </div>
-          {/* <div className="form-group">
-        <label htmlFor="passwordInput">Author</label>
-        <input type="text" className="form-control" id="Author"  name='Author' placeholder="Enter Author" />
-      </div> */}
-
           <label className="fs-14 fw-500 text-900 mb-1 mt-3">Author</label>
-
           <Select
-            defaultValue={null}
             value={selectedAuthor}
             options={authors}
-            getOptionLabel={(authors) => authors.name}
-            getOptionValue={(authors) => authors.name}
-
+            getOptionLabel={(author) => author.name}
+            getOptionValue={(author) => author._id}
             isSearchable={false}
             isClearable={true}
-            onChange={(e) => {
-              setSelectedAuthor(e);
-
+            onChange={(selectedOption) => {
+              setSelectedAuthor(selectedOption);
             }}
           />
           <button type="submit" className="btn btn-primary">Edit</button>
         </form>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default EditBook
+export default EditBook;

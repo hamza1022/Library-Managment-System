@@ -100,6 +100,22 @@ export const BookApi = {
 
 
 
-      }
+      },
+      getOneById: async (id) => {
+        console.log("get id", id)
+    
+        try {
+          const response = await axios.get(`http://localhost:8080/api/book/getOne/${id}`)
+          return response.data.data
+    
+        } catch (error) {
+          throw error
+    
+        }
+    
+    
+    
+    
+      },
 };
 

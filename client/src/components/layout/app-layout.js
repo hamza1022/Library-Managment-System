@@ -193,7 +193,7 @@ export const AppLayout = () => {
             
             <Route path="/" exact element={<Login />} />
                     <Route path="/registration/otp/:id/:type" exact element={<Otp />} />
-                    <Route path="/reset-password/:passwordRestToken" exact element={<Reset />} />
+                    <Route path="/reset-password/:passwordresttoken" exact element={<Reset />} />
                     <Route path="/forgot" exact element={<Forgot />} />
                     <Route path="/register" exact element={<SignUp />} />
             
