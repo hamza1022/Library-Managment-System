@@ -28,10 +28,9 @@ const Otp = () => {
         icon: 'success',
         title: 'Otp resend successfully',
         text: 'Please check your email for verification',
-        confirmButtonText: 'OK'
-      }).then(() => {
-        // navigate(`/registration/otp/${result._id}/1`);
-      });
+        confirmButtonText: 'OK',
+        timer: 1500
+      })
   
        })
        .catch(()=>{
