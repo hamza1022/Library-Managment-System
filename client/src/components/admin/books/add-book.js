@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { BackendApi } from '../../../api';
 import Select from "react-select";
 import { Sidebar } from '../../layout/sidebar';
-import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+ 
 
 
 
@@ -57,23 +59,14 @@ const AddBook = () => {
         }  else {
           BackendApi.book.addBook(data,selectedAuthor._id)
           .then((res)=>{
-            // Swal.fire({
-            //   icon: 'success',
-            //   title: 'Added successfully',
-            //   confirmButtonText: 'OK'
-            // }).then(() => {
-        
-             
-              
-            // });
-            navigate(-1);
+            // toast.success('Book created successfully!');
+              navigate(-1);
   
               console.log("res retrieved", res)
   
           })
           .catch((err)=>{
-            setError(err);
-             
+             setError(err)
   
           })
 
@@ -89,6 +82,7 @@ const AddBook = () => {
     <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
+    <ToastContainer />
     <h1>Create Book</h1>
 
     <form onSubmit={handleSubmit}>
@@ -128,6 +122,7 @@ const AddBook = () => {
 <div className="col-lg-12">
 									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
 								</div>
+               
 										
 									
       <button type="submit" className="btn btn-primary">Add</button>

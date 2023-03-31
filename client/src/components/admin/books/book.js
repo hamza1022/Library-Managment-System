@@ -85,12 +85,12 @@ const removeBook=(book)=>{
   return (
     <>
 
-   
-    <div style={{display :"flex"}}>
-    <Sidebar/>
-    <div className="col-lg-12">
+<div className="col-lg-12">
 									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
 								</div>
+    <div style={{display :"flex"}}>
+    <Sidebar/>
+    
     <div style={{ flex: 1, padding: '20px' }}>
     <input type="text" value={searchText} onChange={handleChange} />
           
