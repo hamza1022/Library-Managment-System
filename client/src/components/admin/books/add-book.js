@@ -45,21 +45,30 @@ const AddBook = () => {
         const formData  = new FormData(event.target);
         const data = Object.fromEntries(formData.entries());
 
-        if (!data.name || !data.Author) {
-          setError("Name or Author is missing");
-        }  
+        console.log(data)
 
+        if (!data.name) {
+          setError("Book name is required");
+        }
+        else if (!selectedAuthor){
+          setError("Author is Required");
+          
+        }  else {
           BackendApi.book.addBook(data,selectedAuthor._id)
-        .then((res)=>{
-            navigate(-1);
+          .then((res)=>{
+              navigate(-1);
+  
+              console.log("res retrieved", res)
+  
+          })
+          .catch((err)=>{
+              console.log("err",err)
+  
+          })
 
-            console.log("res retrieved", res)
+        }
 
-        })
-        .catch((err)=>{
-            console.log("err",err)
-
-        })
+       
 
 
 
@@ -69,7 +78,7 @@ const AddBook = () => {
     <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
-    <p>Create Book</p>
+    <h1>Create Book</h1>
 
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -104,6 +113,10 @@ const AddBook = () => {
 											
 											}}
 										/>
+
+<div className="col-lg-12">
+									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+								</div>
 										
 									
       <button type="submit" className="btn btn-primary">Add</button>
