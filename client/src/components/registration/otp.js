@@ -22,7 +22,7 @@ const Otp = () => {
         console.log(err)
       })
     }
-    console.log("id is undefined")
+
   }, [id])
 
   useEffect(() => {

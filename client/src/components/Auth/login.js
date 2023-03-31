@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { BackendApi } from '../../api';
 import { useDispatch } from "react-redux";
 import { SetUser } from "../../store/user";
+import Swal from 'sweetalert2';
 
 
 // export const UserContext = createContext();
@@ -46,15 +47,27 @@ const Login = () => {
       console.log("user restored", user)
       dispatch(SetUser(user));
       window.localStorage.setItem("token", user.token);
-      
-     
-  
+
+
+       
+    Swal.fire({
+      icon: 'success',
+      title: 'Login successful',
+      confirmButtonText: 'OK'
+    }).then(() => {
+
       if (user.role == "admin") {
         navigate("/admin/dashboard/books");
       }
       else{
          navigate("/user/books");
       }
+      
+    });
+
+
+      
+    
     })
     .catch((err) => {
       setErrors(err.response.data.message)
