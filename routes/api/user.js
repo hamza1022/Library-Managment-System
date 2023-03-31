@@ -138,7 +138,7 @@ router.post('/login', async (req, res, next) => {
 
         return next(new OkResponse(user.toAuthJSON()));
     } catch (error) {
-        return next(new BadRequestResponse(error.message));
+        return next(new BadRequestResponse({message:"Internal Server Error"}));
     }
 });
 
