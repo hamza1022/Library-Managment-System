@@ -59,7 +59,7 @@ const EditBook = () => {
       <Sidebar />
 
       <div style={{ flex: 1, padding: '20px' }}>
-        <p>this is edit page</p>
+       <h1>Edit Book</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">

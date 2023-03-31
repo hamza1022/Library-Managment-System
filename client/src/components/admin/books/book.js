@@ -6,6 +6,7 @@ import { BackendApi } from '../../../api';
 import {FaEdit} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
 import { Sidebar } from '../../layout/sidebar';
+import Swal from 'sweetalert2'
 
 const Book = () => {
 
@@ -64,20 +65,45 @@ const removeBook=(book)=>{
         headers: { 'Authorization': `Bearer ${token}` }
       };
     console.log(token)
-    BackendApi.book.deleteBook(book,options)
-    .then((res)=>{
-        fetchBooks()
+
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
        
-        console.log("res returned", res)
+        BackendApi.book.deleteBook(book,options)
+          .then(() => {
+            fetchBooks()
+           
+            Swal.fire(
+              'Deleted!',
+              'Book has been deleted.',
+              'success'
+            )
+          })
+          .catch((err) => {
+           setError(err)
+           
+            Swal.fire(
+              'Error!',
+              'Failed to delete user.',
+              'error'
+            )
+          })
+      }
     })
-    .catch((err)=>{
-        console.log("err: ", err)
-    })
+
+  
 
 
 
-   
-    console.log(book._id)
 }
 
 
