@@ -60,18 +60,18 @@ export const BookApi = {
       addBook :async (data,id)=>{
         console.log("id",id)
 
-        const bookName = data.bookName;
-        const bookTitle = data.bookTitle;
-        const bookPrice = data.bookPrice;
-        // const Author = data.Author;
+        const name = data.name;
+        const title = data.title;
+        const price = data.price;
+    
   
 
         let token = localStorage.getItem("token");
 
         const response = await axios.post ("http://localhost:8080/api/book/create",{
-          bookName,
-          bookTitle,
-          bookPrice,
+          name,
+          title,
+          price,
           Author:id
         },
         {
