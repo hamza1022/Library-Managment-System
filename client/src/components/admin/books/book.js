@@ -13,6 +13,7 @@ const Book = () => {
 
     const [books,setBooks]= useState([])
     const [searchText, setSearchText] = useState("");
+    const [error,setError] = useState("")
     const [searchResults, setSearchResults] = useState([]);
 
 
@@ -29,7 +30,9 @@ const Book = () => {
               setSearchResults(book)
   
           })
-          .catch((error)=>{console.log(error)})
+          .catch((err)=>{
+            setError(err)
+          })
           }
       }
 
@@ -43,7 +46,7 @@ const Book = () => {
             setBooks(books)
         })
         .catch((err) => {
-          console.log(err)
+          setError(err)
         })
     
   }
@@ -85,6 +88,9 @@ const removeBook=(book)=>{
    
     <div style={{display :"flex"}}>
     <Sidebar/>
+    <div className="col-lg-12">
+									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+								</div>
     <div style={{ flex: 1, padding: '20px' }}>
     <input type="text" value={searchText} onChange={handleChange} />
           

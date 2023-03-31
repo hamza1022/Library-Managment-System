@@ -11,6 +11,7 @@ const AddBook = () => {
 
     const [authors, setAuthors] =useState([])
     const [selectedAuthor,setSelectedAuthor] =useState(null)
+    const [error,setError] = useState("")
 
     console.log(authors)
     console.log("Selected",selectedAuthor)
@@ -20,7 +21,10 @@ const AddBook = () => {
         .then((authors)=>{
             setAuthors(authors)
 
-        }).catch(err => console.log(err))
+        })
+        .catch((err)=>{
+          setError(err)
+        })
     }
  
 
@@ -40,6 +44,10 @@ const AddBook = () => {
         event.preventDefault();
         const formData  = new FormData(event.target);
         const data = Object.fromEntries(formData.entries());
+
+        if (!data.name || !data.Author) {
+          setError("Name or Author is missing");
+        }  
 
           BackendApi.book.addBook(data,selectedAuthor._id)
         .then((res)=>{
