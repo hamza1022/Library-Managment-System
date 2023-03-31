@@ -17,6 +17,7 @@ const Otp = () => {
 
   const [user, setUser] = useState({})
   const [OTP, setOTP] = useState("");
+  const [error ,setErrors] = useState("")
 
   console.log("otp", OTP)
 
@@ -67,26 +68,34 @@ const Otp = () => {
     event.preventDefault();
     console.log("otp in handl", OTP)
 
-
-    await BackendApi.user.verifyOtp({
-      OTP: OTP,
-      email: user.email,
-      type:type
-    })
-    .then((result) => {
-        
-        console.log("result",result);
-        if (parseInt(type) === 1){
-          navigate("/")
-
+    if(OTP.length  === 4){
+      await BackendApi.user.verifyOtp({
+        OTP: OTP,
+        email: user.email,
+        type:type
+      })
+      .then((result) => {
+          
+          console.log("result",result);
+          if (parseInt(type) === 1){
+            navigate("/")
+  
+          }
+          else if (parseInt(type) === 2){
+          navigate(`/reset-password/${result.passwordRestToken}`)
         }
-        else if (parseInt(type) === 2){
-        navigate(`/reset-password/${result.passwordRestToken}`)
-      }
-      })
-      .catch((err) => {
-        navigate(-1)
-      })
+        })
+        .catch((err) => {
+          navigate(-1)
+        })
+
+    }
+    else {
+      setErrors("Please Enter 4 Digit OTP")
+    }
+
+
+   
   }
 
   console.log(user)
@@ -97,9 +106,13 @@ const Otp = () => {
 
         <div className="d-flex justify-content-center align-items-center container">
           <div className="card py-5 px-3">
-            <h5 className="m-0">Registration verification</h5>
+          {
+            type === 1 ? <h5 className="m-0">Registration verification</h5> :
+            <h5 className="m-0">Reset Password verification</h5>
+          }
+        
             <span className="mobile-text">
-              Code is just send to your registered Email{' '}
+              OTP  is just send to your registered Email{' '}
               <b className="text-danger">{user.email}</b>
             </span>
             <div style={{ marginTop: 50, paddingLeft: 135 }}>
@@ -114,7 +127,7 @@ const Otp = () => {
             <div className="text-center mt-5">
               <span className="d-block mobile-text">Don't receive the code?</span>
             
-              <span className="font-weight-bold text-danger cursor" onClick={resendOtp}>Resend</span>
+              <span style={{ fontWeight: 'bold', color: 'red', cursor: 'pointer' }} onClick={resendOtp}>Resend</span>
             </div>
           </div>
         </div>
