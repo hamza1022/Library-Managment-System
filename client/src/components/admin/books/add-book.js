@@ -57,13 +57,23 @@ const AddBook = () => {
         }  else {
           BackendApi.book.addBook(data,selectedAuthor._id)
           .then((res)=>{
-              navigate(-1);
+            // Swal.fire({
+            //   icon: 'success',
+            //   title: 'Added successfully',
+            //   confirmButtonText: 'OK'
+            // }).then(() => {
+        
+             
+              
+            // });
+            navigate(-1);
   
               console.log("res retrieved", res)
   
           })
           .catch((err)=>{
-              console.log("err",err)
+            setError(err);
+             
   
           })
 
