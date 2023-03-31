@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import { useNavigate } from "react-router-dom";
 import { BackendApi } from '../../../api';
@@ -9,10 +9,17 @@ import { Sidebar } from '../../layout/sidebar';
 const CreateAuthor = () => {
     const navigate = useNavigate()
 
+    const [error, setError]= useState("")
+
     const handleSubmit =(event)=>{
         event.preventDefault();
         const formData  = new FormData(event.target);
         const data = Object.fromEntries(formData.entries());
+
+        if (!data.name) {
+          setError("Author name is required");
+        }
+       
 
           BackendApi.author.addAuthor(data)
         .then((res)=>{
