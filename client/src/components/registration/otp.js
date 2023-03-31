@@ -1,70 +1,35 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useCallback } from 'react';
 import { BackendApi } from "../../api"
-
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import OTPInput from "otp-input-react";
 import Swal from 'sweetalert2';
 
-
 const Otp = () => {
-
   const { id ,type} = useParams();
-  console.log("type",type)
   const navigate = useNavigate()
-
-  console.log("id", id);
-
   const [user, setUser] = useState({})
   const [OTP, setOTP] = useState("");
   const [error ,setErrors] = useState("")
 
-  console.log("otp", OTP)
-
-  const resendOtp = async()=>{
-  
-    await BackendApi.user.resendOtp(user.email)
-    .then((result)=>{
-      Swal.fire({
-        icon: 'success',
-        title: 'Otp resend successfully',
-        text: 'Please check your email for verification',
-        confirmButtonText: 'OK',
-        timer: 1500
-      })
-  
-       })
-       .catch(()=>{
-
-       })
-
-    
-
-  }
-  const getUser = async () => {
-
+  const getUser = useCallback(async () => {
     if (id){
-
       await BackendApi.user.getOneById(id)
       .then((result) => {
         console.log()
         setUser(result)
       })
       .catch((err) => {
-
         console.log(err)
-        
       })
-      
     }
     console.log("id is undefined")
-  }
+  }, [id])
 
   useEffect(() => {
     getUser()
-  }, [id])
+  }, [getUser])
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     console.log("otp in handl", OTP)
 
@@ -79,26 +44,34 @@ const Otp = () => {
           console.log("result",result);
           if (parseInt(type) === 1){
             navigate("/")
-  
           }
           else if (parseInt(type) === 2){
-          navigate(`/reset-password/${result.passwordRestToken}`)
-        }
+            navigate(`/reset-password/${result.passwordRestToken}`)
+          }
         })
         .catch((err) => {
           navigate(-1)
         })
-
     }
     else {
       setErrors("Please Enter 4 Digit OTP")
     }
+  }, [OTP, user.email, type, navigate])
 
-
-   
+  const resendOtp = async()=>{
+    await BackendApi.user.resendOtp(user.email)
+    .then((result)=>{
+      Swal.fire({
+        icon: 'success',
+        title: 'Otp resend successfully',
+        text: 'Please check your email for verification',
+        confirmButtonText: 'OK',
+        timer: 1500
+      })
+    })
+    .catch(()=>{
+    })
   }
-
-  console.log(user)
 
   return (
     <>

@@ -51,7 +51,7 @@ export default function SignUp() {
 
      })
      .catch((err)=>{
-      // setError
+      setError(err.response.data.message);
         console.log(err)
      }) 
 
