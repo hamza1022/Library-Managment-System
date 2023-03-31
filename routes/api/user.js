@@ -126,14 +126,14 @@ router.post('/login', async (req, res, next) => {
         let user = await User.findOne({ email: req.body.email });
 
         if (!user) {
-            return next(new BadRequestResponse("email dont exist"));
+            return next(new BadRequestResponse("Email dont exist"));
         }
         else if (user.status !== "active")
             return next(new UnauthorizedResponse("Your Account is Blocked!, Contact to Support please", 403));
         let match = await bcrypt.compare(req.body.password, user.password);
 
         if (!match) {
-            return next(new BadRequestResponse("Incorrect Credentials"));
+            return next(new BadRequestResponse("Username or password is Invalid !!"));
         }
 
         return next(new OkResponse(user.toAuthJSON()));
