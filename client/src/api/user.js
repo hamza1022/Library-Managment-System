@@ -72,8 +72,8 @@ export const UserApi = {
       console.log("api", res.data.data);
       return res.data.data;
     } catch (err) {
-      console.error("err", err);
-      throw err;
+
+      throw  err;
     }
   },
   getAllUsers: async () => {
