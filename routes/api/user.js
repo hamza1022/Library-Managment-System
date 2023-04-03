@@ -439,9 +439,4 @@ router.post("/otp/resend/:email", async (req, res, next) => {
 
 
 
-
-
-
-
-
 module.exports = router
