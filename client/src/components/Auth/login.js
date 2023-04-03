@@ -19,7 +19,7 @@ import { validateEmail } from "../core/helpers/validation";
 	const [profileError, setProfileError] = useState(null);
 	const [error, setError] = useState("");
 
-  console.log("error",error)
+
 
 	const handleChange = (e) => {
 		if (e.target.name === "email") {
@@ -66,43 +66,38 @@ import { validateEmail } from "../core/helpers/validation";
 			password: password,
 		};
 
-        BackendApi.user.login(body)
+    BackendApi.user.login(body)
     .then((user) => {
       console.log("user restored", user)
-
-    
       dispatch(SetUser(user));
       window.localStorage.setItem("token", user.token);
       setEmail("");
       setPassword("");
       setProfileError(null);
 
-      if (user.role === "admin") {
-        navigate("/admin/dashboard/books");
-      }
-      else{
-         navigate("/user/books");
-      }
-   
+     
     Swal.fire({
       icon: 'success',
       title: 'Login successful',
       confirmButtonText: 'OK'
     }).then(() => {
-
-      if (user.role === "admin") {
+     
+      if (user.role == "admin") {
         navigate("/admin/dashboard/books");
       }
       else{
          navigate("/user/books");
       }
+
+     
       
     })
-    .catch((err)=>{
-      console.log(err)
-      setError(err.response?.data?.message);
+   
+  })
+  .catch((err)=>{
+    console.log(err)
+    setError(err.response?.data?.message);
 
-    })
   })
 
 		
@@ -182,7 +177,7 @@ import { validateEmail } from "../core/helpers/validation";
 								</button>
 							</div>
 							<div className="text-center">
-								<Link to="/auth/forget" className="fs-14 fw-500 text-800 text-center">
+								<Link to="/forgot" className="fs-14 fw-500 text-800 text-center">
 									Forgot password?
 								</Link>
 							</div>

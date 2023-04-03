@@ -59,6 +59,7 @@ const Otp = () => {
   }, [OTP, user.email, type, navigate])
 
   const resendOtp = async()=>{
+    setOTP("")
     await BackendApi.user.resendOtp(user.email)
     .then((result)=>{
       Swal.fire({

@@ -57,10 +57,6 @@ export const UserApi = {
   },
 
   login: async (body) => {
-
-
-    console.log("login api called")
-    console.log("body from login",body)
     const email = body.email;
     const password = body.password;
 
