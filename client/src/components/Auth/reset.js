@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BackendApi } from "../../api";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { validateEmail } from "../core/helpers/validation";
 
 import { Sidebar } from "../layout/sidebar";
 import Swal from "sweetalert2";
@@ -15,9 +16,20 @@ const Reset = () => {
   const [validation, setValidation] = useState({ email: "",password:"",confirmPassword: "", });
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
+
+  
+
+	const [password, setPassword] = useState("");
+
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+
+	const handleChange = (e) => {
 		if (e.target.name === "email") {
 			setEmail(e.target.value);
+		}
+		if (e.target.name === "password") {
+			setPassword(e.target.value);
 		}
 	};
 
@@ -32,15 +44,19 @@ const Reset = () => {
 				temp = { ...temp, email: "" };
 			}
 		}
-	
+		if (e.target.name === "password") {
+			if (password.length <= 0) temp = { ...temp, password: "password is required" };
+			else if (password.length < 4) temp = { ...temp, password: "This field must be at least 4 characters long" };
+			else temp = { ...temp, password: "" };
+		}
 		setValidation(temp);
 	};
 
 	const checkDisable = () => {
-		if (email.length <= 0) {
+		if (email.length <= 0 || password.length <= 0) {
 			return true;
 		}
-		if (validation.email.length > 0 ) {
+		if (validation.email.length > 0 || validation.password.length > 0) {
 			return true;
 		}
 		return false;
@@ -50,16 +66,36 @@ const Reset = () => {
 		e.preventDefault();
 		let body = {
 			email: email,
+			password: password,
 		};
 
-    BackendApi.user.forgotPassword(body)
+    BackendApi.user.login(body)
     .then((user) => {
       console.log("user restored", user)
-      setEmail("");
-      navigate(`/registration/otp/${user.result._id}/2`);
     
+      setEmail("");
+      setPassword("");
+      
+
      
+    Swal.fire({
+      icon: 'success',
+      title: 'Login successful',
+      confirmButtonText: 'OK'
+    }).then(() => {
+     
+      if (user.role == "admin") {
+        navigate("/admin/dashboard/books");
+      }
+      else{
+         navigate("/user/books");
+      }
+
+     
+      
     })
+   
+  })
   .catch((err)=>{
     console.log(err)
     setError(err.response?.data?.message);
@@ -67,94 +103,128 @@ const Reset = () => {
   })
 
 		
-	};
+	}
 
 
-
-  const handleSubmit = (event)=>{
-    event.preventDefault();
-    const formData  = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
-
-    if(data.email === ""){
-        setError("Email is required")
-    }
-
-    else if(data.password.length <= 0 === "" ){
-      setError("password is required")
-    }
-    else if  (data.password.length < 4){
-      setError("password   must be at least 4 characters")
-    }
-    else if(data.password !== data.confirmPassword){
-      setError("Password and confirm password must be the same")
-
-    }
-
-    BackendApi.user.resetPassword(data,passwordRestToken)
-    .then((res) => {
-      Swal.fire({
-        title: "Success",
-        text: "Password has been reset successfully!!!",
-        icon: "success",
-        confirmButtonText: "Ok",
-        confirmButtonColor: "#2c974acd",
-        allowEnterKeyboard: true,
-      }).then((result) => {
-        if (result.isConfirmed) navigate("/");
-      });
-    })
-    .catch((e) => {
-      setError(e.response.data.message);
-    
-    });
-
-  }
+  
 
 
   
 
   return (
-    <>
-      <div style={{display :"flex"}}>
-   
-    <Sidebar/>
+    <div>
+    <div className="auth-overlay">
+      <div className="container">
+        <div className="auth-form">
+          <form className="pt-3">
+            <div className="text-center mb-2">
+              <img src="/assets/images/fixerstation-logo.png" height={60} alt="" />
+            </div>
+            <h3 className="fw-600 text-900 mb-2 text-center">Reset Password</h3>
+            <label className="fs-14 fw-500 mb-1">Email</label>
+            <div className={`input-box mb-3 ${validation.email.length > 0 ? "error-message" : ""}`}>
+              <input
+                type="text"
+                placeholder="Email"
+                name="email"
+                value={email}
+                onBlur={(e) => handleValidation(e)}
+                onChange={(e) => handleChange(e)}
+                className="br-16 h-56 authInput"
+              />
+              {validation.email.length > 0 && <div className="error">{validation.email}</div>}
+            </div>
+            <label className="fs-14 fw-500 mb-1">Password</label>
+            <div
+              className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+                value={password}
+                onBlur={(e) => handleValidation(e)}
+                onChange={(e) => handleChange(e)}
+                className="br-16 h-56 authInput"
+              />
+              {validation.password.length > 0 && <div className="error">{validation.password}</div>}
+              {!isPasswordVisible && (
+                <span
+                  onClick={() => {
+                    setIsPasswordVisible(true);
+                  }}
+                  className="iconEye">
+                  <span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
+                </span>
+              )}
+              {isPasswordVisible && (
+                <span
+                  onClick={() => {
+                    setIsPasswordVisible(false);
+                  }}
+                  className="iconEye">
+                  <span className="iconify" data-icon="pajamas:eye-slash"></span>
+                </span>
+              )}
+            </div>
+            <label className="fs-14 fw-500 mb-1">Confirm Password</label>
+            <div
+              className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                placeholder="Password"
+                name="password"
+                value={password}
+                onBlur={(e) => handleValidation(e)}
+                onChange={(e) => handleChange(e)}
+                className="br-16 h-56 authInput"
+              />
+              {validation.password.length > 0 && <div className="error">{validation.password}</div>}
+              {!isPasswordVisible && (
+                <span
+                  onClick={() => {
+                    setIsPasswordVisible(true);
+                  }}
+                  className="iconEye">
+                  <span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
+                </span>
+              )}
+              {isPasswordVisible && (
+                <span
+                  onClick={() => {
+                    setIsPasswordVisible(false);
+                  }}
+                  className="iconEye">
+                  <span className="iconify" data-icon="pajamas:eye-slash"></span>
+                </span>
+              )}
+            </div>
+            {error?.length > 0 && (
+              <div className="alert alert-danger fs-12">
+                {error}
+              
+              </div>
+            )}
+          
+          
+            
+            <div className="mb-3 mt-5">
+              <button
+                type="submit"
+                disabled={checkDisable()}
+                onClick={handleSubmit}
+                className="btnPrimary h-56 w-100 br-16">
+                Send 
+              </button>
+            </div>
+          
+          </form>
+          
+        </div>
+             
      
-
-      <form onSubmit={handleSubmit}>
-    
-      
-      <div className="form-group">
-        <label htmlFor="emailInput">Email</label>
-        <input type="email" className="form-control" id="email"  name='email' placeholder="Enter your email" />
       </div>
-      <div className="form-group">
-        <label htmlFor="emailInput">New Password</label>
-        <input type="password" className="form-control" id="email"  name='password' placeholder="Enter your new password" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="emailInput">Confirm Password</label>
-        <input type="password" className="form-control" id="email"  name='confirmPassword' placeholder="enter password again" />
-      </div>
-
-      
-      
-      
-      <button type="submit" className="btn btn-primary">Set Password</button>
-
-      {error?.length > 0 && (
-								<div className="alert alert-danger fs-12">
-									{error}
-								
-								</div>
-							)}
-    </form>
-
-      
-
-      </div>
-    </>
+    </div>
+  </div>
   );
 };
 
