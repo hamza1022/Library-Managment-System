@@ -30,6 +30,7 @@ router.get('/getOne/:orderId',(req,res,next)=>{
 })
 
 router.post("/create", auth.required, auth.user, async (req, res, next) => {
+  console.log("re", req.body.customer)
 
   if (!req.body.books || !req.body.customer) {
     return next(new BadRequestResponse("Missing Required parameters"));
