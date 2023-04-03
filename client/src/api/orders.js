@@ -37,6 +37,8 @@ export const OrderApi = {
 //   },
 
 placeOrder :async (userId,booksId)=>{
+    console.log("api hits")
+    console.log("id", "book id " , userId, booksId)
 
 
     let token = localStorage.getItem("token");

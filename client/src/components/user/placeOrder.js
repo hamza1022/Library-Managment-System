@@ -45,8 +45,8 @@ const PlaceOrder = () => {
 
       BackendApi.order.placeOrder(loggedInUser._id, bookIds)
         .then((order) => {
-          navigate("user/order")
-          console.log(order)
+          console.log("order create", order)
+          // navigate("user/order")
 
         })
         .catch((err) => { console.log(err) })

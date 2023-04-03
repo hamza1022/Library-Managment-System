@@ -1,37 +1,40 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { environment } from "../../constants";
-import { validateInput } from "../../core/helpers/inputValidator";
-import http from "../../api";
-import numericOnly from "../../core/directives/numericOnly";
-import phoneNumber from "../../core/directives/phoneNumber";
+import { validateInput } from "../core/helpers/inputValidator";
+import numericOnly from "../core/directives/numericOnly";
+import phoneNumber from "../core/directives/phoneNumber";
+import { BackendApi } from "../../api";
+import Swal from 'sweetalert2';
 
 
 
-export const Signup = () => {
+ const Signup = () => {
 	const navigate = useNavigate();
 
 	const defaultBody = {
 		profileImage: "",
-		firstName: "",
-		lastName: "",
+		name: "",
+		address: "",
 		email: "",
 		password: "",
-		confirmPassword: "",
-		primaryPhone: ""
+		
+		phoneNumber: ""
 	};
 
 	const defaultValidationErrors = {
-		firstName: [],
-		lastName: [],
+		name: [],
+		address: [],
 		email: [],
 		password: [],
-		confirmPassword: [],
-		primaryPhone: []
+		phoneNumber: []
 	};
 
 	const [body, setBody] = useState(defaultBody);
 	const [validationErrors, setValidationErrors] = useState(defaultValidationErrors);
+  const [error, setError] = useState("");
+	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+	
+	const [isLoading, setIsLoading] = useState(false);
 	
 
 	const validateNumbers = () => {
@@ -42,7 +45,7 @@ export const Signup = () => {
 
 
 	const checkValidation = () => {
-		if (body.email.length <= 0 || body.primaryPhone.length <= 0) return true;
+		if (body.email.length <= 0 || body.phoneNumber.length <= 0) return true;
 
 		for (let field in validationErrors) {
 			if (validationErrors[field].length > 0) return true;
@@ -54,16 +57,24 @@ export const Signup = () => {
 	const handleSubmit = () => {
 		if (!validateNumbers()) return;
 
-		http
-			.post(environment.api_url + "/user/signup", body)
-			.then((res) => {
-				setError("");
-				setBody(defaultBody);
-				navigate("/auth/complete-profile/" + res.data.data.user._id);
-			})
-			.catch((err) => {
-				setError(err?.response?.data?.message);
-			});
+     BackendApi.user.signUp(body)
+    .then((data)=>{
+   console.log(data)
+   
+   Swal.fire({
+     icon: 'success',
+     title: 'Registration successful',
+     text: 'Please check your email for verification',
+     confirmButtonText: 'OK'
+   }).then(() => {
+     navigate(`/registration/otp/${data._id}/1`);
+   });
+
+    })
+    .catch((err)=>{
+     setError(err.response.data.message);
+       console.log(err)
+    }) 
 	};
 
 	return (
@@ -72,72 +83,29 @@ export const Signup = () => {
 				<div className="container">
 					<div className="auth-form signup-form">
 						<form className="pt-3">
-							<div className="text-center mb-2">
-								<img src="/assets/images/fixerstation-logo.png" height={60} alt="" />
-							</div>
-							<h5 className="fw-600 text-900 mb-2 text-center">Sign up as Handyman</h5>
+							
+						
 							<div className="row justify-content-center">
-								<div className="col-12">
-									<div className="d-flex align-items-center mb-3">
-										<div className="userUpload me-4">
-											{body?.profileImage?.length > 0 ? (
-												<>
-													<img src={body?.profileImage} alt="" />
-													<a onClick={() => setBody({ ...body, profileImage: "" })} className="cross-profile pointer">
-														<span className="iconify" data-icon="gridicons:cross-circle"></span>
-													</a>
-												</>
-											) : (
-												<>
-													<img src="/assets/images/ellips-upload-user.png" alt="" />
-												</>
-											)}
-										</div>
-										{body?.profileImage?.length <= 0 && (
-											<>
-												<div className="uploadBox h-40">
-													{isLoading }
-													{!isLoading && (
-														<>
-															<div className="icon">
-																<span className="iconify " data-icon="akar-icons:cloud-upload"></span>
-															</div>
-															<div className="fs-14 fw-500 text-800">
-																Add Profile{" "}
-																<input
-																	onChange={(e) => {
-																		onProfileImageChange(e);
-																		e.target = null;
-																	}}
-																	type="file"
-																/>
-															</div>
-														</>
-													)}
-												</div>
-											</>
-										)}
-									</div>
-								</div>
+								
 								<div className="col-lg-6">
 									<label className="fs-14 fw-500 mb-1">First Name</label>
-									<div className={`input-box mb-3 ${validationErrors.firstName.length > 0 ? "error-message" : ""}`}>
+									<div className={`input-box mb-3 ${validationErrors.name.length > 0 ? "error-message" : ""}`}>
 										<input
 											type="text"
 											required
 											placeholder="First Name"
-											value={body?.firstName}
-											onInput={(e) => setBody({ ...body, firstName: e.target.value })}
+											value={body?.name}
+											onInput={(e) => setBody({ ...body, name: e.target.value })}
 											onBlur={(e) => {
 												setValidationErrors({
 													...validationErrors,
-													firstName: validateInput(e),
+													name: validateInput(e),
 												});
 											}}
 											className="br-16 h-56 authInput"
 										/>
-										{validationErrors.firstName.length > 0 &&
-											validationErrors.firstName.map((val, i) => {
+										{validationErrors.name.length > 0 &&
+											validationErrors.name.map((val, i) => {
 												return (
 													<div key={i} className="error">
 														{val}
@@ -147,24 +115,24 @@ export const Signup = () => {
 									</div>
 								</div>
 								<div className="col-lg-6">
-									<label className="fs-14 fw-500 mb-1">Last Name</label>
-									<div className={`input-box mb-3 ${validationErrors.lastName.length > 0 ? "error-message" : ""}`}>
+									<label className="fs-14 fw-500 mb-1">Address</label>
+									<div className={`input-box mb-3 ${validationErrors.address.length > 0 ? "error-message" : ""}`}>
 										<input
 											type="text"
 											required
-											placeholder="Last Name"
-											value={body?.lastName}
-											onInput={(e) => setBody({ ...body, lastName: e.target.value })}
+											placeholder="Address"
+											value={body?.address}
+											onInput={(e) => setBody({ ...body, address: e.target.value })}
 											onBlur={(e) => {
 												setValidationErrors({
 													...validationErrors,
-													lastName: validateInput(e),
+													address: validateInput(e),
 												});
 											}}
 											className="br-16 h-56 authInput"
 										/>
-										{validationErrors.lastName.length > 0 &&
-											validationErrors.lastName.map((val, i) => {
+										{validationErrors.address.length > 0 &&
+											validationErrors.address.map((val, i) => {
 												return (
 													<div key={i} className="error">
 														{val}
@@ -176,25 +144,25 @@ export const Signup = () => {
 
 								<div className="col-lg-6">
 									<label className="fs-14 fw-500 mb-1">Phone Number</label>
-									<div className={`input-box mb-3 ${validationErrors.primaryPhone.length > 0 ? "error-message" : ""}`}>
+									<div className={`input-box mb-3 ${validationErrors.phoneNumber.length > 0 ? "error-message" : ""}`}>
 										<input
 											type="text"
 											required
 											minLength={8}
 											onKeyPress={(e) => phoneNumber(e)}
-											value={body?.primaryPhone}
-											onInput={(e) => setBody({ ...body, primaryPhone: e.target.value })}
+											value={body?.phoneNumber}
+											onInput={(e) => setBody({ ...body, phoneNumber: e.target.value })}
 											onBlur={(e) => {
 												setValidationErrors({
 													...validationErrors,
-													primaryPhone: validateInput(e),
+													phoneNumber: validateInput(e),
 												});
 											}}
 											placeholder="Phone Number"
 											className="br-16 h-56 authInput"
 										/>
-										{validationErrors.primaryPhone.length > 0 &&
-											validationErrors.primaryPhone.map((val, i) => {
+										{validationErrors.phoneNumber.length > 0 &&
+											validationErrors.phoneNumber.map((val, i) => {
 												return (
 													<div key={i} className="error">
 														{val}
@@ -229,7 +197,7 @@ export const Signup = () => {
 											})}
 									</div>
 								</div>
-								<div className="col-lg-6">
+								<div className="col-lg-12">
 									<label className="fs-14 fw-500 mb-1">Password</label>
 									<div
 										className={`input-box position-relative mb-3 ${
@@ -278,56 +246,7 @@ export const Signup = () => {
 										)}
 									</div>
 								</div>
-								<div className="col-lg-6">
-									<label className="fs-14 fw-500 mb-1">Confirm Password</label>
-									<div
-										className={`input-box position-relative mb-3 ${
-											validationErrors.confirmPassword.length > 0 ? "error-message" : ""
-										}`}>
-										<input
-											type={isConfirmPasswordVisible ? "text" : "password"}
-											required
-											minLength={4}
-											value={body?.confirmPassword}
-											onInput={(e) => setBody({ ...body, confirmPassword: e.target.value })}
-											placeholder="Confirm Password"
-											name="confirmPassword"
-											onBlur={(e) => {
-												setValidationErrors({
-													...validationErrors,
-													confirmPassword: validateInput(e, body?.password),
-												});
-											}}
-											className="br-16 h-56 authInput"
-										/>
-										{validationErrors.confirmPassword.length > 0 &&
-											validationErrors.confirmPassword.map((val, i) => {
-												return (
-													<div key={i} className="error">
-														{val}
-													</div>
-												);
-											})}
-										{!isConfirmPasswordVisible && (
-											<span
-												onClick={() => {
-													setIsConfirmPasswordVisible(true);
-												}}
-												className="iconEye">
-												<span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
-											</span>
-										)}
-										{isConfirmPasswordVisible && (
-											<span
-												onClick={() => {
-													setIsConfirmPasswordVisible(false);
-												}}
-												className="iconEye">
-												<span className="iconify" data-icon="pajamas:eye-slash"></span>
-											</span>
-										)}
-									</div>
-								</div>
+							
 								<div className="col-lg-12">
 									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
 								</div>
@@ -341,7 +260,7 @@ export const Signup = () => {
 											handleSubmit();
 										}}
 										disabled={checkValidation()}>
-										Next
+										Register
 									</button>
 								</div>
 							</div>
@@ -349,7 +268,7 @@ export const Signup = () => {
 						<div className="form-footer">
 							<div className="d-flex justify-content-center align-items-center gap-3">
 								<div className="fs-13 fw-500 text-900">Have an account?</div>
-								<Link to="/auth" className="fs-13 fw-500 text-primary">
+								<Link to="/" className="fs-13 fw-500 text-primary">
 									Log in
 								</Link>
 							</div>
@@ -360,3 +279,7 @@ export const Signup = () => {
 		</div>
 	);
 };
+
+
+
+export default Signup
