@@ -200,8 +200,8 @@ export const UserApi = {
 
   resetPassword: async (body,_id,  resetPasswordToken) => {
 
-    let email = body.email
-    console.log("body from",body)
+    
+  
 
 
     try {
