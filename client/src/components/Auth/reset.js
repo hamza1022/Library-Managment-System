@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { BackendApi } from "../../api";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { validateEmail } from "../core/helpers/validation";
 import { validateInput } from "../core/helpers/inputValidator";
-
-import { Sidebar } from "../layout/sidebar";
 import Swal from "sweetalert2";
 
 const Reset = () => {
@@ -72,11 +69,33 @@ const Reset = () => {
 	};
 
 	const handleSubmit = (e) => {
+
+    event.preventDefault();
+    const formData  = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+
+    if(data.email === ""){
+        setError("Email is required")
+    }
+
+    else if(data.password.length <= 0 === "" ){
+      setError("password is required")
+    }
+    else if  (data.password.length < 4){
+      setError("password   must be at least 4 characters")
+    }
+    else if(data.password !== data.confirmPassword){
+      setError("Password and confirm password must be the same")
+
+    }
+
+    
   	if (!validatePasswords()) return;
 
 
 
-    BackendApi.user.resetPassword(body,id, passwordResetToken)
+    BackendApi.user.resetPassword(body.password,id, passwordResetToken)
     .then((res) => {
       Swal.fire({
         title: "Success",
@@ -98,153 +117,147 @@ const Reset = () => {
 
 	}
 
-
-
-
-
-
-
   return (
     <div>
-    <div className="auth-overlay">
-      <div className="container">
-        <div className="auth-form">
-          <form>
-            <div className="text-center mb-4">
-              <img src="/assets/images/fixerstation-logo.png" height={60} alt="" />
-            </div>
-            <h2 className="fw-600 text-900 mb-3">Set New Password</h2>
-            <div
-              className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
-              <input
-                type={isPasswordVisible[0] ? "text" : "password"}
-                required
-                name="password"
-                minLength={4}
-                value={body.password}
-                onChange={(e) => setBody({ ...body, password: e.target.value })}
-                onBlur={(e) => {
-                  setValidationErrors({
-                    ...validationErrors,
-                    password: validateInput(e),
-                  });
-                  handleValidation(e);
-                }}
-                placeholder="Password"
-                className="br-16 h-56 authInput"
-              />
-              {isPasswordVisible[0] && (
-                <span
-                  onClick={() => {
-                    let temp = [...isPasswordVisible];
-                    temp[0] = false;
-                    setIsPasswordVisible(temp);
-                  }}
-                  className="iconEye">
-                  <span className="iconify" data-icon="pajamas:eye-slash"></span>
-                </span>
-              )}
-              {!isPasswordVisible[0] && (
-                <span
-                  onClick={() => {
-                    let temp = [...isPasswordVisible];
-                    temp[0] = true;
-                    setIsPasswordVisible(temp);
-                  }}
-                  className="iconEye">
-                  <span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
-                </span>
-              )}
+			<div className="auth-overlay">
+				<div className="container">
+					<div className="auth-form">
+						<form>
+							<div className="text-center mb-4">
+								<img src="/assets/images/fixerstation-logo.png" height={60} alt="" />
+							</div>
+							<h2 className="fw-600 text-900 mb-3">Set New Password</h2>
+							<div
+								className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
+								<input
+									type={isPasswordVisible[0] ? "text" : "password"}
+									required
+									name="password"
+									minLength={4}
+									value={body.password}
+									onChange={(e) => setBody({ ...body, password: e.target.value })}
+									onBlur={(e) => {
+										setValidationErrors({
+											...validationErrors,
+											password: validateInput(e),
+										});
+										handleValidation(e);
+									}}
+									placeholder="Password"
+									className="br-16 h-56 authInput"
+								/>
+								{isPasswordVisible[0] && (
+									<span
+										onClick={() => {
+											let temp = [...isPasswordVisible];
+											temp[0] = false;
+											setIsPasswordVisible(temp);
+										}}
+										className="iconEye">
+										<span className="iconify" data-icon="pajamas:eye-slash"></span>
+									</span>
+								)}
+								{!isPasswordVisible[0] && (
+									<span
+										onClick={() => {
+											let temp = [...isPasswordVisible];
+											temp[0] = true;
+											setIsPasswordVisible(temp);
+										}}
+										className="iconEye">
+										<span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
+									</span>
+								)}
 
-              {validationErrors.password.map((error, index) => (
-                <div key={index} className="error-message text-danger fs-12">
-                  {error}
-                </div>
-              ))}
-            </div>
-            <div
-              className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
-              <input
-                type={isPasswordVisible[1] ? "text" : "password"}
-                required
-                name="confirmPassword"
-                minLength={4}
-                value={body.confirmPassword}
-                onChange={(e) => setBody({ ...body, confirmPassword: e.target.value })}
-                onBlur={(e) => {
-                  setValidationErrors({
-                    ...validationErrors,
-                    confirmPassword: validateInput(e),
-                  });
-                  handleValidation(e);
-                }}
-                placeholder="Confirm Password"
-                className="br-16 h-56 authInput"
-              />
-              {isPasswordVisible[1] && (
-                <span
-                  onClick={() => {
-                    let temp = [...isPasswordVisible];
-                    temp[1] = false;
-                    setIsPasswordVisible(temp);
-                  }}
-                  className="iconEye">
-                  <span className="iconify" data-icon="pajamas:eye-slash"></span>
-                </span>
-              )}
-              {!isPasswordVisible[1] && (
-                <span
-                  onClick={() => {
-                    let temp = [...isPasswordVisible];
-                    temp[1] = true;
-                    setIsPasswordVisible(temp);
-                  }}
-                  className="iconEye">
-                  <span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
-                </span>
-              )}
+								{validationErrors.password.map((error, index) => (
+									<div key={index} className="error-message text-danger fs-12">
+										{error}
+									</div>
+								))}
+							</div>
+							<div
+								className={`input-box position-relative mb-3 ${validation.password.length > 0 ? "error-message" : ""}`}>
+								<input
+									type={isPasswordVisible[1] ? "text" : "password"}
+									required
+									name="confirmPassword"
+									minLength={4}
+									value={body.confirmPassword}
+									onChange={(e) => setBody({ ...body, confirmPassword: e.target.value })}
+									onBlur={(e) => {
+										setValidationErrors({
+											...validationErrors,
+											confirmPassword: validateInput(e),
+										});
+										handleValidation(e);
+									}}
+									placeholder="Confirm Password"
+									className="br-16 h-56 authInput"
+								/>
+								{isPasswordVisible[1] && (
+									<span
+										onClick={() => {
+											let temp = [...isPasswordVisible];
+											temp[1] = false;
+											setIsPasswordVisible(temp);
+										}}
+										className="iconEye">
+										<span className="iconify" data-icon="pajamas:eye-slash"></span>
+									</span>
+								)}
+								{!isPasswordVisible[1] && (
+									<span
+										onClick={() => {
+											let temp = [...isPasswordVisible];
+											temp[1] = true;
+											setIsPasswordVisible(temp);
+										}}
+										className="iconEye">
+										<span className="iconify" data-icon="ic:outline-remove-red-eye"></span>
+									</span>
+								)}
 
-              {validationErrors.confirmPassword.map((error, index) => (
-                <div key={index} className="error-message text-danger fs-12">
-                  {error}
-                </div>
-              ))}
-              {validationErrors?.confirmPassword.length <= 0 && isPasswordDisMatch && (
-                <div className="error-message text-danger text-center fs-12 mt-2">
-                  Password and Confirm Password did not match!!
-                </div>
-              )}
-            </div>
-            {error?.length > 0 && (
-              <div className="error-message text-danger text-center mt-2  fs-5 ms-3 mb-3">{error}</div>
-            )}
-            <div className="mb-3">
-              <button
-                className="btnPrimary h-56 w-100 br-16"
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleSubmit();
-                }}
-                disabled={checkValidation()}>
-                Send
-              </button>
-              {/* <Link to="" className="btnPrimary h-56 w-100 br-16">
-                Send
-              </Link> */}
-            </div>
-          </form>
-          <div className="form-footer">
-            <div className="d-flex justify-content-center align-items-center gap-3">
-              <div className="fs-13 fw-500 text-900">Don't have an account?</div>
-              <Link to="/auth/signup" className="fs-13 fw-500 text-primary">
-                Sign up
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+								{validationErrors.confirmPassword.map((error, index) => (
+									<div key={index} className="error-message text-danger fs-12">
+										{error}
+									</div>
+								))}
+								{validationErrors?.confirmPassword.length <= 0 && isPasswordDisMatch && (
+									<div className="error-message text-danger text-center fs-12 mt-2">
+										Password and Confirm Password did not match!!
+									</div>
+								)}
+							</div>
+							{error?.length > 0 && (
+								<div className="error-message text-danger text-center mt-2  fs-5 ms-3 mb-3">{error}</div>
+							)}
+							<div className="mb-3">
+								<button
+									className="btnPrimary h-56 w-100 br-16"
+									onClick={(e) => {
+										e.preventDefault();
+										handleSubmit();
+									}}
+									disabled={checkValidation()}>
+									Send
+								</button>
+								{/* <Link to="" className="btnPrimary h-56 w-100 br-16">
+									Send
+								</Link> */}
+							</div>
+						</form>
+						<div className="form-footer">
+							<div className="d-flex justify-content-center align-items-center gap-3">
+								<div className="fs-13 fw-500 text-900">Don't have an account?</div>
+								<Link to="/auth/signup" className="fs-13 fw-500 text-primary">
+									Sign up
+								</Link>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
   );
 };
 export default Reset;
