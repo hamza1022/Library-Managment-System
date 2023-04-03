@@ -56,11 +56,13 @@ export const UserApi = {
     }
   },
 
-  login: async (data) => {
+  login: async (body) => {
 
-    console.log("login api called",)
-    const email = data.email;
-    const password = data.password;
+
+    console.log("login api called")
+    console.log("body from login",body)
+    const email = body.email;
+    const password = body.password;
 
     try {
       const res = await axios.post("http://localhost:8080/api/user/login", {

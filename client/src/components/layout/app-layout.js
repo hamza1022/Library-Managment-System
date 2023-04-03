@@ -104,15 +104,7 @@ export const AppLayout = () => {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
+                  
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Library Managment System
                     </Typography>
@@ -121,7 +113,12 @@ export const AppLayout = () => {
                             flexGrow: 0,
                         }}
                     >
-                        {loggedInUser ? (
+                         {Object.keys(loggedInUser).length === 0 ? (
+                            <Button>
+                                Login
+                            </Button>
+                          
+                        ) : (
                             <>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -153,10 +150,6 @@ export const AppLayout = () => {
                                     </MenuItem>
                                 </Menu>
                             </>
-                        ) : (
-                            <Button>
-                                Login
-                            </Button>
                         )}
                     </Box>
 
