@@ -7,19 +7,26 @@ import { Sidebar } from "../layout/sidebar";
 import Swal from "sweetalert2";
 
 const Reset = () => {
+  const defaultBody = {
+		password: "",
+		confirmPassword: "",
+	};
   const navigate = useNavigate();
   const {passwordRestToken} = useParams();
   console.log(passwordRestToken)
 
 
   const [email, setEmail] = useState("");
+  const [body, setBody] = useState(defaultBody);
   const [validation, setValidation] = useState({ email: "",password:"",confirmPassword: "", });
   const [error, setError] = useState("");
+  const [isPasswordDisMatch, setIsPasswordDisMatch] = useState(false);
 
 
   
 
 	const [password, setPassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
 
 	const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -30,8 +37,11 @@ const Reset = () => {
 		}
 		if (e.target.name === "password") {
 			setPassword(e.target.value);
-		}
-	};
+		}	
+    if(e.target.name === "confirmPassword") {
+      setconfirmPassword(e.target.value);
+    }
+  };
 
 	const handleValidation = (e) => {
 		let temp = { ...validation };
@@ -49,58 +59,61 @@ const Reset = () => {
 			else if (password.length < 4) temp = { ...temp, password: "This field must be at least 4 characters long" };
 			else temp = { ...temp, password: "" };
 		}
+    if (e.target.name === "confirmPassword") {
+			if (confirmPassword.length <= 0) temp = { ...temp, confirmPassword: "Confirm Password is required" };
+			else if (confirmPassword.length < 4) temp = { ...temp, confirmPassword: "This field must be at least 4 characters long" };
+			else temp = { ...temp, confirmPassword: "" };
+		}
 		setValidation(temp);
 	};
 
 	const checkDisable = () => {
-		if (email.length <= 0 || password.length <= 0) {
+		if (email.length <= 0 || password.length <= 0 || confirmPassword.length <= 0 || confirmPassword.length <=0) {
 			return true;
 		}
-		if (validation.email.length > 0 || validation.password.length > 0) {
+		if (validation.email.length > 0 || validation.password.length > 0 || validation.confirmPassword.length > 0) {
 			return true;
 		}
 		return false;
 	};
 
+  const validatePasswords = () => {
+		if (body.password !== body.confirmPassword) {
+			setIsPasswordDisMatch(true);
+			setBody({ ...body, confirmPassword: "" });
+			return false;
+		} else {
+			setIsPasswordDisMatch(false);
+			return true;
+		}
+	};
+
 	const handleSubmit = (e) => {
+  	if (!validatePasswords()) return;
+
 		e.preventDefault();
 		let body = {
 			email: email,
 			password: password,
 		};
 
-    BackendApi.user.login(body)
-    .then((user) => {
-      console.log("user restored", user)
-    
-      setEmail("");
-      setPassword("");
-      
-
-     
-    Swal.fire({
-      icon: 'success',
-      title: 'Login successful',
-      confirmButtonText: 'OK'
-    }).then(() => {
-     
-      if (user.role == "admin") {
-        navigate("/admin/dashboard/books");
-      }
-      else{
-         navigate("/user/books");
-      }
-
-     
-      
+    BackendApi.user.changePassword(body)
+    .then((res) => {
+      Swal.fire({
+        title: "Success",
+        text: "Password has been changed successfully!!!",
+        icon: "success",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#2c974acd",
+        allowEnterKeyboard: true,
+      }).then((result) => {
+        if (result.isConfirmed) navigate("/");
+      });
     })
-   
-  })
-  .catch((err)=>{
-    console.log(err)
-    setError(err.response?.data?.message);
-
-  })
+    .catch((e) => {
+      setError(e.response.data.message);
+    
+    });
 
 		
 	}
@@ -172,13 +185,13 @@ const Reset = () => {
               <input
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder="Password"
-                name="password"
-                value={password}
+                name="confirmPassword"
+                value={confirmPassword}
                 onBlur={(e) => handleValidation(e)}
                 onChange={(e) => handleChange(e)}
                 className="br-16 h-56 authInput"
               />
-              {validation.password.length > 0 && <div className="error">{validation.password}</div>}
+              {validation.confirmPassword.length > 0 && <div className="error">{validation.confirmPassword}</div>}
               {!isPasswordVisible && (
                 <span
                   onClick={() => {
