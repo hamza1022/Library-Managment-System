@@ -11,6 +11,9 @@ const Otp = () => {
   const [OTP, setOTP] = useState("");
   const [error ,setErrors] = useState("")
 
+
+  console.log(type)
+
   const getUser = useCallback(async () => {
     if (id){
       await BackendApi.user.getOneById(id)
@@ -40,13 +43,14 @@ const Otp = () => {
         type:type
       })
       .then((result) => {
+
           
           console.log("result",result);
           if (parseInt(type) === 1){
             navigate("/")
           }
           else if (parseInt(type) === 2){
-            navigate(`/reset-password/${result.passwordresttoken}`)
+            navigate(`/reset-password/${result.passwordRestToken}`)
           }
         })
         .catch((err) => {
@@ -81,7 +85,7 @@ const Otp = () => {
         <div className="d-flex justify-content-center align-items-center container">
           <div className="card py-5 px-3">
           {
-            type === 1 ? <h5 className="m-0">Registration verification</h5> :
+            type == 1 ? <h5 className="m-0">Registration verification</h5> :
             <h5 className="m-0">Reset Password verification</h5>
           }
         
