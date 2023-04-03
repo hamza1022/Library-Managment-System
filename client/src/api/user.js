@@ -198,12 +198,12 @@ export const UserApi = {
 
   },
 
-  resetPassword: async (pass,_id,  resetPasswordToken) => {
+  resetPassword: async (data,id,  resetPasswordToken) => {
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/user/reset-password/:${_id}/:${resetPasswordToken}`, {
+      const response = await axios.post(`http://localhost:8080/api/user/reset-password/${id}/${resetPasswordToken}`, {
 
-        password: pass,
+        password: data.password,
 
 
       })
