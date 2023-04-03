@@ -276,8 +276,9 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
 
 router.post("/reset-password/:_id/:resetPasswordToken", async (req, res, next) => {
     let id = req.params._id;
+    console.log(id)
 
-    console.log("token", req.body)
+    console.log("token", req.params.resetPasswordToken)
 
     try {
         let user = await User.findOne({ _id: id });
@@ -286,8 +287,8 @@ router.post("/reset-password/:_id/:resetPasswordToken", async (req, res, next) =
             return next(new BadRequestResponse("User not found"));
         }
 
-        if (!req.body.resetPasswordToken || !req.body.password) {
-            return next(new UnauthorizedResponse("Missing Required Parameters"));
+        if (!req.body.password) {
+            return next(new BadRequestResponse("Missing Required Parameters", 422));
         }
         if (req.params.resetPasswordToken !== user.resetPasswordToken) {
             return next({ err: new UnauthorizedResponse("Invalid Password Reset Token") });

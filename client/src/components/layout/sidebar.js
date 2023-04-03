@@ -129,7 +129,7 @@ export const Sidebar = () => {
 								<span className="side-ic">
 									<span className="iconify" data-icon="uim:calender"></span>
 								</span>
-								<span className="side-link">Profile </span>
+								<span className="side-link">Change Password </span>
 							</NavLink>
 
 

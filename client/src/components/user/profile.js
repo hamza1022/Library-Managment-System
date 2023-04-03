@@ -9,47 +9,105 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
+  
+  const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
+  const [oldPasswordError, setOldPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isPasswordDisMatch, setIsPasswordDisMatch] = useState(false);
 
-
-
-  const handleSubmit = (event)=>{
-    event.preventDefault();
-    const formData  = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
-    if(data.oldPassword.length <= 0 === "" ){
-      setError("old password is required")
-    }
-    else if  (data.oldPassword.length < 4){
-      setError("password   must be at least 4 characters")
-    }
-    else if(data.password !== data.confirmPassword){
-      setError("Password and confirm password must be the same")
-
-    }
-
-    BackendApi.user.changePassword(data)
-    .then((res) => {
-      Swal.fire({
-        title: "Success",
-        text: "Password has been changed successfully!!!",
-        icon: "success",
-        confirmButtonText: "Ok",
-        confirmButtonColor: "#2c974acd",
-        allowEnterKeyboard: true,
-      }).then((result) => {
-        if (result.isConfirmed) navigate("/user/dashboard");
-      });
-    })
-    .catch((e) => {
-      setError(e.response.data.message);
-    
-    });
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
+  const handleOldPasswordChange = (e) => {
+    setOldPassword(e.target.value);
 
   }
 
 
+  const handleOldPasswordBlur = (e)=>{
+    if (oldPassword.length < 4) {
+      setOldPasswordError("Password must be at least 4 characters long");
+    }
+
+    else {
+      setOldPasswordError("");
+    }
+
+  }
+
+  const handlePasswordBlur = () => {
+    if (password.length < 4) {
+      setPasswordError("Password must be at least 4 characters long");
+    }
+    else if (password === oldPassword) {
+      setPasswordError("Old and New password can not be same")
+      
+
+    } 
+    else {
+      setPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    if (confirmPassword !== password) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
+    }
+  };
+
+
+  const comaprePassword = () => {
+		if (password !== confirmPassword) {
+		setError("Password mismatch")
+    setIsPasswordDisMatch(true);
+			return false;
+		} else {
+      setIsPasswordDisMatch(false);
+			
+			return true;
+		}
+	};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!comaprePassword()) return;
+
+
+  let data  = {
+    oldPassword,
+    password,
+    confirmPassword,
+  }
+
+      BackendApi.user.changePassword(data)
+      .then((res) => {
+        Swal.fire({
+          title: "Success",
+          text: "Password has been changed successfully!!!",
+          icon: "success",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#2c974acd",
+          allowEnterKeyboard: true,
+        }).then((result) => {
+          if (result.isConfirmed) navigate("/user/books");
+        });
+      })
+      .catch((e) => {
+        setError(e.response.data.message);
   
+      });
+
+  };
+
+ 
 
   return (
     <>
@@ -58,23 +116,57 @@ const Profile = () => {
     <Sidebar/>
      
 
-      <form onSubmit={handleSubmit}>
-    
-      <div className="form-group">
-        <label htmlFor="nameInput">Old password</label>
-        <input type="password" className="form-control" id="name" name='oldPassword'  placeholder="Enter your old password" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="emailInput">New Password</label>
-        <input type="password" className="form-control" id="email"  name='password' placeholder="Enter your new password" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="emailInput">Confirm Password</label>
-        <input type="password" className="form-control" id="email"  name='confirmPassword' placeholder="enter password again" />
-      </div>
-      
-      <button type="submit" className="btn btn-primary">Register</button>
-    </form>
+    <form onSubmit={handleSubmit}>
+    <div className="form-group">
+    <label htmlFor="password">Old Password</label>
+    <input
+      type="password"
+      className="form-control"
+      id="oldPassword"
+      name="oldPassword"
+      value={oldPassword}
+      onChange={handleOldPasswordChange}
+      onBlur={handleOldPasswordBlur}
+    />
+    {oldPasswordError && (
+      <div className="text-danger">{oldPasswordError}</div>
+    )}
+  </div>
+  
+  <div className="form-group">
+    <label htmlFor="password">Password</label>
+    <input
+      type="password"
+      className="form-control"
+      id="password"
+      name="password"
+      value={password}
+      onChange={handlePasswordChange}
+      onBlur={handlePasswordBlur}
+    />
+    {passwordError && (
+      <div className="text-danger">{passwordError}</div>
+    )}
+  </div>
+  <div className="form-group">
+    <label htmlFor="confirmPassword">Confirm Password</label>
+    <input
+      type="password"
+      className="form-control"
+      id="confirmPassword"
+      name="confirmPassword"
+      value={confirmPassword}
+      onChange={handleConfirmPasswordChange}
+      onBlur={handleConfirmPasswordBlur}
+    />
+    {confirmPasswordError && (
+      <div className="text-danger">{confirmPasswordError}</div>
+    )}
+  </div>
+  <button type="submit" className="btn btn-primary">
+    Submit
+  </button>
+</form>
 
       
 
