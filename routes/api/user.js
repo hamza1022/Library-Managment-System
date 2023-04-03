@@ -257,7 +257,7 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
     if (+req.params.type === 1) {
         user.isOtpVerified === true
     } else {
-        user.generatePasswordRestToken();
+        user.generatePasswordResetToken();
     }
 
 
@@ -266,7 +266,7 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
             if (+req.params.type === 1) {
                 return next(new OkResponse(user.toAuthJSON()));
             } else if (+req.params.type === 2) {
-                return next(new OkResponse({ passwordRestToken: user.resetPasswordToken, user }));
+                return next(new OkResponse({ passwordResetToken: user.resetPasswordToken, user }));
             }
         })
 

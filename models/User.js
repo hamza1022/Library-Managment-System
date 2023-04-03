@@ -37,7 +37,7 @@ userSchema.methods.setOTP = function () {
 	this.otpExpires = Date.now() + 3600000; // 1 hour
 };
 
-userSchema.methods.generatePasswordRestToken = function () {
+userSchema.methods.generatePasswordResetToken = function () {
 	this.resetPasswordToken = crypto.randomBytes(20).toString("hex");
 };
 
