@@ -205,7 +205,7 @@ export const UserApi = {
 
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/user/reset-password/${email}`, {
+      const response = await axios.post(`http://localhost:8080/api/user/reset-password/:${email}`, {
 
         password: body.password,
         resetPasswordToken: token

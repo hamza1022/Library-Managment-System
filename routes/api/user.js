@@ -274,13 +274,13 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
 });
 
 
-router.post("/reset-password/:email", async (req, res, next) => {
-    let email = req.params.email;
+router.post("/reset-password/:_id/:resetPasswordToken", async (req, res, next) => {
+    let id = req.params._id;
 
     console.log("token", req.body)
 
     try {
-        let user = await User.findOne({ email: email });
+        let user = await User.findOne({ _id: id });
 
         if (!user) {
             return next(new BadRequestResponse("User not found"));
@@ -289,7 +289,7 @@ router.post("/reset-password/:email", async (req, res, next) => {
         if (!req.body.resetPasswordToken || !req.body.password) {
             return next(new UnauthorizedResponse("Missing Required Parameters"));
         }
-        if (req.body.resetPasswordToken !== user.resetPasswordToken) {
+        if (req.params.resetPasswordToken !== user.resetPasswordToken) {
             return next({ err: new UnauthorizedResponse("Invalid Password Reset Token") });
         }
 

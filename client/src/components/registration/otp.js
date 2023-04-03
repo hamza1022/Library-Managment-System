@@ -43,6 +43,7 @@ const Otp = () => {
         type:type
       })
       .then((result) => {
+       
 
           
           console.log("result",result);
