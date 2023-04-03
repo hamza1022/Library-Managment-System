@@ -51,7 +51,7 @@ const Otp = () => {
             navigate("/")
           }
           else if (parseInt(type) === 2){
-            navigate(`/reset-password/${result.passwordRestToken}`)
+            navigate(`/reset-password/${result.user._id}/${result.passwordRestToken}`)
           }
         })
         .catch((err) => {
