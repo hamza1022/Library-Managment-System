@@ -14,6 +14,7 @@ const Reset = () => {
   const navigate = useNavigate();
   const {passwordRestToken} = useParams();
   console.log(passwordRestToken)
+  
 
 
   const [email, setEmail] = useState("");
@@ -97,7 +98,7 @@ const Reset = () => {
 			password: password,
 		};
 
-    BackendApi.user.changePassword(body)
+    BackendApi.user.resetPassword(body, passwordRestToken)
     .then((res) => {
       Swal.fire({
         title: "Success",

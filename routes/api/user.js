@@ -277,6 +277,8 @@ router.post("/verifyOtp/:type", async (req, res, next) => {
 router.post("/reset-password/:email", async (req, res, next) => {
     let email = req.params.email;
 
+    console.log("token", req.body)
+
     try {
         let user = await User.findOne({ email: email });
 
