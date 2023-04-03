@@ -7,7 +7,7 @@ import { Sidebar } from "../layout/sidebar";
 import Swal from "sweetalert2";
 
 const Reset = () => {
-  const {passwordRestToken} = useParams();
+  const {id,passwordRestToken} = useParams();
   console.log(passwordRestToken)
   const defaultBody = {
 		password: "",
@@ -106,7 +106,7 @@ const Reset = () => {
 			password: password,
 		};
 
-    BackendApi.user.resetPassword(body, passwordRestToken)
+    BackendApi.user.resetPassword(body,id, passwordRestToken)
     .then((res) => {
       Swal.fire({
         title: "Success",
