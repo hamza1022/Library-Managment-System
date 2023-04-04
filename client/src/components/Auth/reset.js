@@ -42,6 +42,7 @@ const Reset = () => {
       
       
       comaprePassword()
+
     }
     else {
       setConfirmPasswordError("");
@@ -52,6 +53,7 @@ const Reset = () => {
   const comaprePassword = () => {
 		if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords  not match");
+      setConfirmPassword("")
 	
     setIsPasswordDisMatch(true);
 			return false;
@@ -92,8 +94,11 @@ const Reset = () => {
           confirmButtonText: "Ok",
           confirmButtonColor: "#2c974acd",
           allowEnterKeyboard: true,
-        }).then((result) => {
-          if (result.isConfirmed) navigate("/");
+          showCancelButton: false,
+		showConfirmButton: false,
+    timer:1500
+        }).then(() => {
+         navigate("/");
         });
       })
       .catch((e) => {
