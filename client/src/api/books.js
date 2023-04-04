@@ -27,19 +27,20 @@ export const BookApi = {
       }
     },
     editBook:async(id, data,authorid )=>{
-      console.log("edit api called",id)
-      const bookName = data.bookName;
-      const bookTitle = data.bookTitle;
-      const bookPrice = data.bookPrice;
+
+      console.log("edit api called",data)
+      const name = data.name;
+      const title = data.title;
+      const price = data.price;
       
 
       let token = localStorage.getItem("token");
       try{
 
         const response = await axios.put(`http://localhost:8080/api/book/update/${id}`,{
-          bookName,
-          bookTitle,
-          bookPrice,
+          name,
+          title,
+          price,
           Author:authorid
         },
         {

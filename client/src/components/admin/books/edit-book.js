@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { BackendApi } from '../../../api';
 import Select from "react-select";
 import { Sidebar } from '../../layout/sidebar';
+import Swal from 'sweetalert2';
 
 const EditBook = () => {
 
@@ -54,9 +55,24 @@ const EditBook = () => {
 
     BackendApi.book.editBook(id, data, selectedAuthor?._id)
       .then((res) => {
-        navigate(-1);
+        Swal.fire({
+          icon: 'success',
+          title: 'Book Edit Successfull',
+          
+          showCancelButton: false,
+          showConfirmButton: false,
+          timer: 1500
+          }).then(()=>{
+       
+            navigate(-1);
+           
+      
+          })
 
-        console.log("res retrieved", res)
+
+      
+
+       
 
       })
       .catch((err) => {
@@ -78,15 +94,15 @@ const EditBook = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="nameInput">Book Name</label>
-            <input type="text" className="form-control" id="name" name='name' placeholder="Enter Book name" />
+            <input type="text" className="form-control" id="name" name='name' placeholder="Enter Book name" defaultValue={book.name} />
           </div>
           <div className="form-group">
             <label htmlFor="titleInput">Book Title </label>
-            <input type="text" className="form-control" id="title" name='title' placeholder="Enter Book Title" />
+            <input type="text" className="form-control" id="title" name='title' placeholder="Enter Book Title" defaultValue={book.title} />
           </div>
           <div className="form-group">
             <label htmlFor="priceInput">Book Price</label>
-            <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price" />
+            <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price"defaultValue={book.price} />
           </div>
           {/* <div className="form-group">
         <label htmlFor="passwordInput">Author</label>
