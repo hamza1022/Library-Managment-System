@@ -23,7 +23,9 @@ getAllAuthors: async () => {
  getAuthorById :async(id)=>{
 
         try {
-            const response = await axios.get(`http://localhost:8080/api/user/getOne/${id}`)
+            const response = await axios.get(`http://localhost:8080/api/author/getOne/${id}`)
+
+            console.log("response", response)
             return response.data.data
 
         }catch(error){
