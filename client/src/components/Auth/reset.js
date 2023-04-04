@@ -32,9 +32,18 @@ const Reset = () => {
   };
 
   const handleConfirmPasswordBlur = () => {
-    if (confirmPassword !== password) {
-      setConfirmPasswordError("Passwords do not match");
-    } else {
+
+    if(confirmPassword.length <4 ){
+      setConfirmPasswordError("Confirm Password must be at least 4 characters long");
+      
+    }
+
+    else if(password.length >4 || confirmPassword.length >4 ){
+      
+      
+      comaprePassword()
+    }
+    else {
       setConfirmPasswordError("");
     }
   };
@@ -42,7 +51,8 @@ const Reset = () => {
 
   const comaprePassword = () => {
 		if (password !== confirmPassword) {
-		setError("Password mismatch")
+      setConfirmPasswordError("Passwords  not match");
+	
     setIsPasswordDisMatch(true);
 			return false;
 		} else {

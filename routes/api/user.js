@@ -126,7 +126,7 @@ router.post('/login', async (req, res, next) => {
         let user = await User.findOne({ email: req.body.email });
 
         if (!user) {
-            return next(new BadRequestResponse("Email dont exist"));
+            return next(new BadRequestResponse("Username or password is Invalid !!"));
         }
         else if (user.status !== "active")
             return next(new UnauthorizedResponse("Your Account is Blocked!, Contact to Support please", 403));

@@ -75,23 +75,24 @@ import { validateEmail } from "../core/helpers/validation";
       setPassword("");
       setProfileError(null);
 
-     
-    Swal.fire({
-      icon: 'success',
-      title: 'Login successful',
-      confirmButtonText: 'OK'
-    }).then(() => {
-     
-      if (user.role == "admin") {
-        navigate("/admin/dashboard/books");
-      }
-      else{
-         navigate("/user/books");
-      }
+	  Swal.fire({
+		icon: 'success',
+		title: 'Login Successfull',
+		text: 'Thanks for Login',
+		showCancelButton: false,
+		showConfirmButton: false,
+		timer: 1500
+	  }).then(()=>{
+		if (user.role == "admin") {
+			navigate("/admin/dashboard/books");
+		  }
+		  else{
+			 navigate("/user/books");
+		  }
 
-     
-      
-    })
+	  })
+
+	  
    
   })
   .catch((err)=>{

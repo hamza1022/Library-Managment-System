@@ -76,6 +76,16 @@ const Profile = () => {
 		}
 	};
 
+  const checkDisable = () => {
+		if (oldPassword.length<=0 || password.length <= 0 || confirmPassword.length <= 0) {
+			return true;
+		}
+		if  (password !== confirmPassword){
+			return true;
+		}
+		return false;
+	};
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!comaprePassword()) return;
@@ -166,7 +176,7 @@ const Profile = () => {
   <div className="col-lg-12">
 									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
 								</div>
-  <button type="submit" className="btn btn-primary">
+  <button type="submit"  disabled={checkDisable()} className="btn btn-primary">
     Submit
   </button>
 </form>

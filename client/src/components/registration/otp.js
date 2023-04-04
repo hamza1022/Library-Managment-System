@@ -28,6 +28,14 @@ const Otp = () => {
 
   }, [id])
 
+  const checkDisable = () => {
+		if (OTP.length  < 4) {
+			return true;
+		}
+	
+		return false;
+	};
+
   useEffect(() => {
     getUser()
   }, [getUser])
@@ -43,18 +51,36 @@ const Otp = () => {
         type:type
       })
       .then((result) => {
-       
 
-          
-          console.log("result",result);
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Otp Verifies successfully',
+          text: 'Thanks for verifying your Identity',
+          showCancelButton: false,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        .then(()=>{
           if (parseInt(type) === 1){
             navigate("/")
           }
           else if (parseInt(type) === 2){
             navigate(`/reset-password/${result.user._id}/${result.passwordResetToken}`)
           }
+        }
+        )
+    
         })
         .catch((err) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error || "Invalid Otp!",
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: 1500
+          });
           navigate(-1)
         })
     }
@@ -72,10 +98,13 @@ const Otp = () => {
         title: 'Otp resend successfully',
         text: 'Please check your email for verification',
         confirmButtonText: 'OK',
+        showCancelButton: false,
+        showConfirmButton: false,
         timer: 1500
       })
     })
-    .catch(()=>{
+    .catch((err)=>{
+      setErrors(err.response?.data?.message)
     })
   }
 
@@ -99,7 +128,7 @@ const Otp = () => {
 
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '15vh' }}>
-              <button type="submit">Verify</button>
+              <button type="submit" disabled={checkDisable()}>Verify</button>
 
             </div>
 

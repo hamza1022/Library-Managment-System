@@ -41,6 +41,7 @@ import { SetUser , logout} from '../../store/user';
 import { Paths } from '../constants/paths';
 import Forgot from '../Auth/forgot';
 import Reset from '../Auth/reset';
+import NotFound from './not-found';
 
 
 
@@ -189,8 +190,9 @@ export const AppLayout = () => {
                     <Route path="/reset-password/:id/:passwordResetToken" exact element={<Reset />} />
                     <Route path="/forgot" exact element={<Forgot />} />
                     <Route path="/register" exact element={<SignUp />} />
+                    <Route path="/not-found" exact element={<NotFound />} />
             
-                    <Route path="*" element={<Navigate to={"/"} />} />
+                    <Route path="*"  exact element={<NotFound />}  />
            
         </>
     
