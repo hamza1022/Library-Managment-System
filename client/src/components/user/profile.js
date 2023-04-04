@@ -32,7 +32,7 @@ const Profile = () => {
 
   const handleOldPasswordBlur = (e)=>{
     if (oldPassword.length < 4) {
-      setOldPasswordError("Password must be at least 4 characters long");
+      setOldPasswordError(" Old password is required");
     }
 
     else {
@@ -163,6 +163,9 @@ const Profile = () => {
       <div className="text-danger">{confirmPasswordError}</div>
     )}
   </div>
+  <div className="col-lg-12">
+									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+								</div>
   <button type="submit" className="btn btn-primary">
     Submit
   </button>

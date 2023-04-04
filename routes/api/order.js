@@ -50,7 +50,8 @@ router.post("/create", auth.required, auth.user, async (req, res, next) => {
     .then(async (order) => {
       const bookIds = order.books.map((book) => book._id);
       await Book.updateMany({ _id: { $in: bookIds } }, { status: "lent" });
-      await  order.populate([{path: 'books', select: 'name'}, {path: 'customer', select: 'name email'}])
+      await  order.populate([{path: 'books', select: 'name'},
+      {path: 'customer', select: 'name email'}])
       return next(new OkResponse({
         order:{
           books:order.books,
