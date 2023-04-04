@@ -6,6 +6,7 @@ import Select from "react-select";
 import { Sidebar } from '../../layout/sidebar';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
  
 
 
@@ -59,10 +60,22 @@ const AddBook = () => {
         }  else {
           BackendApi.book.addBook(data,selectedAuthor._id)
           .then((res)=>{
-            // toast.success('Book created successfully!');
-              navigate(-1);
+
+            Swal.fire({
+              icon: 'success',
+              title: 'Book Created Successfull',
+              
+              showCancelButton: false,
+              showConfirmButton: false,
+              timer: 1500
+              }).then(()=>{
+           
+                navigate(-1);
+               
+          
+              })
+
   
-              console.log("res retrieved", res)
   
           })
           .catch((err)=>{

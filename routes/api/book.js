@@ -98,7 +98,7 @@ router.put("/update/:bookId", auth.required, auth.admin, (req, res, next) => {
           Book.findById(bookId)
           .then((book) =>{
             if(!book){
-                return next(new BadRequestResponse("The Book Doesnot Exists."));
+                return next(new BadRequestResponse("The Book Does not Exists."));
 
             }
             for (let key in dataToUpdate) {
