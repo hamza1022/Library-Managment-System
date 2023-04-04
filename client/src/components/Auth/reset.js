@@ -38,6 +38,8 @@ const Reset = () => {
       setConfirmPasswordError("");
     }
   };
+
+
   const comaprePassword = () => {
 		if (password !== confirmPassword) {
 		setError("Password mismatch")
@@ -49,8 +51,20 @@ const Reset = () => {
 			return true;
 		}
 	};
+  const checkDisable = () => {
+		if (password.length <= 0 || confirmPassword.length <= 0) {
+			return true;
+		}
+		if  (password !== confirmPassword){
+			return true;
+		}
+		return false;
+	};
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
+  
     if (!comaprePassword()) return;
 
 
@@ -118,7 +132,13 @@ const Reset = () => {
       <div className="text-danger">{confirmPasswordError}</div>
     )}
   </div>
-  <button type="submit" className="btn btn-primary">
+  {error?.length > 0 && (
+								<div className="alert alert-danger fs-12">
+									{error}
+								
+								</div>
+							)}
+  <button type="submit" disabled={checkDisable()} className="btn btn-primary">
     Submit
   </button>
 </form>
