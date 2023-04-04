@@ -3,7 +3,7 @@
 import axios from 'axios';
 
 export const AuthorApi = {
-    getAllAuthors: async () => {
+getAllAuthors: async () => {
         let token = localStorage.getItem("token");
         try {
           const response = await axios.get("http://localhost:8080/api/author/getAuthors",{
@@ -19,7 +19,8 @@ export const AuthorApi = {
           throw error;
         }
       },
-      getAuthorById :async(id)=>{
+
+ getAuthorById :async(id)=>{
 
         try {
             const response = await axios.get(`http://localhost:8080/api/user/getOne/${id}`)

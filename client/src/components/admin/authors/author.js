@@ -5,6 +5,7 @@ import { BackendApi } from '../../../api';
 import {FaEdit} from 'react-icons/fa'
 import { NavLink } from 'react-router-dom';
 import { Sidebar } from '../../layout/sidebar';
+import Swal from 'sweetalert2'
 
 const Author = () => {
 
@@ -31,7 +32,19 @@ const Author = () => {
 }, [])
 
 const removeAuthor=(author)=>{
-    
+
+
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+       
     let token = localStorage.getItem("token");
 
     const options = {
@@ -41,6 +54,14 @@ const removeAuthor=(author)=>{
     BackendApi.author.deleteAuthor(author,options)
     .then((res)=>{
         fetchAuthors()
+        Swal.fire({
+		icon: 'success',
+		title: 'Author Deleted Successfully',
+		
+		showCancelButton: false,
+		showConfirmButton: false,
+		timer: 1500
+	  })
        
         console.log("res returned", res)
     })
@@ -48,6 +69,10 @@ const removeAuthor=(author)=>{
         console.log("err: ", err)
     })
 
+    }
+})
+   
+  
 
 
    
