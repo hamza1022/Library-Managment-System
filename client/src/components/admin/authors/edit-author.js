@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react'
 import { useNavigate, useParams } from "react-router-dom";
 import { BackendApi } from '../../../api';
 import { Sidebar } from '../../layout/sidebar';
-
+import Swal from 'sweetalert2'
 const EditAuthor = () => {
 
     const { id } = useParams();
@@ -44,7 +44,20 @@ const EditAuthor = () => {
   
           BackendApi.author.editAuthor(id,data)
           .then((res)=>{
-              navigate(-1);
+            Swal.fire({
+              icon: 'success',
+              title: 'Author Edit Successfull',
+              
+              showCancelButton: false,
+              showConfirmButton: false,
+              timer: 1500
+              }).then(()=>{
+           
+                navigate(-1);
+               
+          
+              })
+           
   
               console.log("res retrieved", res)
   
