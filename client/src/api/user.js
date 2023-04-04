@@ -85,7 +85,7 @@ export const UserApi = {
 
         }
       })
-      return response.data.data.filter(user => user.role === 'user');
+      return response.data.data
 
     } catch (err) {
       throw err

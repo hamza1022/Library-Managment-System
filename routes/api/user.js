@@ -144,7 +144,13 @@ router.post('/login', async (req, res, next) => {
 
 
 router.get("/getUsers", auth.required, auth.admin, (req, res, next) => {
-    User.find().then((user) => {
+
+
+    let query = {
+        role: "user"
+      }
+
+    User.find(query).then((user) => {
         return next(new OkResponse(user));
 
     }).catch((err) => {
