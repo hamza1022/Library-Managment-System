@@ -18,6 +18,16 @@ const EditBook = () => {
 
   console.log(authors)
 
+  useEffect(() => {
+
+    getAuthors()
+    getBookById()
+    
+
+
+
+  }, [id])
+
   const getAuthors = () => {
     BackendApi.author.getAllAuthors()
       .then((authors) => {
@@ -26,44 +36,38 @@ const EditBook = () => {
       }).catch(err => console.log(err))
   }
 
-  const getAuthor =()=>{
-    BackendApi.author.getAuthorById(book.Author)
-    .then((author)=>{
-      setSelectedAuthor(author);
-     
-
-    })
-    .catch((err)=>{
-      setError(err)
-    })
-
-  }
-  console.log(selectedAuthor)
-
+  
   const getBookById = ()=>{
     BackendApi.book.getOneById(id)
     .then((book)=>{
       setBook(book)
-      const author = authors.find((author) => author._id === book.Author);
+      const author = authors.find((author) => author._id === parseInt(book.Author));
       setSelectedAuthor(author);
-
-
+      
+      
     })
     .catch((err)=>{
       setError(err)
     })
   }
+  
+  // const getAuthor =()=>{
+  //   const authorId = parseInt(book?.Author);  
+  //   BackendApi.author.getAuthorById(authorId)
+  //   .then((author)=>{
+  //     setSelectedAuthor(author);
+     
+
+  //   })
+  //   .catch((err)=>{
+  //     setError(err)
+  //   })
+
+  // }
+  console.log(selectedAuthor)
   console.log(book)
+  
 
-  useEffect(() => {
-
-    getAuthors()
-    getBookById()
-    getAuthor()
-
-
-
-  }, [])
 
   console.log("Selected", selectedAuthor)
 
