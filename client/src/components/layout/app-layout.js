@@ -56,7 +56,7 @@ export const AppLayout = () => {
 
     const naviagte = useNavigate()
     const loggedInUser = useSelector((state) => state.user.value);
-    console.log("logged user from redux",loggedInUser)
+
   
     const [anchorElUser, setAnchorElUser] = useState(null)
 

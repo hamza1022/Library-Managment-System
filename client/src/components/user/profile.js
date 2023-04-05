@@ -56,17 +56,30 @@ const Profile = () => {
   };
 
   const handleConfirmPasswordBlur = () => {
-    if (confirmPassword !== password) {
-      setConfirmPasswordError("Passwords do not match");
-    } else {
+
+    if(confirmPassword.length <4 ){
+      setConfirmPasswordError("Confirm Password must be at least 4 characters long");
+      
+    }
+
+    else if(password.length >4 || confirmPassword.length >4 ){
+      
+      
+      comaprePassword()
+
+    }
+    else {
       setConfirmPasswordError("");
     }
   };
 
 
+
   const comaprePassword = () => {
 		if (password !== confirmPassword) {
-		setError("Password mismatch")
+      setConfirmPasswordError("Passwords  not match");
+      setConfirmPassword("")
+	
     setIsPasswordDisMatch(true);
 			return false;
 		} else {

@@ -119,11 +119,13 @@ const Book = () => {
 
         <div style={{ flex: 1, padding: '20px' }}>
           <input type="text" value={searchText} onChange={handleChange} />
+        <h5>Search Books</h5>
 
-          <NavLink
+        <div>
+        <NavLink
             to={"/admin/dashboard/book/create"}
             className="pointer"
-            style={{ display: 'block', marginBottom: '10px', color: '#000', marginRight: "12px" }}
+            // style={{ display: 'block', marginBottom: '10px', color: '#000', marginRight: "12px" }}
           >
 
             <span className="side-ic">
@@ -131,6 +133,7 @@ const Book = () => {
             </span>
             <button className='h-5 w-5'>Add Book</button>
           </NavLink>
+        </div>
           <Table striped bordered hover>
             <thead>
               <tr>

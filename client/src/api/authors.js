@@ -87,25 +87,35 @@ getAllAuthors: async () => {
 
       addAuthor :async (data)=>{
 
-        const name = data.name;
-        const age = data.age;
-        const country = data.country;
-        let token = localStorage.getItem("token")
-    
-        const response = await axios.post ("http://localhost:8080/api/author/create",{
-          name,
-          age,
-          country,
-        
-        },{
-          headers:{
-            'Authorization': `Bearer ${token}`
-            
-        }  
-        }
-      )
 
-        return response.data.data
+
+        console.log(data)
+
+    
+        let token = localStorage.getItem("token")
+
+        try {
+          const response = await axios.post ("http://localhost:8080/api/author/create",{
+            name:data.name,
+            age:data.age,
+            country:data.country,
+          
+          },{
+            headers:{
+              'Authorization': `Bearer ${token}`
+              
+          }  
+          }
+        )
+  
+          return response.data.data
+          
+        } catch (error) {
+          throw error
+          
+        }
+    
+       
 
       }
 };

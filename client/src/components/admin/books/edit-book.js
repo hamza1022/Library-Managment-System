@@ -16,6 +16,8 @@ const EditBook = () => {
   const [book, setBook] = useState({})
   const [error, setError] = useState("")
 
+  console.log(authors)
+
   const getAuthors = () => {
     BackendApi.author.getAllAuthors()
       .then((authors) => {
@@ -24,21 +26,40 @@ const EditBook = () => {
       }).catch(err => console.log(err))
   }
 
+  const getAuthor =()=>{
+    BackendApi.author.getAuthorById(book.Author)
+    .then((author)=>{
+      setSelectedAuthor(author);
+     
+
+    })
+    .catch((err)=>{
+      setError(err)
+    })
+
+  }
+  console.log(selectedAuthor)
+
   const getBookById = ()=>{
     BackendApi.book.getOneById(id)
     .then((book)=>{
       setBook(book)
+      const author = authors.find((author) => author._id === book.Author);
+      setSelectedAuthor(author);
+
 
     })
     .catch((err)=>{
       setError(err)
     })
   }
+  console.log(book)
 
   useEffect(() => {
 
     getAuthors()
     getBookById()
+    getAuthor()
 
 
 

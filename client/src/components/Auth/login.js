@@ -98,8 +98,7 @@ import { validateEmail } from "../core/helpers/validation";
   .catch((err)=>{
     console.log(err)
     setError(err.response?.data?.message);
-	setEmail("")
-	setPassword("")
+	
 
   })
 

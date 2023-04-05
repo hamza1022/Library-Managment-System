@@ -10,78 +10,179 @@ import Swal from 'sweetalert2';
 const CreateAuthor = () => {
     const navigate = useNavigate()
 
-    const [error, setError]= useState("")
+  const [error, setError]= useState("")
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [country, setCountry] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [ageError, setAgeError] = useState("");
+  const [countryError, setCountryError] = useState("");
 
-    const handleSubmit =(event)=>{
-        event.preventDefault();
-        const formData  = new FormData(event.target);
-        const data = Object.fromEntries(formData.entries());
 
-        if (!data.name) {
-          setError("Author name is required");
-        }
+    const handleNameChange = (e) => {
+      setName(e.target.value);
+    };
+    const handleAgeChange = (e) => {
+      setAge(e.target.value);
+    }
+    const handleCountryChange = (e) => {
+      setCountry(e.target.value);
+    }
 
-        else {
+  
+    const handleNameBlur = () => {
+      if (name.length <= 0) {
+        setNameError("name is required");
+      } else {
+        setNameError("");
+      }
+    };
+  
+    const handleAgeBlur = () => {
+  
+      if(age.length <= 0 ){
+        setAgeError("age is required");
+        
+      }
+  
+      else {
+        setAgeError("");
+      }
+    };
+    const handleCountryBlur = () => {
+  
+      if(country.length <= 0 ){
+        setCountryError("Country is required");
+        
+      }
+  
+      else {
+        setCountryError("");
+      }
+    };
+  
+    const checkDisable = () => {
+      if (name.length <= 0 || age.length <= 0 || country.length <= 0) {
+        return true;
+      }
+     
+      return false;
+    };
 
+    const handleSubmit =()=>{
+
+      let data = {
+        name,
+        age, 
+        country
+      }
     
           BackendApi.author.addAuthor(data)
           .then((res)=>{
+            console.log(res)
 
-            Swal.fire({
-              icon: 'success',
-              title: 'Author Created Successfull',
+            // Swal.fire({
+            //   icon: 'success',
+            //   title: 'Author Created Successfull',
               
-              showCancelButton: false,
-              showConfirmButton: false,
-              timer: 1500
-              }).then(()=>{
+            //   showCancelButton: false,
+            //   showConfirmButton: false,
+            //   timer: 1500
+            //   }).then(()=>{
            
-                navigate(-1);
+            //     navigate(-1);
                
           
-              })
+            //   })
             
-           
             
           })
           .catch((err)=>{
             setError(err.response?.data?.message)
             
           })
-        }
+        
 
 
 
     }
+
+    
   return (
     <div style={{display :"flex"}}>
     <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
     <p>Create Author</p>
-    <div className="col-lg-12">
-									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
-								</div>
+    <div>
+			<div className="auth-overlay">
+				<div className="container">
+					<div className="auth-form">
+          <form onSubmit={handleSubmit}>
+  <div className="form-group">
+  <label htmlFor="country">Name<span style={{color: "red"}}>*</span></label>
+    <input
+      type="text"
+      className="form-control"
+      id="name"
+      name="name"
+      value={name}
+      onChange={handleNameChange}
+      onBlur={handleNameBlur}
+    />
+    {nameError && (
+      <div className="text-danger">{nameError}</div>
+    )}
+  </div>
+  <div className="form-group">
+  <label htmlFor="country">Age<span style={{color: "red"}}>*</span></label>
+    <input
+      type="number"
+      className="form-control"
+      id="age"
+      name="age"
+      value={age}
+      onChange={handleAgeChange}
+      onBlur={handleAgeBlur}
+    />
+    {ageError && (
+      <div className="text-danger">{ageError}</div>
+    )}
+  </div>
+  <div className="form-group">
+  <label htmlFor="country">Country<span style={{color: "red"}}>*</span></label>
 
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="nameInput"> Name</label>
-        <input type="text" className="form-control" id="name" name='name'  placeholder="Enter Author" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="titleInput">Age  </label>
-        <input type="number" className="form-control" id="age"  name='age' placeholder="Enter Age " />
-      </div>
-      <div className="form-group">
-        <label htmlFor="priceInput">Country</label>
-        <input type="text" className="form-control" id="country" name='country' placeholder="Enter Country" />
-      </div>
-	 
+
+    <input
+      type="text"
+      className="form-control"
+      id="country"
+      name="country"
+      value={country}
+      onChange={handleCountryChange}
+      onBlur={handleCountryBlur}
+    />
+    {countryError && (
+      <div className="text-danger">{countryError}</div>
+    )}
+  </div>
+  {error?.length > 0 && (
+								<div className="alert alert-danger fs-12">
+									{error}
+								
+								</div>
+							)}
+  <button type="submit" disabled={checkDisable()} className="btn btn-primary">
+    Add
+  </button>
+</form>
+						
+					</div>
+					      
       
-										
-									
-      <button type="submit" className="btn btn-primary">Add</button>
-    </form>
+				</div>
+			</div>
+		</div>
 
     </div>
     </div>

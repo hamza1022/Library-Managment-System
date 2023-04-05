@@ -6,6 +6,7 @@ import Select from "react-select";
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Sidebar } from '../layout/sidebar';
+import Swal from 'sweetalert2';
 
 
 
@@ -45,8 +46,21 @@ const PlaceOrder = () => {
 
       BackendApi.order.placeOrder(loggedInUser._id, bookIds)
         .then((order) => {
-          navigate('/user/order')
-          console.log("order create", order)
+
+          Swal.fire({
+            icon: 'success',
+            title: 'You Order has been placed Successfully',
+            text: 'Thanks for Shooping',
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: 1500
+            })
+            .then(()=>{
+              navigate('/user/order')
+              console.log("order create", order)
+
+            })
+         
 
         })
         .catch((err) => { console.log(err) })

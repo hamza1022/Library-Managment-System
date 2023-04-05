@@ -15,7 +15,63 @@ const AddBook = () => {
 
     const [authors, setAuthors] =useState([])
     const [selectedAuthor,setSelectedAuthor] =useState(null)
-    const [error,setError] = useState("")
+  const [error, setError]= useState("")
+  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [titleError, setTitleError] = useState("");
+  const [priceError, setPriceError] = useState("");
+
+    const handleNameChange = (e) => {
+      setName(e.target.value);
+    };
+    const handleTitleChange = (e) => {
+      setTitle(e.target.value);
+    }
+    const handlePriceChange = (e) => {
+      setPrice(e.target.value);
+    }
+
+  
+    const handleNameBlur = () => {
+      if (name.length <= 0) {
+        setNameError("name is required");
+      } else {
+        setNameError("");
+      }
+    };
+  
+    const handleTitleBlur = () => {
+  
+      if(title.length <= 0 ){
+        setTitleError("title is required");
+        
+      }
+  
+      else {
+        setTitleError("");
+      }
+    };
+    const handlePriceBlur = () => {
+  
+      if(price.length <= 0 ){
+        setPriceError("price is required");
+        
+      }
+  
+      else {
+        setPriceError("");
+      }
+    };
+  
+    const checkDisable = () => {
+      if (name.length <= 0 || title.length <= 0 || price.length <= 0 || !selectedAuthor) {
+        return true;
+      }
+     
+      return false;
+    };
 
     console.log(authors)
     console.log("Selected",selectedAuthor)
@@ -31,8 +87,6 @@ const AddBook = () => {
         })
     }
  
-
-
      useEffect(() => {
 
         getAuthors()
@@ -95,27 +149,60 @@ const AddBook = () => {
     <Sidebar/>
 
     <div style={{ flex: 1, padding: '20px' }}>
-    <ToastContainer />
-    <h1>Create Book</h1>
+    <p>Create Author</p>
+    <div>
+			<div className="auth-overlay">
+				<div className="container">
+					<div className="auth-form">
+          <form onSubmit={handleSubmit}>
+  <div className="form-group">
+  <label htmlFor="price">Name<span style={{color: "red"}}>*</span></label>
+    <input
+      type="text"
+      className="form-control"
+      id="name"
+      name="name"
+      value={name}
+      onChange={handleNameChange}
+      onBlur={handleNameBlur}
+    />
+    {nameError && (
+      <div className="text-danger">{nameError}</div>
+    )}
+  </div>
+  <div className="form-group">
+  <label htmlFor="price">Title<span style={{color: "red"}}>*</span></label>
+    <input
+      type="text"
+      className="form-control"
+      id="title"
+      name="title"
+      value={title}
+      onChange={handleTitleChange}
+      onBlur={handleTitleBlur}
+    />
+    {titleError && (
+      <div className="text-danger">{titleError}</div>
+    )}
+  </div>
+  <div className="form-group">
+  <label htmlFor="price">Price<span style={{color: "red"}}>*</span></label>
 
-    <form onSubmit={handleSubmit}>
-      <div className="form-group">
-        <label htmlFor="nameInput">Book Name</label>
-        <input type="text" className="form-control" id="name" name='name'  placeholder="Enter Book name" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="titleInput">Book Title </label>
-        <input type="text" className="form-control" id="title"  name='title' placeholder="Enter Book Title" />
-      </div>
-      <div className="form-group">
-        <label htmlFor="priceInput">Book Price</label>
-        <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price" />
-      </div>
-	  {/* <div className="form-group">
-        <label htmlFor="passwordInput">Author</label>
-        <input type="text" className="form-control" id="Author"  name='Author' placeholder="Enter Author" />
-      </div> */}
-      <label className="fs-14 fw-500 text-900 mb-1 mt-3">Author</label>
+
+    <input
+      type="number"
+      className="form-control"
+      id="price"
+      name="price"
+      value={price}
+      onChange={handlePriceChange}
+      onBlur={handlePriceBlur}
+    />
+    {priceError && (
+      <div className="text-danger">{priceError}</div>
+    )}
+  </div>
+  <label className="fs-14 fw-500 text-900 mb-1 mt-3">Author</label>
 									
 										<Select
 											defaultValue={null}
@@ -131,15 +218,23 @@ const AddBook = () => {
 											
 											}}
 										/>
-
-<div className="col-lg-12">
-									{error?.length > 0 && <div className="error-message text-danger mb-3 fs-16 text-center">{error}</div>}
+  {error?.length > 0 && (
+								<div className="alert alert-danger fs-12">
+									{error}
+								
 								</div>
-               
-										
-									
-      <button type="submit" className="btn btn-primary">Add</button>
-    </form>
+							)}
+  <button type="submit" disabled={checkDisable()} className="btn btn-primary">
+    Add
+  </button>
+</form>
+						
+					</div>
+					      
+      
+				</div>
+			</div>
+		</div>
 
     </div>
     </div>

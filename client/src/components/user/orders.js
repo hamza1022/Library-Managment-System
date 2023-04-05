@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import { BackendApi } from '../../api';
 import { useNavigate, useParams } from "react-router-dom";
 import { Sidebar } from '../layout/sidebar';
-
+import Swal from 'sweetalert2';
 
 
 const Order = () => {
@@ -33,9 +33,21 @@ const returnBook=(order)=>{
     console.log(order._id)
     BackendApi.order.returnOrder(order._id)
     .then((response)=>{
-        fetchOrders()
 
-        console.log("response", response)
+      Swal.fire({
+        icon: 'success',
+        title: 'You Order has been Returned Successfully',
+        text: 'Thanks for returning your order',
+        showCancelButton: false,
+        showConfirmButton: false,
+        timer: 1500
+        })
+        .then(()=>{
+          fetchOrders()
+
+        })
+       
+
 
     }).catch((error)=>{console.log("error", error)})
 
