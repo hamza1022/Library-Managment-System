@@ -131,6 +131,17 @@ export const Sidebar = () => {
 								</span>
 								<span className="side-link">Change Password </span>
 							</NavLink>
+							<NavLink
+								to={"/user/upload-photo"}
+								className="pointer"
+								style={{ display: 'block', marginBottom: '10px', color: '#000' }}
+							>
+
+								<span className="side-ic">
+									<span className="iconify" data-icon="uim:calender"></span>
+								</span>
+								<span className="side-link">Upload Photo </span>
+							</NavLink>
 
 
 						</>

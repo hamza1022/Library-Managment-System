@@ -42,6 +42,7 @@ import { Paths } from '../constants/paths';
 import Forgot from '../Auth/forgot';
 import Reset from '../Auth/reset';
 import NotFound from './not-found';
+import UploadPhoto from '../user/upload-photo';
 
 
 
@@ -179,6 +180,7 @@ export const AppLayout = () => {
                     <Route path="/user/placeorder" exact element={<PlaceOrder />} />
                     <Route path="/user/order" exact element={<Order />} />
                     <Route path="/user/profile" exact element={<Profile />} />
+                    <Route path="/user/upload-photo" exact element={<UploadPhoto />} />
                 </>
             )}
             {Object.keys(loggedInUser).length === 0 && (
