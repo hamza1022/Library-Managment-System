@@ -6,33 +6,46 @@ import Select from "react-select";
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Sidebar } from '../layout/sidebar';
+
 import Swal from 'sweetalert2';
+import { BsBookmarkCheckFill } from 'react-icons/bs';
+import Table from 'react-bootstrap/Table';
 
 
 
 const PlaceOrder = () => {
   const navigate = useNavigate()
   let { id } = useParams()
-  console.log(id)
+  
 
 
   const loggedInUser = useSelector((state) => state.user.value);
-  const [selectedBooks, setSelectedBooks] = useState(null)
+  const [selectedBooks, setSelectedBooks] = useState([])
   const [books, setBooks] = useState([])
-  const [book, setBook] = useState({})
-  console.log("Selected", selectedBooks)
+  const [book, setBook] = useState([])
+  const [authors, setAuthors] = useState([])
+
+console.log("book which to order slected books", selectedBooks)
+
+const getAuthors = () => {
+  BackendApi.author.getAllAuthors()
+    .then((authors) => {
+      setAuthors(authors)
+
+    }).catch(err => console.log(err))
+}
 
 
 
   const fetchBooks = () => {
     BackendApi.book.getAllBooks()
       .then((books) => {
-        console.log(books)
+      
 
         setBooks(books)
       })
       .catch((err) => {
-        console.log(err)
+        
       })
 
   }
@@ -40,23 +53,14 @@ const PlaceOrder = () => {
   const getBookById = () => {
     BackendApi.book.getOneById(id)
       .then((book) => {
-        setBook(book)
-        console.log("one book", book)
+        setSelectedBooks([book])
+        
+
 
       })
 
   }
-
-
-  useEffect(() => {
-    fetchBooks()
-    getBookById()
-
-
-  }, [])
-
-
-  const handleSubmit = () => {
+    const handleSubmit = () => {
     if (selectedBooks) {
       const bookIds = selectedBooks.map((book) => book._id);
 
@@ -73,7 +77,7 @@ const PlaceOrder = () => {
           })
             .then(() => {
               navigate('/user/order')
-              console.log("order create", order)
+             
 
             })
 
@@ -82,11 +86,32 @@ const PlaceOrder = () => {
         .catch((err) => { console.log(err) })
 
 
-      console.log(bookIds);
+      
     } else {
-      console.log("No books selected.");
+  
     }
   };
+
+  useEffect(() => {
+    fetchBooks()
+    getBookById()
+    getAuthors()
+
+
+  }, [])
+  
+  useEffect(() => {
+    if(book && authors ){
+      const author = authors.find(author=>author._id.toString() === book.Author.toString())
+      console.log("gdshjdsagdsajgdsajdgdsa",author)
+      // setSelectedAuthor(author)
+    
+    }
+
+  }, [book])
+
+
+
 
 
   return (
@@ -104,7 +129,7 @@ const PlaceOrder = () => {
 
           <label className="fs-14 fw-500 text-900 mb-1 mt-3">Books</label>
           <Select
-            defaultValue={null}
+            defaultValue={selectedBooks}
             value={selectedBooks}
             options={books}
             getOptionLabel={(book) => book.name}
@@ -113,9 +138,51 @@ const PlaceOrder = () => {
             isClearable={true}
             onChange={(selected) => {
               setSelectedBooks(selected);
+             
             }}
             isMulti
           />
+         
+        
+          <h1 className='text-xl font-bold mb-6 text-center' style={{ marginTop: 40 }}> Order Summary</h1>
+          <Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>Book Name</th>
+          <th>Book Price</th>
+          <th>Book Title</th>
+          <th>Author</th>
+        
+      
+        </tr>
+      </thead>
+      <tbody>
+      {
+        selectedBooks?.map((book)=>{
+            return (
+
+
+            <tr key= {book._id}>
+          <td>{book.name}</td>
+          <td>{book.price}</td>
+          <td>{book.title}</td>
+          <td>
+          {book.Author.find(author=>author._id.toString() === authors._id.toString() )
+          }
+          </td>
+       
+        
+        </tr>
+
+            )
+
+        })
+      }
+      
+    
+      </tbody>
+    </Table>
+          
           <div className="col-lg-6">
             <button
               className="btnPrimary pointer mt-4 h-56 w-100 br-16"
@@ -129,43 +196,6 @@ const PlaceOrder = () => {
             >
               Place Order
             </button>
-          </div>
-          <h1 className='text-xl font-bold mb-6 text-center' style={{ marginTop: 40 }}> Order Summary</h1>
-          <div className="card p-5 float-left" >
-
-            <div className='mb-2 flex justify-between'>
-              <div className=''>Book Name:
-                <span style={{ marginLeft: 90 }}>
-                  {book.name}
-                </span>
-
-              </div>
-
-            </div>
-            <div className='mb-2 flex justify-between'>
-              <div>Price:
-              <span style={{ marginLeft: 136 }}>
-
-             {book.price}
-              </span>
-              </div>
-             
-            </div>
-            <div className='mb-2 flex justify-between'>
-              <div>Title:
-              <span style={{ marginLeft: 136 }}>
-
-             {book.title}
-              </span>
-              </div>
-
-              
-
-            </div>
-
-            <div className='mt-2'>
-
-            </div>
           </div>
 
 
