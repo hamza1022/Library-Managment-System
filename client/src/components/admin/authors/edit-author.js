@@ -39,6 +39,19 @@ const EditAuthor = () => {
           event.preventDefault();
           const formData  = new FormData(event.target);
           const data = Object.fromEntries(formData.entries());
+
+          if(data.name.length <= 0 ){
+            setError(" Name is required")
+          }
+          else if(data.age.length <= 0){
+            setError("Age is required")
+          }
+          else if (data.country.length  <= 0){
+            setError("Country is required")
+          }
+          else if(data.name.length>0 && data.age.length>0 && data.country.length>0){
+
+         
   
           
   
@@ -66,6 +79,7 @@ const EditAuthor = () => {
               console.log("err",err)
   
           })
+        }
   
   
   
@@ -90,6 +104,12 @@ const EditAuthor = () => {
         <label htmlFor="priceInput">Country</label>
         <input type="text" className="form-control" id="country" name='country' placeholder="Enter Country"  defaultValue={author.country}/>
       </div>
+      {error?.length > 0 && (
+								<div className="alert alert-danger fs-12">
+									{error}
+								
+								</div>
+							)}
 	
       <button type="submit" className="btn btn-primary">Edit</button>
     </form>

@@ -97,9 +97,15 @@ const Books = () => {
           <td>{book.price}</td>
           <td>{book.title}</td>
           <td>{book.Author?.name}</td>
-          <td>{book.status}</td>
           <td>
-          <button onClick={() =>Buy()}>Buy</button>
+          {book.status}
+          </td>
+          <td>
+          {
+            book.status === "Available" ?  <button onClick={() =>Buy()}>Buy</button>
+            :  <button style={{color:"red"}}>Buy</button>
+          }
+         
           </td>
         </tr>
 

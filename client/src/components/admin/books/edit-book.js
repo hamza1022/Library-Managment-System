@@ -84,7 +84,7 @@ const EditBook = () => {
 
     }
 
-    else if(data.name && data.title && data.price){
+    else if(data.name.length>0 && data.title.length>0 && data.price.length>0){
 
       BackendApi.book.editBook(id, data, selectedAuthor._id)
       .then((res) => {
