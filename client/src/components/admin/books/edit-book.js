@@ -18,15 +18,7 @@ const EditBook = () => {
 
   console.log(authors)
 
-  useEffect(() => {
-
-    getAuthors()
-    getBookById()
-    
-
-
-
-  }, [id])
+  
 
   const getAuthors = () => {
     BackendApi.author.getAllAuthors()
@@ -41,8 +33,7 @@ const EditBook = () => {
     BackendApi.book.getOneById(id)
     .then((book)=>{
       setBook(book)
-      const author = authors.find((author) => author._id === parseInt(book.Author));
-      setSelectedAuthor(author);
+     
       
       
     })
@@ -77,8 +68,25 @@ const EditBook = () => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = Object.fromEntries(formData.entries())
+    console.log("form data .>>>>>>>>>>",data)
 
-    BackendApi.book.editBook(id, data, selectedAuthor?._id)
+    if(data.name.length <= 0 ){
+      setError(" Name is required")
+    }
+    else if(data.title.length <= 0){
+      setError("Title is required")
+    }
+    else if (data.price.length  <= 0){
+      setError("Price is required")
+    }
+    else if(!selectedAuthor){
+      setError("Please select Author")
+
+    }
+
+    else if(data.name && data.title && data.price){
+
+      BackendApi.book.editBook(id, data, selectedAuthor._id)
       .then((res) => {
         Swal.fire({
           icon: 'success',
@@ -106,8 +114,36 @@ const EditBook = () => {
       })
 
 
+    }
+
+  
+
 
   }
+
+
+
+
+  useEffect(() => {
+
+    getAuthors()
+    getBookById()
+    
+
+
+  }, [])
+
+  useEffect(() => {
+
+if(book && authors ){
+  const author = authors.find(author=>author._id.toString() === book.Author.toString())
+  console.log("gdshjdsagdsajgdsajdgdsa",author)
+  setSelectedAuthor(author)
+
+}
+  
+
+  }, [book])
   return (
 
     <div style={{ display: "flex" }}>
@@ -129,27 +165,30 @@ const EditBook = () => {
             <label htmlFor="priceInput">Book Price</label>
             <input type="number" className="form-control" id="price" name='price' placeholder="Enter Book Price"defaultValue={book.price} />
           </div>
-          {/* <div className="form-group">
-        <label htmlFor="passwordInput">Author</label>
-        <input type="text" className="form-control" id="Author"  name='Author' placeholder="Enter Author" />
-      </div> */}
+        
 
           <label className="fs-14 fw-500 text-900 mb-1 mt-3">Author</label>
 
           <Select
-            defaultValue={null}
+            defaultValue={selectedAuthor}
             value={selectedAuthor}
             options={authors}
             getOptionLabel={(authors) => authors.name}
-            getOptionValue={(authors) => authors.name}
+            getOptionValue={(authors) => authors._id}
 
-            isSearchable={false}
+            isSearchable={true}
             isClearable={true}
             onChange={(e) => {
               setSelectedAuthor(e);
 
             }}
           />
+           {error?.length > 0 && (
+								<div className="alert alert-danger fs-12">
+									{error}
+								
+								</div>
+							)}
           <button type="submit" className="btn btn-primary">Edit</button>
         </form>
 
