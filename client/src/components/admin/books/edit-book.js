@@ -117,18 +117,11 @@ const EditBook = () => {
   }, [])
 
   useEffect(() => {
-
-if(book.Author){
-
-
-
-  setSelectedAuthor(book.Author.name)
-
-
-}
-  
-
-  }, [book.Author])
+    if (book.Author) {
+      const authorObj = authors.find(author => author._id === book.Author._id);
+      setSelectedAuthor(authorObj);
+    }
+  }, [authors, book.Author]);
   return (
 
     <div style={{ display: "flex" }}>
@@ -155,19 +148,17 @@ if(book.Author){
           <label className="fs-14 fw-500 text-900 mb-1 mt-3">Author</label>
 
           <Select
-            defaultValue={selectedAuthor}
-            value={selectedAuthor}
-            options={authors}
-            getOptionLabel={(authors) => authors.name}
-            getOptionValue={(authors) => authors._id}
-
-            isSearchable={true}
-            isClearable={true}
-            onChange={(e) => {
-              setSelectedAuthor(e);
-
-            }}
-          />
+  defaultValue={selectedAuthor}
+  value={selectedAuthor}
+  options={authors}
+  getOptionLabel={(author) => author.name}
+  getOptionValue={(author) => author}
+  isSearchable={true}
+  isClearable={true}
+  onChange={(selectedOption) => {
+    setSelectedAuthor(selectedOption);
+  }}
+/>
            {error?.length > 0 && (
 								<div className="alert alert-danger fs-12">
 									{error}
