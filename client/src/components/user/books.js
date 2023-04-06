@@ -37,9 +37,11 @@ const Books = () => {
   
       const booksToDisplay = searchText === "" ? books : searchResults;
 
-      const Buy= ()=>{
-        navigate("/user/placeorder")
+      const Buy= (book)=>{
+        navigate(`/user/placeorder/${book._id}`)
       }
+
+      
 
 
 
@@ -102,8 +104,8 @@ const Books = () => {
           </td>
           <td>
           {
-            book.status === "Available" ?  <button onClick={() =>Buy()}>Buy</button>
-            :  <button style={{color:"red"}}>Buy</button>
+            book.status === "Available" ?  <button onClick={() =>Buy(book)}>Buy</button>
+            :  <button style={{color: "red"}}>Buy</button>
           }
          
           </td>

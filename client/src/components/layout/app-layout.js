@@ -177,7 +177,7 @@ export const AppLayout = () => {
                     <Route path="/user/dashboard" exact element={<Sidebar />} />
                     <Route path="/user/authors" exact element={<Authors />} />
                     <Route path="/user/books" exact element={<Books />} />
-                    <Route path="/user/placeorder" exact element={<PlaceOrder />} />
+                    <Route path="/user/placeorder/:id" exact element={<PlaceOrder />} />
                     <Route path="/user/order" exact element={<Order />} />
                     <Route path="/user/profile" exact element={<Profile />} />
                     <Route path="/user/upload-photo" exact element={<UploadPhoto />} />
