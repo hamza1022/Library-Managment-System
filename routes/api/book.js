@@ -37,8 +37,9 @@ router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
 
     // console.log(newBook);
     newBook.save()
-        .then(result => {
-            return next(new OkResponse(result));
+        .then (async(book) => {
+          await book.populate([{path: 'Author', select: 'name'}])
+            return next(new OkResponse(book));
         })
         .catch(err => {
             return next(new BadRequestResponse(err));

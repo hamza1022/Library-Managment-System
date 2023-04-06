@@ -100,15 +100,15 @@ const getAuthors = () => {
 
   }, [])
   
-  useEffect(() => {
-    if(book && authors ){
-      const author = authors.find(author=>author._id.toString() === book.Author.toString())
-      console.log("gdshjdsagdsajgdsajdgdsa",author)
-      // setSelectedAuthor(author)
+  // useEffect(() => {
+  //   if(book && authors ){
+  //     const author = authors.find(author=>author._id.toString() === book.Author.toString())
+  //     console.log("gdshjdsagdsajgdsajdgdsa",author)
+  //     // setSelectedAuthor(author)
     
-    }
+  //   }
 
-  }, [book])
+  // }, [book])
 
 
 
@@ -167,7 +167,7 @@ const getAuthors = () => {
           <td>{book.price}</td>
           <td>{book.title}</td>
           <td>
-          {book.Author.find(author=>author._id.toString() === authors._id.toString() )
+          {book.Author?.name
           }
           </td>
        
