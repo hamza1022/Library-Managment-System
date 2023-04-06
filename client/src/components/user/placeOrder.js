@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { BackendApi } from '../../api';
 import Select from "react-select";
 import { useSelector } from 'react-redux';
-import { useNavigate,useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Sidebar } from '../layout/sidebar';
 import Swal from 'sweetalert2';
 
@@ -12,14 +12,14 @@ import Swal from 'sweetalert2';
 
 const PlaceOrder = () => {
   const navigate = useNavigate()
-  let {id} = useParams()
+  let { id } = useParams()
   console.log(id)
 
 
   const loggedInUser = useSelector((state) => state.user.value);
   const [selectedBooks, setSelectedBooks] = useState(null)
   const [books, setBooks] = useState([])
-  const [book,setBook]= useState({})
+  const [book, setBook] = useState({})
   console.log("Selected", selectedBooks)
 
 
@@ -36,13 +36,14 @@ const PlaceOrder = () => {
       })
 
   }
-  const getBookById= (id)=>{
-    BackendApi.book.getOneById(id)
-    .then((book)=>{
-      setBook(book)
-      console.log("one book", book)
 
-    })
+  const getBookById = () => {
+    BackendApi.book.getOneById(id)
+      .then((book) => {
+        setBook(book)
+        console.log("one book", book)
+
+      })
 
   }
 
@@ -50,7 +51,7 @@ const PlaceOrder = () => {
   useEffect(() => {
     fetchBooks()
     getBookById()
-    
+
 
   }, [])
 
@@ -69,13 +70,13 @@ const PlaceOrder = () => {
             showCancelButton: false,
             showConfirmButton: false,
             timer: 1500
-            })
-            .then(()=>{
+          })
+            .then(() => {
               navigate('/user/order')
               console.log("order create", order)
 
             })
-         
+
 
         })
         .catch((err) => { console.log(err) })
@@ -94,7 +95,6 @@ const PlaceOrder = () => {
       <div style={{ display: "flex" }}>
         <Sidebar />
 
-
         <div style={{ flex: 1, padding: '20px' }}>
 
           <div>
@@ -102,11 +102,7 @@ const PlaceOrder = () => {
             <h2>Want to order more books</h2>
           </div>
 
-
-
-
           <label className="fs-14 fw-500 text-900 mb-1 mt-3">Books</label>
-
           <Select
             defaultValue={null}
             value={selectedBooks}
@@ -134,36 +130,43 @@ const PlaceOrder = () => {
               Place Order
             </button>
           </div>
-                                    <h1 className='text-xl font-bold mb-6 text-center'style={{marginTop:40}}> Order Summary</h1>
+          <h1 className='text-xl font-bold mb-6 text-center' style={{ marginTop: 40 }}> Order Summary</h1>
           <div className="card p-5 float-left" >
 
-                                    <div className='mb-2 flex justify-between'>
-                                        <div className=''>Total Books :</div>
-                                        <div className='mr-9'>
+            <div className='mb-2 flex justify-between'>
+              <div className=''>Book Name:
+                <span style={{ marginLeft: 90 }}>
+                  {book.name}
+                </span>
 
-                                            {/* {items.reduce((a, c) => a + c.quantity , 0)} */}
+              </div>
 
-                                        </div>
+            </div>
+            <div className='mb-2 flex justify-between'>
+              <div>Price:
+              <span style={{ marginLeft: 136 }}>
 
+             {book.price}
+              </span>
+              </div>
+             
+            </div>
+            <div className='mb-2 flex justify-between'>
+              <div>Title:
+              <span style={{ marginLeft: 136 }}>
 
-                                    </div>
-                                    <div className='mb-[50px] flex justify-between'>
-                                        <div>Total Amount:</div>
-                                        <div className='mr-6'>
-                                            {/* {items.reduce((a, c) => a + c.quantity * c.price, 0)} */}
-                                        </div>
-                                    </div>
+             {book.title}
+              </span>
+              </div>
 
-                                    
+              
 
-                                    
-                                   
-                                    <div className='mt-2'>
+            </div>
 
-                                  
-                                
-                                                </div>
-                                </div>
+            <div className='mt-2'>
+
+            </div>
+          </div>
 
 
 

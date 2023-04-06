@@ -98,7 +98,7 @@ export const Sidebar = () => {
 								</span>
 								<span className="side-link">Authors </span>
 							</NavLink>
-							<NavLink
+							{/* <NavLink
 								to={"/user/placeorder"}
 								className="pointer"
 								style={{ display: 'block', marginBottom: '10px', color: '#000' }}
@@ -108,7 +108,7 @@ export const Sidebar = () => {
 									<span className="iconify" data-icon="uim:calender"></span>
 								</span>
 								<span className="side-link">Place Order </span>
-							</NavLink>
+							</NavLink> */}
 							<NavLink
 								to={"/user/order"}
 								className="pointer"
