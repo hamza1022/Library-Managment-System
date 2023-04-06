@@ -100,15 +100,7 @@ const getAuthors = () => {
 
   }, [])
   
-  // useEffect(() => {
-  //   if(book && authors ){
-  //     const author = authors.find(author=>author._id.toString() === book.Author.toString())
-  //     console.log("gdshjdsagdsajgdsajdgdsa",author)
-  //     // setSelectedAuthor(author)
-    
-  //   }
 
-  // }, [book])
 
 
 

@@ -16,7 +16,7 @@ const EditBook = () => {
   const [book, setBook] = useState({})
   const [error, setError] = useState("")
 
-  console.log(authors)
+  console.log("book one retrived", book)
 
   
 
@@ -33,33 +33,16 @@ const EditBook = () => {
     BackendApi.book.getOneById(id)
     .then((book)=>{
       setBook(book)
-     
-      
       
     })
     .catch((err)=>{
       setError(err)
     })
   }
-  
-  // const getAuthor =()=>{
-  //   const authorId = parseInt(book?.Author);  
-  //   BackendApi.author.getAuthorById(authorId)
-  //   .then((author)=>{
-  //     setSelectedAuthor(author);
-     
 
-  //   })
-  //   .catch((err)=>{
-  //     setError(err)
-  //   })
 
-  // }
-  console.log(selectedAuthor)
+
   console.log(book)
-  
-
-
   console.log("Selected", selectedAuthor)
 
   const handleSubmit = (event) => {
@@ -135,15 +118,17 @@ const EditBook = () => {
 
   useEffect(() => {
 
-if(book && authors ){
-  const author = authors.find(author=>author._id.toString() === book.Author.toString())
-  console.log("gdshjdsagdsajgdsajdgdsa",author)
-  setSelectedAuthor(author)
+if(book.Author){
+
+
+
+  setSelectedAuthor(book.Author.name)
+
 
 }
   
 
-  }, [book])
+  }, [book.Author])
   return (
 
     <div style={{ display: "flex" }}>

@@ -50,7 +50,8 @@ router.post("/create", auth.required,auth.admin,  async (req, res, next) => {
 router.get('/getOne/:bookId',(req,res,next)=>{
     
     Book.findById(req.params.bookId)
-    .then((book)=>{
+    .then(async(book)=>{
+      await book.populate('Author', 'name country')
         return next(new OkResponse(book));
     })
     .catch((err)=>{
