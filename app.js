@@ -1,5 +1,9 @@
 const express = require('express')
+const socketio = require("socket.io")
 const app = express()
+const http = require("http")
+const server = http.createServer(app)
+const io = socketio(server)
 let  PORT = 8080;
 require("dotenv").config();
 
@@ -16,6 +20,24 @@ app.use(express.json())
 app.get("/",(req,res)=>{
   res.send("heloo")
 })
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('message', (msg) => {
+      console.log('client message: ' + msg);
+    });
+
+  socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+
+    socket.emit("Server","Recieve from  Server")
+
+
+
+});
 
 
 app.listen(PORT, () => {

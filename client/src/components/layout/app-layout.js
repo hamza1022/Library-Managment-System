@@ -43,6 +43,7 @@ import Forgot from '../Auth/forgot';
 import Reset from '../Auth/reset';
 import NotFound from './not-found';
 import UploadPhoto from '../user/upload-photo';
+import Chats from '../user/chats';
 
 
 
@@ -176,6 +177,7 @@ export const AppLayout = () => {
                 <>
                     <Route path="/user/dashboard" exact element={<Sidebar />} />
                     <Route path="/user/authors" exact element={<Authors />} />
+                    <Route path="/user/chats" exact element={<Chats />} />
                     <Route path="/user/books" exact element={<Books />} />
                     <Route path="/user/placeorder/:id" exact element={<PlaceOrder />} />
                     <Route path="/user/order" exact element={<Order />} />

@@ -10,6 +10,8 @@ router.use('/book',require('./book'))
 
 router.use('/order',require('./order'))
 
+router.use('/chat',require('./chat'))
+
 
 
 module.exports = router;

@@ -98,6 +98,17 @@ export const Sidebar = () => {
 								</span>
 								<span className="side-link">Authors </span>
 							</NavLink>
+							<NavLink
+								to={"/user/chats"}
+								className="pointer"
+								style={{ display: 'block', marginBottom: '10px', color: '#000' }}
+							>
+
+								<span className="side-ic">
+									<span className="iconify" data-icon="uim:calender"></span>
+								</span>
+								<span className="side-link">Chats </span>
+							</NavLink>
 							{/* <NavLink
 								to={"/user/placeorder"}
 								className="pointer"
