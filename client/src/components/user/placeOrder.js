@@ -124,7 +124,7 @@ const getAuthors = () => {
             defaultValue={selectedBooks}
             value={selectedBooks}
             options={books}
-            getOptionLabel={(book) => book.name}
+            getOptionLabel={(book) => `${book.name}: ${book.price}`}
             getOptionValue={(book) => book._id}
             isSearchable={false}
             isClearable={true}
@@ -174,6 +174,24 @@ const getAuthors = () => {
     
       </tbody>
     </Table>
+    <>
+    <div>
+      <p>
+        You have to pay 
+        <span>
+        <h3>
+
+
+        {
+          selectedBooks.reduce((accumulator, book) => accumulator + book.price, 0)
+        }
+        </h3>
+        </span> 
+        Rupees if you don't returned books
+      </p>
+    </div>
+    </>
+    
           
           <div className="col-lg-6">
             <button

@@ -1,4 +1,4 @@
-let jwt = require("express-jwt");
+ let jwt = require("express-jwt");
 let secret = require("../config").secret;
 let mongoose = require("mongoose");
 
