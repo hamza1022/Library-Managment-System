@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { BackendApi } from '../../api';
 import { useSelector } from 'react-redux';
+import io from "socket.io-client"
 
 const Chats = () => {
+  const socket = io("http://localhost:8080");
+
+  socket.on("Server",(data)=>{
+    console.log(data);
+  })
 
   const loggedInUser = useSelector((state) => state.user.value);
   const [users, setUsers] = useState([]);
@@ -22,10 +28,11 @@ const Chats = () => {
   };
 
   const handleUserClick = (user) => {
+    console.log("click", user);
     setSelectedUser(user);
-    // Fetch messages for the selected user
-    BackendApi.chat
-      .viewMsg(user)
+     console.log("Selected user:", JSON.stringify(user));
+    
+    BackendApi.chat.viewMsg(user)
       .then((messages) => {
         console.log(messages);
         setMessages(messages);
@@ -64,7 +71,7 @@ const Chats = () => {
         <ul style={{ listStyleType: 'none', padding: '0', margin: '0' }}>
           {users.map((user) => {
             return (
-              <li key={user._id} onClick={() => handleUserClick(user)}>
+              <li key={user._id} onClick={() => handleUserClick(user)} style={{cursor:"pointer"}}>
                 {user.name}
               </li>
             );

@@ -1,6 +1,6 @@
 
 import axios from 'axios';
-export const OrderApi = {
+export const ChatApi = {
  
 
 sendMsg :async (byId,toId, text )=>{
@@ -60,11 +60,11 @@ viewMsgs :async ()=>{
 viewMsg :async (user)=>{
     const id = user._id
     console.log(id)
-    
+
     let token = localStorage.getItem("token");
 
     try {
-        const response = await  axios.get ("http://localhost:8080/api/chat/get-msgs",
+        const response = await  axios.get (`http://localhost:8080/api/chat/view-msg/${id}`,
     {
         headers:{
             'Authorization': `Bearer ${token}`
@@ -72,8 +72,8 @@ viewMsg :async (user)=>{
         }       
     })
 
-    console.log("api response", response.data.chats)
-    return response.data.chats
+    console.log("api response", response.data.msgs)
+    return response.data.msgs
         
     } catch (error) {
 
