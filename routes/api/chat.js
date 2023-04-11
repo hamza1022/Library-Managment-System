@@ -44,6 +44,29 @@ router.post("/create-msg",auth.required , auth.user ,  async (req, res, next) =>
 
 });
 
+router.get("/get-msgs", auth.required, auth.user, async (req, res, next) => {
+    try {
+      const user = req.user._id;
+  
+      const userMsgs = await Chat.find({ $or: [{ by: user }, { to: user }] })
+        .populate("by", "name -_id") // populate the `by` field with `name`
+        .populate("to", "name -_id") // populate the `to` field with `name`
+        .exec();
+  
+      res.status(200).json({
+        message: "Chat retrieved successfully",
+        msgs: userMsgs,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Internal server error",
+      });
+    }
+  });
+  
+
+
 
 
 
