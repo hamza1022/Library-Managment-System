@@ -44,26 +44,64 @@ router.post("/create-msg",auth.required , auth.user ,  async (req, res, next) =>
 
 });
 
-router.get("/get-msgs", auth.required, auth.user, async (req, res, next) => {
+
+
+router.get('/view-msgs', auth.required, auth.user, async (req, res) => {
     try {
-      const user = req.user._id;
-  
-      const userMsgs = await Chat.find({ $or: [{ by: user }, { to: user }] })
-        .populate("by", "name -_id") // populate the `by` field with `name`
-        .populate("to", "name -_id") // populate the `to` field with `name`
-        .exec();
-  
+      const allMsgs = await Chat.find({});
+      const userMsgs = allMsgs
+        .map((msg) => {
+         
+          if (msg.by.toString()===req.user._id.toString()) {
+            return msg;
+          }
+        })
+        .filter(Boolean);
+    
       res.status(200).json({
-        message: "Chat retrieved successfully",
-        msgs: userMsgs,
+        message: "Orders retrieved successfully",
+        msgs: userMsgs
       });
     } catch (error) {
       console.error(error);
       res.status(500).json({
-        message: "Internal server error",
+        message: "Internal server error"
       });
     }
   });
+
+
+router.get('/view-msg/:id',auth.required,auth.user,async(req,res,next)=>{
+
+    const userid = req.params.id;
+    try {
+        const allMsgs = await Chat.find({});
+        const userMsgs = allMsgs
+          .map((msg) => {
+           
+            if (msg.to.toString()===userid.toString()) {
+                console.log("condition true")
+              return msg;
+            }
+          })
+          .filter(Boolean);
+      
+        res.status(200).json({
+          message: "Orders retrieved successfully",
+          msgs: userMsgs
+        });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({
+          message: "Internal server error"
+        });
+      }
+
+}
+)
+  
+
+
   
 
 

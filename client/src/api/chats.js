@@ -33,7 +33,34 @@ sendMsg :async (byId,toId, text )=>{
         
 
 }  ,
-viewMsg :async ()=>{
+viewMsgs :async ()=>{
+    let token = localStorage.getItem("token");
+
+    try {
+        const response = await  axios.get ("http://localhost:8080/api/chat/get-msgs",
+    {
+        headers:{
+            'Authorization': `Bearer ${token}`
+            
+        }       
+    })
+
+    console.log("api response", response.data.chats)
+    return response.data.chats
+        
+    } catch (error) {
+
+        throw error
+        
+    }
+},
+
+
+
+viewMsg :async (user)=>{
+    const id = user._id
+    console.log(id)
+    
     let token = localStorage.getItem("token");
 
     try {

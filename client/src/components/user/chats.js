@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { BackendApi } from '../../api';
+import { useSelector } from 'react-redux';
 
 const Chats = () => {
+
+  const loggedInUser = useSelector((state) => state.user.value);
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -22,7 +25,7 @@ const Chats = () => {
     setSelectedUser(user);
     // Fetch messages for the selected user
     BackendApi.chat
-      .getMessages(user.id)
+      .viewMsg(user)
       .then((messages) => {
         console.log(messages);
         setMessages(messages);
@@ -32,18 +35,18 @@ const Chats = () => {
       });
   };
 
-  // const handleSendMessage = (messageText) => {
-  //   // Send the message to the server
-  //   BackendApi.chat
-  //     .sendMessage(selectedUser.id, messageText)
-  //     .then((message) => {
-  //       console.log(message);
-  //       setMessages([...messages, message]);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const handleSendMessage = (messageText) => {
+    // Send the message to the server
+    BackendApi.chat
+      .sendMsg(selectedUser.id,loggedInUser._id, messageText)
+      .then((message) => {
+        console.log(message);
+        setMessages([...messages, message]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     fetchUsers();
@@ -78,9 +81,9 @@ const Chats = () => {
               overflowY: 'scroll',
             }}
           >
-            {messages.map((message) => (
+            {messages && messages.map((message) => (
               <div
-                key={message.id}
+                key={message._id}
                 style={{
                   backgroundColor:
                     message.senderId === selectedUser.id ? '#eee' : '#fff',
@@ -89,7 +92,7 @@ const Chats = () => {
                   borderRadius: '10px',
                 }}
               >
-                {message.text}
+                {message.msg}
               </div>
             ))}
           </div>
