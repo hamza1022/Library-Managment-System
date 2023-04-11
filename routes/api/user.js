@@ -13,6 +13,7 @@ let { OkResponse, BadRequestResponse, UnauthorizedResponse } = require("express-
 
 
 
+
 router.get("/", function (req, res, next) {
     return next(
         new OkResponse({
@@ -91,31 +92,7 @@ router.post("/signUp", async (req, res, next) => {
 
 });
 
-// router.post('/login', async (req, res, next) => {
 
-//     if (!req.body.email || !req.body.password) {
-
-//         res.status(301).json({ message: "error", messgae: "Please enter Email and password" })
-//     }
-
-//     let user = await User.findOne({ email: req.body.email })
-
-//     if (!user || user.password === req.body.password) {
-//         return next(new BadRequestResponse("Incorrect Credentials"));
-
-//     }
-//     else if (user) {
-//         let match = await bcrypt.compare(req.body.password, user.password)
-//         if(match){
-
-//             return next(new OkResponse(user.toAuthJSON()));
-//         }
-//         return next(new BadRequestResponse("Incorrect Credentials"));
-
-//     }
-
-
-// })
 router.post('/login', async (req, res, next) => {
 
     if (!req.body.email || !req.body.password) {
@@ -143,7 +120,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 
-router.get("/getUsers", auth.required, auth.admin, (req, res, next) => {
+router.get("/getUsers", auth.required, (req, res, next) => {
 
 
     let query = {
@@ -442,6 +419,26 @@ router.post("/otp/resend/:email", async (req, res, next) => {
 
 });
 
+router.get("/search", async (req, res, next) => {
+    const searchQuery = req.query.q;
+    if (!searchQuery) {
+      return next(new BadRequestResponse("Missing search query parameter"));
+    }
+  
+    try {
+      const users = await User.find({
+        $or: [
+          { name: { $regex: searchQuery, $options: "i" } },
+         
+        ],
+      });
+       
+      return next(new OkResponse(users));
+    } catch (err) {
+      console.error(err);
+      return next(new BadRequestResponse("An error occurred while processing your request."));
+    }
+});
 
 
 
